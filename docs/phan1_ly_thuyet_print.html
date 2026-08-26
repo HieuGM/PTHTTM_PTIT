@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Phần 1 — Lý thuyết</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<style>
+@page { size: A4; margin: 18mm 15mm; }
+body { font-family: 'Segoe UI', 'Times New Roman', serif; line-height: 1.55; font-size: 11.5pt; color: #1a1a1a; max-width: 100%; }
+h1 { font-size: 20pt; color: #0f3460; border-bottom: 3px solid #0f3460; padding-bottom: 6px; }
+h2 { font-size: 15pt; color: #0f3460; margin-top: 1.4em; border-left: 5px solid #e94560; padding-left: 8px; }
+h3 { font-size: 12.5pt; color: #16213e; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 10pt; }
+th, td { border: 1px solid #999; padding: 5px 8px; text-align: left; }
+th { background: #0f3460; color: white; }
+tr:nth-child(even) { background: #f0f4fa; }
+code { background: #eef1f6; padding: 1px 4px; border-radius: 3px; font-size: 9.5pt; }
+pre { background: #16213e; color: #e8e8e8; padding: 10px; border-radius: 6px; overflow-x: hidden; }
+pre code { background: none; color: inherit; }
+blockquote { border-left: 4px solid #e94560; background: #fdf0f2; margin: 10px 0; padding: 8px 14px; }
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Phần 1 — Lý thuyết</h1>
+</header>
+<h1 id="phần-1-lý-thuyết-từ-intelligence-đến-intelligent-system">PHẦN 1
+— LÝ THUYẾT: TỪ INTELLIGENCE ĐẾN INTELLIGENT SYSTEM</h1>
+<p><strong>Môn học: Intelligent System Development — Assignment
+01</strong> <em>From Data Representation to a First Intelligent
+System</em></p>
+<blockquote>
+<p>“Understand the system, represent the information, learn from data,
+and turn the model into an application.”</p>
+</blockquote>
+<hr />
+<h2 id="intelligence-là-gì-quan-điểm-chức-năng-functional-view">1.
+Intelligence là gì? — Quan điểm chức năng (functional view)</h2>
+<p>Không có một định nghĩa kỹ thuật duy nhất được chấp nhận rộng rãi cho
+<em>intelligence</em>. Môn học này tiếp cận theo <strong>quan điểm chức
+năng</strong>: một hệ thống được coi là “có trí tuệ” khi nó <em>thực
+hiện được</em> các năng lực sau (Slide 01, trang 6):</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Năng lực</th>
+<th>Câu hỏi cốt lõi</th>
+<th>Cơ chế điển hình</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Perception</strong> (tri giác)</td>
+<td>Hệ thống nhận thông tin gì từ môi trường?</td>
+<td>Sensor, dữ liệu, API</td>
+</tr>
+<tr>
+<td><strong>Representation</strong> (biểu diễn)</td>
+<td>Thông tin được biểu diễn bên trong như thế nào?</td>
+<td>Feature vector, tensor, graph, embedding</td>
+</tr>
+<tr>
+<td><strong>Learning</strong> (học)</td>
+<td>Hệ thống học từ đâu?</td>
+<td>Machine learning, deep learning</td>
+</tr>
+<tr>
+<td><strong>Reasoning</strong> (suy luận)</td>
+<td>Hệ thống suy luận ra sao dưới bất định?</td>
+<td>Logic, search, xác suất</td>
+</tr>
+<tr>
+<td><strong>Decision</strong> (quyết định)</td>
+<td>Hệ thống chọn hành động nào?</td>
+<td>Ngưỡng quyết định, policy, tối ưu hóa</td>
+</tr>
+<tr>
+<td><strong>Action</strong> (hành động)</td>
+<td>Hệ thống tác động lên môi trường ra sao?</td>
+<td>Dự đoán, cảnh báo, giao diện người dùng</td>
+</tr>
+<tr>
+<td><strong>Adaptation</strong> (thích nghi)</td>
+<td>Hệ thống cải thiện từ phản hồi không?</td>
+<td>Feedback, continual learning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Điểm mấu chốt:</strong> Intelligence không phải là một thuật
+toán duy nhất. Trí tuệ <em>nổi lên</em> (emerges) từ sự <strong>phối hợp
+các năng lực</strong> (Slide 01, trang 7).</p>
+<h3 id="khái-niệm-intelligence-trong-assignment-01">1.1 Khái niệm
+“intelligence” trong Assignment 01</h3>
+<p>Assignment 01 cố tình xử lý intelligence theo nghĩa <strong>hẹp và có
+thể vận hành được</strong> (limited and operational sense). Hệ thống thể
+hiện một <em>hình thức</em> trí tuệ khi nó có thể:</p>
+<ol type="1">
+<li><strong>Nhận thông tin</strong> (receive information);</li>
+<li><strong>Biểu diễn thông tin liên quan một cách tính toán</strong>
+(represent relevant information computationally);</li>
+<li><strong>Học một quan hệ từ các ví dụ</strong> (learn a relationship
+from examples);</li>
+<li><strong>Tạo ra dự đoán cho một trường hợp mới</strong> (produce a
+prediction for a new case);</li>
+<li><strong>Hỗ trợ một quyết định hoặc ứng dụng</strong> (support a
+decision or application).</li>
+</ol>
+<p>Từ đó, working notion of intelligence cho Assignment 01 là:</p>
+<p><span class="math display">\[\boxed{\;\text{Learning from examples}
+\;+\; \text{Generalization} \;+\; \text{Prediction}\;}\]</span></p>
+<p>Đây không phải định nghĩa hoàn chỉnh về trí tuệ. Các assignment sau
+sẽ mở rộng qua deep learning (A3), kiến thức + đồ thị (A4),
+embedding/RAG/tương tác/triển khai (A5).</p>
+<hr />
+<h2 id="intelligent-system-là-gì-abstraction-kỹ-thuật">2. Intelligent
+System là gì? — Abstraction kỹ thuật</h2>
+<p>Slide 01 (trang 8) đưa ra một abstraction kỹ thuật hữu ích:</p>
+<p><span class="math display">\[\text{IntelSyst} = (\text{Environment},
+\text{State}, \text{Representation}, \text{Knowledge}, \text{Learning},
+\text{Decision}, \text{Action})\]</span></p>
+<pre><code>Environment ──observe──▶ Internal State ──reason──▶ Decision ──act──▶ Environment
+                update ▲                                              │
+                └──────────────── feedback ◀─────────────────────────┘</code></pre>
+<p><strong>Phân biệt quan trọng nhất:</strong> <em>external state</em>
+(thế giới thực) ≠ <em>internal/cognitive state</em> (biểu diễn bên trong
+hệ thống).</p>
+<blockquote>
+<p>Hệ thống <strong>không sở hữu trực tiếp</strong> toàn bộ thế giới
+thực. Nó vận hành thông qua <strong>quan sát (observations)</strong> và
+<strong>biểu diễn (representations)</strong>.</p>
+</blockquote>
+<h3 id="sự-khác-nhau-model-application-intelligent-system">2.1 Sự khác
+nhau: Model ≠ Application ≠ Intelligent System</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Khái niệm</th>
+<th>Bản chất</th>
+<th>Thành phần</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>Hàm học được <span class="math inline">\(f_\theta(x)\)</span></td>
+<td>Learned mapping</td>
+</tr>
+<tr>
+<td><strong>Application</strong></td>
+<td>Model làm ra <strong>usable</strong></td>
+<td>model + interface + data processing</td>
+</tr>
+<tr>
+<td><strong>Intelligent System</strong></td>
+<td>Application vận hành <strong>trong môi trường</strong></td>
+<td>application + state + interaction + feedback</td>
+</tr>
+</tbody>
+</table>
+<p>Từ đó rút ra nguyên lý xuyên suốt môn học:</p>
+<p><span class="math display">\[\text{ML model} \neq \text{complete
+intelligent system}\]</span></p>
+<p>Assignment 01 hiện thực hóa nguyên lý này bằng cách <strong>bắt
+buộc</strong> biến model thành application (mục 17 trong đề): model một
+mình chưa phải là hệ thống hoàn chỉnh.</p>
+<hr />
+<h2 id="representation-ý-tưởng-trung-tâm-của-toàn-bộ-môn-học">3.
+Representation — Ý tưởng trung tâm của toàn bộ môn học</h2>
+<h3 id="nguyên-lý-nền-tảng-foundation-key-principle">3.1 Nguyên lý nền
+tảng (Foundation / Key principle)</h3>
+<blockquote>
+<p><strong>Model không nhận “thế giới thực”. Model nhận một biểu diễn
+(representation) của thông tin được lựa chọn. Do đó: Representation
+quyết định thông tin nào có sẵn cho học.</strong></p>
+</blockquote>
+<p>Slide 01 (trang 24) nhấn mạnh: <strong>Representation không phải lựa
+chọn trung tính</strong> (Representation is not a neutral choice). Cùng
+một đối tượng thực có thể được biểu diễn nhiều cách:</p>
+<pre><code>Real-world Object ──▶ Feature Vector   (giữ thông tin đo đếm, mất cấu trúc)
+                 ──▶ Graph             (giữ quan hệ, mất chi tiết liên tục)
+                 ──▶ Embedding         (giữ ngữ nghĩa học được, mất tính diễn giải)</code></pre>
+<p>Mỗi representation <strong>giữ lại một phần thông tin và loại bỏ/su
+biến đổi phần khác</strong>:</p>
+<p><span class="math display">\[\text{Representation} \Rightarrow
+\text{available information} \Rightarrow \text{possible
+learning}\]</span></p>
+<h3 id="feature-vector-representation-của-dữ-liệu-có-cấu-trúc">3.2
+Feature vector — Representation của dữ liệu có cấu trúc</h3>
+<p>Với dữ liệu có cấu trúc (structured data), một quan sát được biểu
+diễn bằng <strong>feature vector</strong>:</p>
+<p><span class="math display">\[x_i = [x_{i1}, x_{i2}, \dots, x_{id}]
+\in \mathbb{R}^d\]</span></p>
+<p>Một dataset có giám sát (supervised dataset):</p>
+<p><span class="math display">\[D = \{(x_i,
+y_i)\}_{i=1}^{N}\]</span></p>
+<p>trong đó: - <span class="math inline">\(x_i\)</span>: input
+representation (biểu diễn đầu vào); - <span
+class="math inline">\(d\)</span>: số đặc trưng (features); - <span
+class="math inline">\(y_i\)</span>: target (giá trị mục tiêu); - <span
+class="math inline">\(N\)</span>: số quan sát (observations).</p>
+<p>Ma trận đặc trưng hoàn chỉnh:</p>
+<p><span class="math display">\[X \in \mathbb{R}^{N \times
+d}\]</span></p>
+<h3 id="ba-tầng-representation-phải-phân-biệt-mục-8-đề-bài">3.3 Ba tầng
+representation phải phân biệt (mục 8 đề bài)</h3>
+<p><span class="math display">\[\text{Raw feature} \neq \text{Encoded
+feature} \neq \text{Model input}\]</span></p>
+<p>Ví dụ trong hệ Chẩn đoán bệnh tim: - <strong>Raw feature</strong>:
+<code>cp</code> (loại đau ngực) nhận giá trị 1–4 — biến phân loại theo
+thang đo định danh; - <strong>Encoded feature</strong>: sau one-hot
+encoding thành 4 cột nhị phân <code>cp_1..cp_4</code>; - <strong>Model
+input</strong>: sau chuẩn hóa (standardization) các đặc trưng số — giá
+trị <span class="math inline">\(z = \frac{x - \mu}{\sigma}\)</span>.</p>
+<p>Sự thay đổi representation ở tầng preprocessing <strong>thay đổi
+hẳn</strong> không gian mà thuật toán học “nhìn thấy”.</p>
+<h3
+id="tiến-hóa-của-representation-trong-lịch-sử-ai-slide-01-trang-2223">3.4
+Tiến hóa của representation trong lịch sử AI (Slide 01, trang
+22–23)</h3>
+<p><span class="math display">\[\text{Symbols} \rightarrow
+\text{Features} \rightarrow \text{Vectors} \rightarrow \text{Tensors}
+\rightarrow \text{Graphs} \rightarrow \text{Embeddings} \rightarrow
+\text{Multimodal}\]</span></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cấu trúc thông tin</th>
+<th>Representation tự nhiên</th>
+<th>Model điển hình</th>
+<th>Giai đoạn môn học</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bản ghi có cấu trúc</td>
+<td>Feature vector <span class="math inline">\(x \in
+\mathbb{R}^d\)</span></td>
+<td>LR, KNN, SVM, Trees</td>
+<td><strong>A1–A2</strong></td>
+</tr>
+<tr>
+<td>Hình ảnh</td>
+<td>Tensor</td>
+<td>CNN, ViT</td>
+<td>Deep Learning</td>
+</tr>
+<tr>
+<td>Chuỗi (sequence)</td>
+<td>Vector sequence</td>
+<td>RNN, LSTM, Transformer</td>
+<td>Deep Learning</td>
+</tr>
+<tr>
+<td>Quan hệ</td>
+<td>Nodes + edges</td>
+<td>GNN</td>
+<td>Knowledge/Graph</td>
+</tr>
+<tr>
+<td>Tri thức</td>
+<td>Entities + relations</td>
+<td>KG reasoning</td>
+<td>Knowledge Graph</td>
+</tr>
+<tr>
+<td>Văn bản</td>
+<td>Embeddings</td>
+<td>Similarity search</td>
+<td>RAG</td>
+</tr>
+<tr>
+<td>Đa phương thức</td>
+<td>Nhiều representation</td>
+<td>Multimodal AI</td>
+<td>Final Project</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lịch sử của AI cũng là lịch sử của representations</strong> —
+đây là câu chủ đạo nối Assignment 01 với toàn bộ lộ trình môn học.</p>
+<hr />
+<h2 id="traditional-machine-learning-vị-trí-trong-lịch-sử-ai">4.
+Traditional Machine Learning — Vị trí trong lịch sử AI</h2>
+<h3 id="timeline-khái-niệm-slide-01-trang-1012">4.1 Timeline khái niệm
+(Slide 01, trang 10–12)</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Giai đoạn</th>
+<th>Paradigm</th>
+<th>Ý tưởng chính</th>
+<th>Representation điển hình</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1950s–60s</td>
+<td>Symbolic AI</td>
+<td>Logic, search, problem solving</td>
+<td>Symbols / rules</td>
+</tr>
+<tr>
+<td>1970s–80s</td>
+<td>Expert Systems</td>
+<td>Mã hóa tri thức chuyên gia</td>
+<td>Rules / knowledge base</td>
+</tr>
+<tr>
+<td><strong>1980s–2000s</strong></td>
+<td><strong>Statistical ML</strong></td>
+<td><strong>Học pattern từ ví dụ</strong></td>
+<td><strong>Feature vectors</strong></td>
+</tr>
+<tr>
+<td>2000s–2010s</td>
+<td>Deep Learning</td>
+<td>Học representation phân tầng</td>
+<td>Tensors</td>
+</tr>
+<tr>
+<td>2010s</td>
+<td>Large-scale DL</td>
+<td>Data + compute + learned repr.</td>
+<td>High-dim tensors</td>
+</tr>
+<tr>
+<td>Late 2010s–2020s</td>
+<td>Transformers</td>
+<td>Attention, sequence modeling</td>
+<td>Embeddings / tokens</td>
+</tr>
+<tr>
+<td>2020s</td>
+<td>Foundation/Gen AI</td>
+<td>Reusable learned capabilities</td>
+<td>Multimodal embeddings</td>
+</tr>
+<tr>
+<td>Hiện tại</td>
+<td>Interactive/Agentic</td>
+<td>Perceive, reason, use tools, act</td>
+<td>State + memory + tools</td>
+</tr>
+</tbody>
+</table>
+<h3 id="era-3-statistical-ml-sự-dịch-chuyển-cốt-lõi">4.2 Era 3:
+Statistical ML — sự dịch chuyển cốt lõi</h3>
+<p><span class="math display">\[\underbrace{\text{Program the
+rules}}_{\text{Symbolic AI}} \longrightarrow \underbrace{\text{Learn
+patterns from examples}}_{\text{Statistical ML}}\]</span></p>
+<p>Thay vì con người viết luật
+<code>IF fever AND cough THEN possible_infection</code>, hệ thống
+<strong>tự suy ra</strong> quan hệ input → output từ dữ liệu:</p>
+<p><span class="math display">\[\hat{y} = f_\theta(x)\]</span></p>
+<p>Các phương pháp điển hình: <strong>Logistic Regression, k-Nearest
+Neighbors, Support Vector Machines, Decision Trees, Random
+Forests</strong> — đúng 5 nhóm model Assignment 01 yêu cầu.</p>
+<p><strong>Hệ quả quan trọng:</strong> khi học từ dữ liệu thay vì viết
+luật, <strong>representation trở thành bài toán kỹ thuật trung
+tâm</strong> (Representation becomes a central engineering problem).</p>
+<h3 id="traditional-ml-vs-deep-learning-phân-biệt-bắt-buộc-phải-nắm">4.3
+Traditional ML vs Deep Learning — phân biệt bắt buộc phải nắm</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tiêu chí</th>
+<th>Traditional ML</th>
+<th>Deep Learning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Representation</td>
+<td><strong>Human-designed features</strong></td>
+<td><strong>Learned representations</strong></td>
+</tr>
+<tr>
+<td>Pipeline</td>
+<td>Data → Human features → ML Model → Prediction</td>
+<td>Data → Learned repr. → Prediction</td>
+</tr>
+<tr>
+<td>Dạng dữ liệu</td>
+<td>Vector cố định chiều</td>
+<td>Vectors, tensors, sequences</td>
+</tr>
+<tr>
+<td>Model học gì</td>
+<td>Quan hệ dự đoán</td>
+<td>Representation + quan hệ dự đoán</td>
+</tr>
+<tr>
+<td>Hiệu quả</td>
+<td>Dữ liệu có cấu trúc</td>
+<td>Dữ liệu phi cấu trúc phức tạp</td>
+</tr>
+<tr>
+<td>Kích thước model</td>
+<td>Nhỏ</td>
+<td>Lớn</td>
+</tr>
+<tr>
+<td>Sở hữu trong môn học</td>
+<td><strong>Assignment 01: feature engineering</strong></td>
+<td>A3+: representation learning</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[\text{Traditional ML}:
+\underbrace{\text{human-designed feature representation}}_{\text{con
+người thiết kế}} + \underbrace{\text{learned prediction
+model}}_{\text{máy học}}\]</span> <span
+class="math display">\[\text{Deep Learning}: \underbrace{\text{learned
+representation}}_{\text{máy học}} + \underbrace{\text{learned prediction
+model}}_{\text{máy học}}\]</span></p>
+<h3 id="vì-sao-traditional-ml-phù-hợp-assignment-01">4.4 Vì sao
+Traditional ML phù hợp Assignment 01?</h3>
+<ol type="1">
+<li><strong>Formulation toán minh bạch</strong> — sinh viên kiểm chứng
+được từng thành phần;</li>
+<li><strong>Representation kiểm tra trực tiếp được</strong> — feature
+vector con người đọc hiểu;</li>
+<li><strong>Nhiều thuật toán cổ điển so sánh được</strong> trong cùng
+một protocol;</li>
+<li><strong>Experiment kiểm soát và giải thích được</strong>;</li>
+<li><strong>Deployment tạo ra góc nhìn hệ thống</strong> (system
+perspective).</li>
+</ol>
+<blockquote>
+<p><em>We start simple so that the development principles are
+visible.</em> (Slide 01, trang 33)</p>
+</blockquote>
+<hr />
+<h2 id="formulating-the-learning-problem-toán-học-của-việc-học">5.
+Formulating the Learning Problem — Toán học của việc học</h2>
+<h3 id="bài-toán-học-có-giám-sát">5.1 Bài toán học có giám sát</h3>
+<p>Cho dataset:</p>
+<p><span class="math display">\[D = \{(x_i,
+y_i)\}_{i=1}^{N}\]</span></p>
+<p>hệ thống tìm hàm dự đoán:</p>
+<p><span class="math display">\[\hat{y} = f_\theta(x)\]</span></p>
+<p>Quá trình học là <strong>tìm tham số tối ưu</strong> theo tiêu chí
+tối thiểu hóa mất mát trung bình:</p>
+<p><span class="math display">\[\theta^* = \arg\min_\theta
+\frac{1}{N}\sum_{i=1}^{N} \ell\big(f_\theta(x_i), y_i\big)\]</span></p>
+<p><strong>Giải thích từng ký hiệu</strong> (đề bài yêu cầu sinh viên
+giải thích mọi ký hiệu):</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ký hiệu</th>
+<th>Ý nghĩa</th>
+<th>Ví dụ trong hệ bệnh tim</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(x_i \in \mathbb{R}^d\)</span></td>
+<td>Input representation của quan sát thứ <span
+class="math inline">\(i\)</span></td>
+<td>Vector 13 chỉ số tim mạch</td>
+</tr>
+<tr>
+<td><span class="math inline">\(y_i\)</span></td>
+<td>Target (label) của quan sát thứ <span
+class="math inline">\(i\)</span></td>
+<td>0 = khỏe, 1 = mắc bệnh tim</td>
+</tr>
+<tr>
+<td><span class="math inline">\(f_\theta\)</span></td>
+<td>Họ hàm dự đoán tham số hóa bởi <span
+class="math inline">\(\theta\)</span></td>
+<td>Logistic Regression, RF, …</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\theta\)</span></td>
+<td>Tham số model (weights, biases, cấu trúc cây)</td>
+<td><span class="math inline">\(w, b\)</span> của LR</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\hat{y}\)</span></td>
+<td>Dự đoán cho input mới</td>
+<td>Xác suất/bán quyết bệnh tim</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\ell(\cdot, \cdot)\)</span></td>
+<td>Loss function đo sai khác dự đoán–thực tế</td>
+<td>Cross-entropy / Gini impurity</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\theta^*\)</span></td>
+<td>Tham số tối ưu tìm được</td>
+<td>Kết quả <code>model.fit()</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="classification-vs-regression">5.2 Classification vs
+Regression</h3>
+<p><strong>Classification</strong> — dự đoán lớp:</p>
+<p><span class="math display">\[x \rightarrow \hat{y} \in \{1, \dots,
+K\}\]</span></p>
+<p>Ví dụ: disease/healthy, spam/not spam. <em>Hệ Chẩn đoán bệnh tim của
+em thuộc loại này (nhị phân, <span
+class="math inline">\(K=2\)</span>).</em></p>
+<p><strong>Regression</strong> — dự đoán lượng số:</p>
+<p><span class="math display">\[x \rightarrow \hat{y} \in
+\mathbb{R}\]</span></p>
+<p>Ví dụ: house price, temperature. <em>Hệ Dự đoán giá nhà của em thuộc
+loại này.</em></p>
+<h3 id="training-testing-vì-sao-phải-tách">5.3 Training ≠ Testing — vì
+sao phải tách</h3>
+<p><span class="math display">\[D = D_{train} \cup D_{test}\]</span></p>
+<ul>
+<li><strong>Training set</strong>: nguồn để thuật toán <em>học</em> quan
+hệ (tìm <span class="math inline">\(\theta^*\)</span>);</li>
+<li><strong>Test set</strong>: mô phỏng <em>dữ liệu chưa từng thấy</em>
+để <strong>ước lượng khả năng khái quát (generalization)</strong>.</li>
+</ul>
+<p><strong>Vì sao test set không được dùng làm nguồn huấn
+luyện?</strong> Nếu model “nhìn thấy” test set trong quá trình phát
+triển (chọn model, chỉnh hyperparameter dựa trên test score), kết quả
+đánh giá sẽ bị <strong>lạm phát</strong> — model thuộc nhớ dữ liệu
+(overfitting/memorization) thay vì khái quát. Đề bài liệt kê <em>“Using
+the test set repeatedly during model development”</em> vào danh mục điều
+CẤM. Đánh giá trung thực đòi hỏi test set được dùng <strong>đúng một
+lần</strong> ở bước cuối.</p>
+<hr />
+<h2 id="baseline-điểm-tham-chiếu-đầu-tiên">6. Baseline — Điểm tham chiếu
+đầu tiên</h2>
+<p>Trước khi xây model phức tạp, phải có <strong>baseline</strong> —
+chiến lược ngây thơ nhất:</p>
+<ul>
+<li>Classification:
+<code>DummyClassifier(strategy="most_frequent")</code> — luôn đoán lớp
+đa số;</li>
+<li>Regression: <code>DummyRegressor(strategy="mean")</code> — luôn đoán
+giá trị trung bình.</li>
+</ul>
+<p><strong>Vì sao baseline cần thiết?</strong> Câu hỏi đúng không phải
+<em>“Model của tôi có chính xác không?”</em> mà là:</p>
+<blockquote>
+<p><strong>Model của tôi có học được điều gì hữu ích vượt trội một chiến
+lược đơn giản không?</strong></p>
+</blockquote>
+<p>Ví dụ: hệ bệnh tim có 54.1% mẫu lớp 0 → baseline accuracy = 54.1%.
+Một model đạt 60% “nghe khá”, nhưng chỉ <strong>hơn baseline 6
+điểm</strong> — bằng chứng học được khá yếu; ngược lại model đạt 85% là
+hơn hẳn 31 điểm. Không có baseline, mọi con số accuracy đều
+<strong>không có ngữ cảnh</strong> để diễn giải.</p>
+<hr />
+<h2 id="bốn-model-truyền-thống-nguyên-lý-học-của-từng-model">7. Bốn
+model truyền thống — Nguyên lý học của từng model</h2>
+<h3 id="logistic-regression-classification">7.1 Logistic Regression
+(Classification)</h3>
+<p><span class="math display">\[z = w^Tx + b, \qquad \sigma(z) =
+\frac{1}{1 + e^{-z}}\]</span></p>
+<p><span class="math display">\[x \rightarrow w^Tx + b \rightarrow
+\sigma(\cdot) \rightarrow P(y=1|x)\]</span></p>
+<ul>
+<li><strong>Representation nhận vào</strong>: feature vector (cần chuẩn
+hóa để weight so sánh được);</li>
+<li><strong>Quan hệ học</strong>: ranh giới quyết định <strong>tuyến
+tính</strong> trong không gian đặc trưng;</li>
+<li><strong>Tham số học</strong>: <span class="math inline">\(w \in
+\mathbb{R}^d\)</span>, <span class="math inline">\(b \in
+\mathbb{R}\)</span>;</li>
+<li><strong>Tiêu chí học</strong>: tối thiểu hóa cross-entropy loss (có
+thể + regularization);</li>
+<li><strong>Giả định</strong>: quan hệ log-odds tuyến tính theo đặc
+trưng;</li>
+<li><strong>Mạnh</strong>: diễn giải được (weight = đóng góp của
+feature), nhanh, baseline tốt;</li>
+<li><strong>Yếu</strong>: bắt không được quan hệ phi tuyến/phương thức
+tương tác phức tạp.</li>
+<li><em>Weight <span class="math inline">\(w_j\)</span> dương lớn → tăng
+<span class="math inline">\(x_j\)</span> làm tăng xác suất lớp 1; âm lớn
+→ giảm.</em></li>
+</ul>
+<h3 id="k-nearest-neighbors-classificationregression">7.2 k-Nearest
+Neighbors (Classification/Regression)</h3>
+<p><span class="math display">\[d(x, x_i) = \sqrt{\sum_{j=1}^{d}(x_j -
+x_{ij})^2} \quad \text{(khoảng cách Euclid)}\]</span></p>
+<ul>
+<li><strong>Representation nhận vào</strong>: feature vector <strong>+
+toàn bộ training set</strong> (lazy learner);</li>
+<li><strong>Quan hệ học</strong>: không học hàm tường minh — phân loại
+theo <strong>lân cận</strong> của điểm mới;</li>
+<li>“Tham số”: <span class="math inline">\(k\)</span> (hyperparameter,
+không học từ dữ liệu);</li>
+<li><strong>Tiêu chí</strong>: không có hàm loss tối thiểu hóa toàn
+cục;</li>
+<li><strong>Giả định</strong>: các điểm gần nhau theo metric khoảng cách
+có nhãn tương tự;</li>
+<li><strong>Mạnh</strong>: đơn giản, không giả định dạng hàm, bắt được
+ranh giới phi tuyến;</li>
+<li><strong>Yếu</strong>: <strong>feature scale chi phối khoảng
+cách</strong> (Glucose ~100, Age ~40 → Glucose áp đảo); chậm lúc
+inference; degrade ở chiều cao.</li>
+</ul>
+<blockquote>
+<p><strong>Hệ quả quan trọng liên kết representation ↔︎ model:</strong>
+Với KNN, <em>representation và preprocessing kết nối với nhau</em> —
+chuẩn hóa đặc trưng <strong>thay đổi trực tiếp</strong> hình học không
+gian và kết quả phân lớp. Đây là lý do Experiment 3 (representation) có
+ý nghĩa.</p>
+</blockquote>
+<h3 id="support-vector-machine-classification">7.3 Support Vector
+Machine (Classification)</h3>
+<ul>
+<li><strong>Representation nhận vào</strong>: feature vector (chuẩn hóa
+gần như bắt buộc);</li>
+<li><strong>Quan hệ học</strong>: ranh giới phân cách với <strong>biên
+(margin) lớn nhất</strong>;</li>
+<li><strong>Tham số</strong>: vector hỗ trợ + hệ số siêu phẳng <span
+class="math inline">\(w, b\)</span>; kernel trick cho phi tuyến
+(RBF);</li>
+<li><strong>Tiêu chí học</strong>: <span class="math inline">\(\min
+\frac{1}{2}\|w\|^2 + C\sum\xi_i\)</span> — tối đa margin, phạt vi
+phạm;</li>
+<li><strong>Giả định</strong>: margin lớn → khái quát tốt;</li>
+<li><strong>Mạnh</strong>: hiệu quả chiều cao, kernel linh hoạt;</li>
+<li><strong>Yếu</strong>: nhạy với scale, chi phí <span
+class="math inline">\(O(n^2)\)</span>–<span
+class="math inline">\(O(n^3)\)</span>, khó diễn giải.</li>
+</ul>
+<blockquote>
+<p><em>Good separation is not enough; <strong>the margin
+matters</strong>.</em> — nhiều ranh giới phân đúng training data, SVM
+chọn ranh giới <strong>cách xa nhất</strong> cả hai lớp để khái
+quát.</p>
+</blockquote>
+<h3 id="decision-tree-random-forest">7.4 Decision Tree &amp; Random
+Forest</h3>
+<p><strong>Decision Tree:</strong></p>
+<ul>
+<li><strong>Representation nhận vào</strong>: feature vector (không cần
+scale — chia theo ngưỡng);</li>
+<li><strong>Quan hệ học</strong>: chia đệ quy không gian đặc trưng theo
+tiêu chí tách;</li>
+<li><strong>Cấu trúc học</strong>: cây các node điều kiện
+<code>(feature, ngưỡng)</code>;</li>
+<li><strong>Tiêu chí học</strong>: Gini impurity / entropy — mỗi lần
+chia tối đa độ tinh khiết;</li>
+<li><strong>Mạnh</strong>: diễn giải cực tốt (vẽ cây ra đọc được), bắt
+phi tuyến + tương tác;</li>
+<li><strong>Yếu</strong>: <strong>overfit mạnh</strong> nếu không giới
+hạn độ sâu; bất ổn (nhỏ dữ liệu → cây khác hẳn).</li>
+</ul>
+<p><strong>Random Forest = Bagging + Random Feature Selection + Ensemble
+Prediction:</strong></p>
+<p><span class="math display">\[\hat{y} = \text{Vote}\big(T_1(x), \dots,
+T_B(x)\big) \qquad \text{(classification)}\]</span> <span
+class="math display">\[\hat{y} = \frac{1}{B}\sum_{b=1}^{B} T_b(x) \qquad
+\text{(regression)}\]</span></p>
+<p>Mỗi cây: (1) nhìn <strong>bootstrap sample</strong> của dữ liệu; (2)
+mỗi split chỉ xét <strong>subset ngẫu nhiên</strong> các feature. Nhiều
+cây đa dạng → dự đoán <strong>robust hơn</strong> (giảm variance).</p>
+<p>Với regression (hệ giá nhà), assignment dùng thêm:</p>
+<h3 id="linear-regression-regression">7.5 Linear Regression
+(Regression)</h3>
+<p><span class="math display">\[\hat{y} = w^Tx + b\]</span></p>
+<ul>
+<li><strong>Tiêu chí học</strong>: tối thiểu hóa MSE <span
+class="math inline">\(\sum_i (f_\theta(x_i) - y_i)^2\)</span> (OLS có
+nghiệm đóng);</li>
+<li><strong>Giả định</strong>: quan hệ tuyến tính, sai số iid Gaussian,
+không đa cộng tuyến mạnh;</li>
+<li><strong>Mạnh</strong>: đơn giản, diễn giải được (hệ số = marginal
+effect);</li>
+<li><strong>Yếu</strong>: bắt không được phi tuyến nếu không thêm biến
+đổi đặc trưng.</li>
+</ul>
+<h3 id="support-vector-regression-regression">7.6 Support Vector
+Regression (Regression)</h3>
+<p>SVR tìm hàm <span class="math inline">\(f(x)\)</span> lệch khỏi <span
+class="math inline">\(y\)</span> thực tế tối đa <span
+class="math inline">\(\varepsilon\)</span>, đồng thời phẳng nhất có thể
+— phiên bản “margin” của regression: chỉ các điểm ngoài <strong><span
+class="math inline">\(\varepsilon\)</span>-tube</strong> mới đóng góp
+loss.</p>
+<p><strong>Điểm chung quan trọng</strong> (Slide 01, trang 44): các
+thuật toán nhận <strong>cùng một representation</strong> (feature
+vector) nhưng áp đặt <strong>giả định và cơ chế học khác nhau</strong> —
+đó là lý do so sánh chúng trong cùng protocol là một experiment có ý
+nghĩa khoa học.</p>
+<hr />
+<h2 id="controlled-experiments-từ-chạy-model-đến-thực-nghiệm">8.
+Controlled Experiments — Từ “chạy model” đến thực nghiệm</h2>
+<p>Slide 01 (trang 52) phân biệt:</p>
+<ul>
+<li><strong>Experiment yếu</strong>: <em>“I trained KNN, SVM, and
+Logistic Regression. KNN was best.”</em></li>
+<li><strong>Experiment mạnh</strong>: hỏi thêm <strong>“WHY?”</strong> —
+và thiết kế kiểm soát để trả lời.</li>
+</ul>
+<h3 id="ba-experiment-bắt-buộc">8.1 Ba experiment bắt buộc</h3>
+<p><strong>Experiment 1 — Model Comparison:</strong> ≥4 model, cùng
+protocol đánh giá, cùng train/test split → bảng
+Accuracy/Precision/Recall/F1 (hoặc MAE/MSE/RMSE/<span
+class="math inline">\(R^2\)</span>).</p>
+<p><strong>Experiment 2 — Hyperparameter Investigation:</strong> thay
+đổi <strong>một</strong> hyperparameter có ý nghĩa (k của KNN, độ sâu
+cây, số cây RF, <span class="math inline">\(C\)</span> của SVM,
+regularization của LR…). <em>Phải nêu câu hỏi thực nghiệm TRƯỚC khi
+chạy.</em></p>
+<p><strong>Experiment 3 — Representation/Feature Investigation:</strong>
+so sánh <span class="math inline">\(X_{all}\)</span> vs <span
+class="math inline">\(X_{selected}\)</span>, hoặc unscaled vs
+standardized. Trả lời: <em>representation thay đổi kết quả không, và
+<strong>vì sao</strong>?</em> — experiment này <strong>trả lời trực tiếp
+triết lý Slide 01</strong>.</p>
+<h3 id="nguyên-tắc-đổi-một-biến">8.2 Nguyên tắc đổi một biến</h3>
+<p>Một experiment có kiểm soát chỉ đổi <strong>một yếu tố</strong> và
+giữ nguyên phần còn lại. Đề bài cảnh cáo: <em>“Changing many parameters
+without an experimental question”</em> là không đủ chuẩn — mỗi lần đổi
+tham số phải <strong>trả lời một câu hỏi</strong>.</p>
+<hr />
+<h2 id="evaluation-accuracy-là-chưa-đủ">9. Evaluation — Accuracy là chưa
+đủ</h2>
+<h3 id="classification">9.1 Classification</h3>
+<p>Confusion matrix:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Dự đoán +</th>
+<th>Dự đoán −</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Thực tế +</strong></td>
+<td>TP</td>
+<td>FN</td>
+</tr>
+<tr>
+<td><strong>Thực tế −</strong></td>
+<td>FP</td>
+<td>TN</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[\text{Accuracy} = \frac{TP + TN}{TP + TN
++ FP + FN}, \quad \text{Precision} = \frac{TP}{TP + FP}, \quad
+\text{Recall} = \frac{TP}{TP + FN}, \quad F_1 = \frac{2PR}{P +
+R}\]</span></p>
+<p><strong>Chọn metric nào tùy bài toán ứng dụng</strong> (yêu cầu bắt
+buộc của đề):</p>
+<ul>
+<li><strong>Hệ bệnh tim</strong>: bỏ sót người bệnh (FN) nghiêm trọng
+hơn báo giả (FP) → <strong>Recall là metric ưu tiên</strong>, theo dõi
+Precision/F1 để bảo đảm không tăng báo giả quá cao. Accuracy đơn thuần
+gây hiểu lầm khi lớp mất cân bằng.</li>
+<li>Công thức <span class="math inline">\(F_1\)</span> là <strong>trung
+bình điều hòa</strong> của Precision và Recall — phạt nặng khi một trong
+hai thấp.</li>
+</ul>
+<h3 id="regression">9.2 Regression</h3>
+<p><span class="math display">\[MAE = \frac{1}{N}\sum_i |\hat{y}_i -
+y_i|, \quad MSE = \frac{1}{N}\sum_i (\hat{y}_i - y_i)^2, \quad RMSE =
+\sqrt{MSE}\]</span></p>
+<p><span class="math display">\[R^2 = 1 - \frac{\sum_i (y_i -
+\hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}\]</span></p>
+<ul>
+<li><strong>MAE</strong>: sai số trung bình cùng đơn vị giá nhà ($) — dễ
+diễn giải cho người dùng;</li>
+<li><strong>RMSE</strong>: phạt lỗi lớn nặng hơn — quan trọng vì dự đoán
+lệch $100k nghiêm trọng hơn nhiều so với $10k;</li>
+<li><strong><span class="math inline">\(R^2\)</span></strong>: phần
+phương sai mục tiêu model giải thích được (1.0 hoàn hảo, 0 = bằng
+baseline mean);</li>
+<li><strong>Hệ giá nhà</strong>: <span
+class="math inline">\(R^2\)</span> là chỉ số tổng quát, RMSE nhấn sai số
+lớn, MAE để diễn giải cho người dùng cuối — báo cáo đủ cả bốn.</li>
+</ul>
+<h3 id="model-selection-là-một-quyết-định">9.3 Model Selection là một
+<strong>quyết định</strong></h3>
+<p>Câu hỏi không phải <span
+class="math inline">\(\max(\text{Accuracy})\)</span> mà là: model nào
+<strong>khái quát tốt</strong>? metric nào quan trọng với ứng dụng?
+model có <strong>diễn giải được</strong> không (y tế cần)? chi phí tính
+toán? có <strong>deploy được đáng tin cậy</strong> không?</p>
+<hr />
+<h2 id="từ-model-đến-intelligent-application">10. Từ Model đến
+Intelligent Application</h2>
+<h3 id="model-một-mình-chưa-phải-hệ-thống">10.1 Model một mình chưa phải
+hệ thống</h3>
+<p>Pipeline ứng dụng phải hiện thực hóa đầy đủ:</p>
+<p><span class="math display">\[\text{Input} \rightarrow
+\text{Representation} \rightarrow \text{Preprocessing} \rightarrow
+\text{Model} \rightarrow \text{Prediction} \rightarrow
+\text{Output}\]</span></p>
+<p><strong>Ràng buộc nền tảng:</strong> <em>Representation dùng cho
+input mới phải GIỐNG HỆT representation dùng lúc huấn luyện</em> — cùng
+encoder, cùng scaler, cùng thứ tự cột. Đây chính là ý nghĩa câu Slide 01
+(trang 56): <em>“New input must be represented and preprocessed in the
+same way as the training data.”</em></p>
+<h3 id="model-persistence-deployment">10.2 Model Persistence +
+Deployment</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lưu model sau huấn luyện</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>joblib.dump(model, <span class="st">&quot;model.joblib&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Tải lại cho inference</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> joblib.load(<span class="st">&quot;model.joblib&quot;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>prediction <span class="op">=</span> model.predict(X_new)</span></code></pre></div>
+<p>Kiến trúc deployment dạng <strong>Prediction Service</strong> (Slide
+01, trang 57):</p>
+<pre><code>User/Client ──request features──▶ REST API / Web App ──▶ Saved ML Model (inference)
+           ◀──prediction response──┘</code></pre>
+<blockquote>
+<p><em>Application does not need to know how the model learns. It needs
+a well-defined prediction interface.</em></p>
+</blockquote>
+<p>Trong Assignment 01, em hiện thực hóa bằng <strong>web app
+Streamlit</strong> deploy lên <strong>Hugging Face Spaces</strong>:
+người dùng nhập chỉ số → app chuyển sang đúng representation huấn luyện
+→ model trả dự đoán + xác suất → hiển thị kèm khuyến nghị. Đây là bước
+<strong>Deploy</strong> trong vòng phát triển Understand → Represent →
+Implement → Experiment → Evaluate → Deploy → Iterate.</p>
+<h3 id="demonstration-bắt-buộc">10.3 Demonstration bắt buộc</h3>
+<p>Đề yêu cầu demo đường đi đầy đủ:</p>
+<p><span class="math display">\[\text{User/Environment} \rightarrow
+\text{Input} \rightarrow \text{Feature Representation} \rightarrow
+\text{ML Model} \rightarrow \text{Prediction}\]</span></p>
+<p>với <strong>ít nhất 3 input case</strong> — một case lành, một case
+mắc bệnh (với hệ tim); một nhà rẻ, một nhà trung bình, một nhà đắt (với
+hệ giá nhà) — chứng minh cùng một pipeline xử lý mọi case.</p>
+<hr />
+<h2 id="reflection-điều-gì-làm-hệ-thống-này-intelligent">11. Reflection
+— Điều gì làm hệ thống này “intelligent”?</h2>
+<h3 id="bảy-câu-hỏi-reflection-bắt-buộc-mục-18-đề">11.1 Bảy câu hỏi
+reflection bắt buộc (mục 18 đề)</h3>
+<ol type="1">
+<li><strong>Hệ thống nhận thông tin gì?</strong> Chỉ số measument của
+bệnh nhân / đặc điểm nhà;</li>
+<li><strong>Representation nội bộ là gì?</strong> Feature vector <span
+class="math inline">\(x \in \mathbb{R}^d\)</span> sau encode +
+scale;</li>
+<li><strong>Model học gì từ ví dụ?</strong> Quan hệ ánh xạ feature →
+target <span class="math inline">\(f_\theta: x \mapsto
+\hat{y}\)</span>;</li>
+<li><strong>Dự đoán/quyết định gì?</strong> Xác suất bệnh tim (ngưỡng
+0.5) / mức giá ước tính ($);</li>
+<li><strong>Vì sao xử lý được input chưa thấy?</strong> <strong>Khái
+quát hóa</strong>: học quan hệ có cấu trúc (pattern) chứ không ghi nhớ
+từng mẫu — miễn input mới cùng phân phối với training data;</li>
+<li><strong>Phần nào gọi là “intelligent” hợp lý?</strong> Khả năng
+<strong>học từ ví dụ + khái quát + dự đoán đúng</strong> — năng lực
+không ai lập trình luật tường minh;</li>
+<li><strong>Hạn chế gì ngăn trở việc thông minh hơn?</strong> (mục
+11.2).</li>
+</ol>
+<h3 id="hạn-chế-của-representation-feature-vector-mục-19-đề">11.2 Hạn
+chế của representation feature vector (mục 19 đề)</h3>
+<ul>
+<li><strong>Lưu giữ</strong>: các thuộc tính đo đếm/chốt được chọn — tín
+hiệu dự báo chính;</li>
+<li><strong>Mất</strong>: quan hệ giữa các thực thể, dữ liệu ảnh/Y tế
+gốc (ECG thô, ảnh chụp), chuỗi thời gian, ngữ cảnh lâm sàng, tri thức y
+khoa chuyên gia;</li>
+<li><strong>Image?</strong> Có thể — ảnh siêu âm tim / ảnh chụp nhà →
+tensor → CNN (A4 của môn học);</li>
+<li><strong>Sequence?</strong> Có thể — chuỗi ECG theo thời gian, lịch
+sử giao dịch nhà;</li>
+<li><strong>Graph?</strong> Có thể — đồ thị bệnh–triệu chứng, mạng lưới
+vị trí nhà–trường học–trung tâm;</li>
+<li><strong>Learned embeddings?</strong> Có thể — embedding mã hóa bệnh
+nhân/nhà tương tự nhau gần nhau;</li>
+<li><strong>Đổi representation thì đổi gì?</strong> Đổi <em>thông tin có
+sẵn</em> → đổi <em>họ hàm học được</em> → đổi <em>trần khả năng dự
+đoán</em> (nhưng thường đổi cả chi phí dữ liệu + mất diễn giải).</li>
+</ul>
+<p><span class="math display">\[\text{trained model} \neq \text{complete
+intelligent system}\]</span></p>
+<p>Hệ thống hoàn chỉnh cần thêm: input handling, representation,
+preprocessing, prediction, output, và <strong>tích hợp vào
+application</strong>.</p>
+<hr />
+<h2 id="vị-trí-của-assignment-01-trong-lộ-trình-môn-học">12. Vị trí của
+Assignment 01 trong lộ trình môn học</h2>
+<p><span class="math display">\[\underbrace{\text{Structured
+Data}}_{\text{input}} \rightarrow \underbrace{\text{Feature
+Engineering}}_{\text{representation}} \rightarrow
+\underbrace{\text{Traditional ML}}_{\text{learning}} \rightarrow
+\underbrace{\text{Prediction}}_{\text{decision}}\]</span></p>
+<p>Trong dòng chảy lịch sử:</p>
+<p><span class="math display">\[\text{Symbolic AI} \rightarrow
+\text{Expert Systems} \rightarrow \boxed{\text{Statistical ML}}
+\rightarrow \text{Deep Learning} \rightarrow \text{Foundation/Gen AI}
+\rightarrow \text{Interactive/Agentic}\]</span></p>
+<p>Assignment 01 chiếm giai đoạn <strong>Statistical ML</strong> — giai
+đoạn mà con người thiết kế representation (feature vector) và máy học
+quan hệ dự đoán.</p>
+<p>Lộ trình 5 assignment:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Giai đoạn</th>
+<th>Representation chính</th>
+<th>Năng lực chính</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A1</strong></td>
+<td>Feature vectors</td>
+<td><strong>Traditional ML + deployment</strong> ← <em>vị trí hiện
+tại</em></td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Data / improved representations</td>
+<td>Preprocessing + evaluation</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Learned representations</td>
+<td>Neural networks + deep learning</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Tensors + graphs</td>
+<td>CNN + relational knowledge</td>
+</tr>
+<tr>
+<td>A5</td>
+<td>Embeddings + context</td>
+<td>RAG + conversational systems</td>
+</tr>
+<tr>
+<td>Project</td>
+<td>Integrated representations</td>
+<td>Complete intelligent system</td>
+</tr>
+</tbody>
+</table>
+<p>Tiến trình dài hạn: Data → Representation → Learning → Knowledge →
+Retrieval → Generation → Interaction → <strong>Intelligent
+System</strong>.</p>
+<hr />
+<h2 id="kết-luận-lý-thuyết">13. Kết luận lý thuyết</h2>
+<p>Assignment 01 là <strong>bước hiện thực hóa đầu tiên</strong> của
+khung khái niệm Slide 01:</p>
+<p><span class="math display">\[\text{Understand} \rightarrow
+\text{Represent} \rightarrow \text{Implement} \rightarrow
+\text{Experiment} \rightarrow \text{Evaluate} \rightarrow
+\text{Apply}\]</span></p>
+<p>Ba luận điểm trung tâm được Parts 2 (thực hành) chứng minh:</p>
+<ol type="1">
+<li><p><strong>Representation là xương sống</strong>: model không nhận
+thế giới thực mà nhận representation — representation quyết định thông
+tin sẵn có cho học. Hai hệ thống thực nghiệm (bệnh tim, giá nhà) sẽ cho
+thấy đổi representation (scale, chọn feature, log-transform)
+<strong>thay đổi kết quả học</strong>.</p></li>
+<li><p><strong>Learning = học từ ví dụ + khái quát + dự đoán</strong>:
+baseline cho khung tham chiếu, ≥4 model cùng representation so sánh theo
+protocol thống nhất, 3 controlled experiment trả lời câu hỏi đặt
+trước.</p></li>
+<li><p><strong>Model ≠ hệ thống</strong>: chỉ khi model được bọc trong
+pipeline Input → Representation → Preprocessing → Model → Prediction →
+Output và <strong>deploy thành application</strong> (web app) thì mới có
+một <em>intelligent system nhỏ</em> hoàn chỉnh — intelligent system
+<strong>đầu tiên</strong> em phát triển trong môn học này.</p></li>
+</ol>
+<hr />
+<h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h2>
+<ol type="1">
+<li>Tran, D. Q., <em>Intelligent System Development — Lecture 01: From
+Intelligence to Intelligent Systems</em>, PTIT.</li>
+<li>Tran, D. Q., <em>Intelligent System Development — Assignment 01:
+From Data Representation to a First Intelligent System</em>, PTIT.</li>
+<li>Lee, W.-M., <em>Python® Machine Learning</em>, First Edition, Wiley,
+2019 — Chương 12: Deploying Machine Learning Models.</li>
+<li>Scikit-learn documentation: machine learning algorithms and model
+evaluation.</li>
+<li>Russell, S. and Norvig, P., <em>Artificial Intelligence: A Modern
+Approach</em>.</li>
+<li>Goodfellow, I., Bengio, Y., and Courville, A., <em>Deep
+Learning</em>.</li>
+<li>Vaswani, A. et al., “Attention Is All You Need,” 2017.</li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Phần 2 — Báo cáo kỹ thuật</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<style>
+@page { size: A4; margin: 18mm 15mm; }
+body { font-family: 'Segoe UI', 'Times New Roman', serif; line-height: 1.55; font-size: 11.5pt; color: #1a1a1a; max-width: 100%; }
+h1 { font-size: 20pt; color: #0f3460; border-bottom: 3px solid #0f3460; padding-bottom: 6px; }
+h2 { font-size: 15pt; color: #0f3460; margin-top: 1.4em; border-left: 5px solid #e94560; padding-left: 8px; }
+h3 { font-size: 12.5pt; color: #16213e; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 10pt; }
+th, td { border: 1px solid #999; padding: 5px 8px; text-align: left; }
+th { background: #0f3460; color: white; }
+tr:nth-child(even) { background: #f0f4fa; }
+code { background: #eef1f6; padding: 1px 4px; border-radius: 3px; font-size: 9.5pt; }
+pre { background: #16213e; color: #e8e8e8; padding: 10px; border-radius: 6px; overflow-x: hidden; }
+pre code { background: none; color: inherit; }
+blockquote { border-left: 4px solid #e94560; background: #fdf0f2; margin: 10px 0; padding: 8px 14px; }
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Phần 2 — Báo cáo kỹ thuật</h1>
+</header>
+<h1 id="phần-2-báo-cáo-kỹ-thuật-hai-hệ-thống-thông-minh">PHẦN 2 — BÁO
+CÁO KỸ THUẬT: HAI HỆ THỐNG THÔNG MINH</h1>
+<p><strong>Môn học: Intelligent System Development — Assignment
+01</strong> <em>From Data Representation to a First Intelligent
+System</em></p>
+<blockquote>
+<p>Hai hệ thống: <strong>🫀 Hệ Chẩn đoán bệnh tim</strong>
+(classification) và <strong>🏠 Hệ Dự đoán giá nhà</strong> (regression)
+— cùng một methodology <em>Understand → Represent → Implement →
+Experiment → Apply</em>.</p>
+</blockquote>
+<hr />
+<h2 id="introduction">1. Introduction</h2>
+<p>Assignment 01 yêu cầu phát triển <strong>một intelligent system
+nhỏ</strong> — không chỉ “train classifier” — theo khung Slide 01:
+Intelligence → Intelligent System → Representation → Learning → Decision
+→ Action.</p>
+<p>Báo cáo này trình bày <strong>hai hệ thống</strong> trên hai bài toán
+có bản chất khác nhau về bản chất học:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>🫀 Hệ Chẩn đoán bệnh tim</th>
+<th>🏠 Hệ Dự đoán giá nhà</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loại bài toán</td>
+<td><strong>Binary classification</strong></td>
+<td><strong>Regression</strong></td>
+</tr>
+<tr>
+<td>Target</td>
+<td>Có/không bệnh tim (0/1)</td>
+<td>Giá bán USD (liên tục)</td>
+</tr>
+<tr>
+<td>Metric chính</td>
+<td>Recall, F1, Accuracy, Precision</td>
+<td>MAE, RMSE, R²</td>
+</tr>
+<tr>
+<td>Model cuối</td>
+<td>Random Forest (B=100)</td>
+<td>Random Forest Regressor (B=100, log-target)</td>
+</tr>
+<tr>
+<td>Ứng dụng</td>
+<td>Sàng lọc tim mạch cho nhân viên y tế</td>
+<td>Ước giá nhà cho người mua/bán</td>
+</tr>
+</tbody>
+</table>
+<p>Hai hệ thống cùng dùng <strong>một quy trình 22 mục</strong>
+(Required Notebook Structure — mục 21 đề), cùng kỷ luật thực nghiệm,
+nhưng khác nhau ở mọi quyết định kỹ thuật do bản chất
+classification/regression chi phối — đó chính là bài học so sánh mà báo
+cáo này làm rõ.</p>
+<p><strong>Lưu ý về lựa chọn dataset:</strong> Slide 67 quy định <em>“Do
+not simply reproduce Lee’s diabetes example”</em> — diabetes chỉ là
+scaffold. Hai dataset được chọn là dataset thật, khác hoàn toàn ví dụ
+lớp: UCI Heart Disease (Cleveland) và Kaggle Ames Housing.</p>
+<hr />
+<h2 id="intelligent-system-definition">2. Intelligent System
+Definition</h2>
+<h3 id="hệ-chẩn-đoán-bệnh-tim">2.1 Hệ Chẩn đoán bệnh tim</h3>
+<p><strong>System statement:</strong></p>
+<blockquote>
+<p>Hệ thống hỗ trợ sàng lọc bệnh tim nhận 13 chỉ số tim mạch đo lường
+được của bệnh nhân, biểu diễn thành feature vector <span
+class="math inline">\(x \in \mathbb{R}^{13}\)</span> (sau encode: <span
+class="math inline">\(\mathbb{R}^{18}\)</span>), dùng model học từ 303
+bệnh nhân để dự đoán xác suất hẹp động mạch vành, hỗ trợ nhân viên y tế
+ưu tiên bệnh nhân cần khám chuyên sâu.</p>
+</blockquote>
+<h3 id="hệ-dự-đoán-giá-nhà">2.2 Hệ Dự đoán giá nhà</h3>
+<p><strong>System statement:</strong></p>
+<blockquote>
+<p>Hệ thống ước tính giá nhà nhận các thuộc tính bất động sản (diện
+tích, chất lượng, vị trí, năm xây…), biểu diễn thành feature vector (sau
+encode: <span class="math inline">\(\mathbb{R}^{271}\)</span>) +
+log-transform target, dùng model học từ 1460 giao dịch Ames, Iowa để dự
+đoán giá bán USD, hỗ trợ người mua/bán/đại lý định giá tham khảo.</p>
+</blockquote>
+<h3 id="kiến-trúc-chung-cả-hai-hệ-thống">2.3 Kiến trúc chung cả hai hệ
+thống</h3>
+<pre><code>ENVIRONMENT → INPUT → REPRESENTATION → PREPROCESSING → MODEL → PREDICTION → OUTPUT → USER
+                                     (one-hot + scale)  (RF)    (class/giá)  (web app)
+                                                                              │
+                                                       feedback: dữ liệu mới ◀─┘</code></pre>
+<p>Cả hai hiện thực đầy đủ chuỗi Slide 01: external information
+(dataset) → internal representation (feature vector) → learning
+(traditional ML) → decision (prediction) → action (application
+deploy).</p>
+<hr />
+<h2 id="problem-definition">3. Problem Definition</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Thành phần</th>
+<th>🫀 Bệnh tim</th>
+<th>🏠 Giá nhà</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Input <span class="math inline">\(x\)</span></td>
+<td>13 chỉ số tim mạch</td>
+<td>74 thuộc tính nhà</td>
+</tr>
+<tr>
+<td>Target <span class="math inline">\(y\)</span></td>
+<td><span class="math inline">\(\{0, 1\}\)</span> — có/không bệnh</td>
+<td><span class="math inline">\(\mathbb{R}\)</span> — giá USD</td>
+</tr>
+<tr>
+<td>Bài toán</td>
+<td>Binary classification</td>
+<td>Regression</td>
+</tr>
+<tr>
+<td>Định nghĩa 1 câu</td>
+<td>Given the 13-dim feature vector, predict heart disease class</td>
+<td>Given house feature vector, predict sale price in USD</td>
+</tr>
+<tr>
+<td>Learning objective</td>
+<td><span class="math inline">\(\theta^* = \arg\min_\theta
+\frac{1}{N}\sum \ell(f_\theta(x_i), y_i)\)</span></td>
+<td>cùng công thức, <span class="math inline">\(\ell\)</span> = squared
+loss trên log-giá</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="dataset">4. Dataset</h2>
+<h3 id="uci-heart-disease-cleveland">4.1 UCI Heart Disease
+(Cleveland)</h3>
+<table>
+<thead>
+<tr>
+<th>Thuộc tính</th>
+<th>Giá trị</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nguồn</td>
+<td>https://archive.ics.uci.edu/dataset/45/heart+disease</td>
+</tr>
+<tr>
+<td>Quan sát</td>
+<td>303 bệnh nhân (Cleveland Clinic)</td>
+</tr>
+<tr>
+<td>Feature</td>
+<td>13 (6 numerical + 7 categorical)</td>
+</tr>
+<tr>
+<td>Target</td>
+<td><code>num</code> 0–4 → nhị phân (num&gt;0 = có bệnh)</td>
+</tr>
+<tr>
+<td>Cân bằng lớp</td>
+<td>164 khỏe / 139 bệnh (54/46) — cân bằng tốt</td>
+</tr>
+<tr>
+<td>Citation</td>
+<td>Janosi, Steinbrunn, Pfisterer, Detrano (1988)</td>
+</tr>
+</tbody>
+</table>
+<p>Tiền xử lý: median imputation cho <code>ca</code> (4 thiếu),
+<code>thal</code> (2 thiếu) — tỷ lệ ~2% quá nhỏ để bỏ hàng.</p>
+<h3 id="kaggle-ames-housing">4.2 Kaggle Ames Housing</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Thuộc tính</th>
+<th>Giá trị</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nguồn</td>
+<td>https://www.kaggle.com/c/house-prices-advanced-regression-techniques</td>
+</tr>
+<tr>
+<td>Quan sát</td>
+<td>1460 giao dịch (Ames, Iowa 2006–2010)</td>
+</tr>
+<tr>
+<td>Feature</td>
+<td>74 sau xử lý (36 numerical + 38 categorical)</td>
+</tr>
+<tr>
+<td>Target</td>
+<td><code>SalePrice</code> ($34,900 – $755,000, lệch phải skew
+1.88)</td>
+</tr>
+<tr>
+<td>Citation</td>
+<td>De Cock (2011), J. Statistics Education 19(3)</td>
+</tr>
+</tbody>
+</table>
+<p>Tiền xử lý tinh tế: <strong>NA của Ames mang nghĩa “không có tiện
+ích”</strong> (không phải missing!) — <code>Garage*</code>,
+<code>Bsmt*</code>, <code>FireplaceQu</code> NA → “None”; bỏ 5 cột thiếu
+&gt;50%; <code>LotFrontage</code> → median theo Neighborhood.</p>
+<hr />
+<h2 id="data-representation">5. Data Representation</h2>
+<h3 id="nguyên-lý-chung">5.1 Nguyên lý chung</h3>
+<p><span class="math display">\[\text{Raw feature} \neq \text{Encoded
+feature} \neq \text{Model input}\]</span></p>
+<h3 id="so-sánh-representation-hai-hệ-thống">5.2 So sánh representation
+hai hệ thống</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>🫀 Bệnh tim</th>
+<th>🏠 Giá nhà</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw</td>
+<td>13 cột (7 categorical mã số)</td>
+<td>74 cột (38 chuỗi văn bản)</td>
+</tr>
+<tr>
+<td>Encoded</td>
+<td>one-hot 7 categorical → <strong>18 chiều</strong></td>
+<td>one-hot 38 categorical → <strong>271 chiều</strong></td>
+</tr>
+<tr>
+<td>Model input</td>
+<td>standardized trong Pipeline</td>
+<td>standardized trong Pipeline</td>
+</tr>
+<tr>
+<td><strong>Representation của target</strong></td>
+<td>nhãn 0/1 (nguyên bản)</td>
+<td><strong>log(1+y)</strong> — chính là thay đổi representation!</td>
+</tr>
+<tr>
+<td>Lý do chọn</td>
+<td>one-hot tránh giả thứ tự sai (cp 1–4 vô thứ tự)</td>
+<td>one-hot giữ 25 khu Neighborhood không áp thứ tự</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Điểm nhấn:</strong> ở hệ giá nhà, việc log-transform target
+<em>chính là một quyết định representation</em> — không chỉ input mới là
+representation. Experiment 3 chứng minh quyết định này cải thiện mọi
+model.</p>
+<hr />
+<h2 id="traditional-ml-methods">6. Traditional ML Methods</h2>
+<h3 id="bốn-model-mỗi-hệ-thống-đúng-mục-13-đề">6.1 Bốn model mỗi hệ
+thống (đúng mục 13 đề)</h3>
+<p><strong>Hệ tim (classification):</strong> Logistic Regression, k-NN
+(k=11), SVM (RBF, C=1), Random Forest (B=100).</p>
+<p><strong>Hệ nhà (regression):</strong> Linear Regression, Decision
+Tree Regressor (depth 8), Random Forest Regressor (B=100, log-target),
+SVR (RBF).</p>
+<h3 id="model-understanding-bảng-tổng-hợp-7-câu-hỏi">6.2 Model
+understanding — bảng tổng hợp 7 câu hỏi</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Câu hỏi</th>
+<th>LR</th>
+<th>KNN</th>
+<th>SVM/DT</th>
+<th>RF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Representation nhận?</td>
+<td>vector chuẩn hóa (cần)</td>
+<td>vector chuẩn hóa (<strong>bắt buộc</strong> — khoảng cách)</td>
+<td>SVM cần scale / DT không cần</td>
+<td>không cần scale</td>
+</tr>
+<tr>
+<td>Quan hệ học?</td>
+<td>ranh giới tuyến tính</td>
+<td>lân cận theo khoảng cách</td>
+<td>margin tối đa / chia đệ quy</td>
+<td>ensemble trung bình/vote</td>
+</tr>
+<tr>
+<td>Tham số?</td>
+<td><span class="math inline">\(w, b\)</span></td>
+<td>không có (lazy)</td>
+<td>siêu phẳng / cấu trúc cây</td>
+<td>100 cây</td>
+</tr>
+<tr>
+<td>Tiêu chí?</td>
+<td>cross-entropy (log)</td>
+<td>không loss toàn cục</td>
+<td>margin + hinge / Gini</td>
+<td>Gini từng cây + variance reduction</td>
+</tr>
+<tr>
+<td>Giả định?</td>
+<td>log-odds tuyến tính</td>
+<td>điểm gần nhau cùng lớp</td>
+<td>margin lớn → khái quát</td>
+<td>cây đa dạng → lỗi triệt tiêu</td>
+</tr>
+<tr>
+<td>Mạnh?</td>
+<td>diễn giải, nhanh</td>
+<td>đơn giản, phi tuyến cục bộ</td>
+<td>hiệu quả chiều cao / diễn giải cây</td>
+<td>hiệu năng top, robust</td>
+</tr>
+<tr>
+<td>Yếu?</td>
+<td>chỉ tuyến tính</td>
+<td>curse of dim, chậm inference</td>
+<td>nhạy <span class="math inline">\(C,\gamma\)</span>, khó diễn giải /
+overfit</td>
+<td>black box hơn</td>
+</tr>
+</tbody>
+</table>
+<p><em>(Chi tiết từng model + công thức: notebook mục 10–13 mỗi
+hệ.)</em></p>
+<hr />
+<h2 id="experimental-design">7. Experimental Design</h2>
+<p>Cả hai hệ thống thực hiện <strong>đúng 3 controlled
+experiments</strong>, mỗi experiment đặt <strong>câu hỏi trước khi
+chạy</strong> (mục 15 đề):</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Experiment</th>
+<th>Câu hỏi</th>
+<th>Hệ tim</th>
+<th>Hệ nhà</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Model comparison</strong></td>
+<td>Model nào tốt nhất dưới cùng protocol?</td>
+<td>4 model × 5-fold CV (F1)</td>
+<td>4 model × 10-fold CV (R²)</td>
+</tr>
+<tr>
+<td><strong>2. Hyperparameter</strong></td>
+<td>Đổi 1 tham số → thay đổi gì?</td>
+<td>RF: <span class="math inline">\(B\)</span> ∈ {1..400}; KNN: <span
+class="math inline">\(k\)</span> ∈ {1..31}</td>
+<td>DT: depth ∈ {2..None}; RF: <span class="math inline">\(B\)</span> ∈
+{5..400}</td>
+</tr>
+<tr>
+<td><strong>3. Representation</strong></td>
+<td>Đổi representation → thay đổi gì? (a) raw vs standardized (b) <span
+class="math inline">\(X_{all}\)</span> vs <span
+class="math inline">\(X_{top6}\)</span></td>
+<td>(a) raw vs <strong>log-target</strong> (b) <span
+class="math inline">\(X_{all}\)</span> vs <span
+class="math inline">\(X_{top8}\)</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kỷ luật:</strong> mọi quyết định phát triển dùng
+cross-validation trên train; test set chỉ dùng <strong>một lần</strong>
+ở Evaluation (tránh danh mục cấm của đề).</p>
+<hr />
+<h2 id="results">8. Results</h2>
+<h3 id="hệ-chẩn-đoán-bệnh-tim-test-set-n61">8.1 Hệ Chẩn đoán bệnh tim —
+test set (n=61)</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+<th>Precision</th>
+<th>Recall</th>
+<th><strong>F1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Random Forest (100)</strong></td>
+<td><strong>0.885</strong></td>
+<td>0.839</td>
+<td><strong>0.929</strong></td>
+<td><strong>0.881</strong></td>
+</tr>
+<tr>
+<td>KNN (k=11)</td>
+<td>0.885</td>
+<td>0.862</td>
+<td>0.893</td>
+<td>0.877</td>
+</tr>
+<tr>
+<td>Logistic Regression</td>
+<td>0.836</td>
+<td>0.800</td>
+<td>0.857</td>
+<td>0.828</td>
+</tr>
+<tr>
+<td>SVM (RBF)</td>
+<td>0.836</td>
+<td>0.800</td>
+<td>0.857</td>
+<td>0.828</td>
+</tr>
+<tr>
+<td>Baseline (majority)</td>
+<td>0.541</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Phân tích:</strong> cả 4 model vượt baseline áp đảo (F1: 0 →
+0.83–0.88) — học được tín hiệu thật. RF có <strong>Recall 0.929</strong>
+cao nhất — chỉ bỏ sót 2/28 người bệnh (FN nhỏ nhất), đúng ưu tiên y tế.
+AUC của các model 0.90–0.93 (mức excellent cho sàng lọc).</p>
+<h3 id="hệ-dự-đoán-giá-nhà-test-set-n292">8.2 Hệ Dự đoán giá nhà — test
+set (n=292)</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>MAE</th>
+<th>RMSE</th>
+<th><strong>R²</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Random Forest (log-target)</strong></td>
+<td><strong>$17,277</strong></td>
+<td>$29,297</td>
+<td><strong>0.888</strong></td>
+</tr>
+<tr>
+<td>Linear Regression</td>
+<td>~$23k</td>
+<td>~$35k</td>
+<td>~0.84</td>
+</tr>
+<tr>
+<td>Decision Tree</td>
+<td>~$22k</td>
+<td>~$34k</td>
+<td>~0.85</td>
+</tr>
+<tr>
+<td>SVR (RBF, default)</td>
+<td>~$28k</td>
+<td>~$41k</td>
+<td>~0.77</td>
+</tr>
+<tr>
+<td>Baseline (mean)</td>
+<td>$59,931</td>
+<td>$88,271</td>
+<td>−0.016</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Phân tích:</strong> RF MAE ≈ $17k ≈ 10.6% median giá — vượt
+baseline 3.5×. Residual phân bố quanh 0 không theo pattern → model đã
+vắt hết phần tuyến tính. LR bị “kéo về trung bình” ở nhà đắt (&gt; $400k
+dự đoán thấp hơn thật) — đúng hạn chế lý thuyết tuyến tính ở đuôi phân
+phối.</p>
+<h3 id="kết-quả-3-experiments">8.3 Kết quả 3 experiments</h3>
+<p><strong>Hệ tim:</strong> - <strong>Exp 1:</strong> Xếp hạng RF ≈ SVM
+&gt; LR &gt; KNN ổn định qua 5 fold; - <strong>Exp 2:</strong> RF F1
+tăng từ 0.70 (1 cây) → ~0.78 (50+ cây) rồi <strong>bão hòa</strong> —
+thêm cây chỉ giảm variance; KNN tối ưu k=13; - <strong>Exp 3a:</strong>
+Standardization: <strong>SVM +0.313 F1, KNN +0.208</strong> (thay đổi
+rất lớn!), LR −0.007, RF −0.007 (miễn nhiễm); - <strong>Exp 3b:</strong>
+Top-6 feature giữ ~95% hiệu năng.</p>
+<p><strong>Hệ nhà:</strong> - <strong>Exp 1:</strong> RF &gt; DT &gt; LR
+&gt; SVR(default) qua 10 fold; - <strong>Exp 2:</strong> DT depth 2 (R²
+0.58 — underfit) → 8–12 (~0.75 tối ưu) → đi ngang (overfit bắt đầu); RF
+bão hòa B≈100; - <strong>Exp 3a:</strong> <strong>log-target cải thiện
+mọi model</strong> (LR, RF, SVR đều Δ dương); - <strong>Exp 3b:</strong>
+Top-8 feature giữ gần nguyên hiệu năng (Δ chỉ −0.03 với RF).</p>
+<hr />
+<h2 id="model-comparison-vì-sao-chọn-random-forest-cho-cả-hai-hệ">9.
+Model Comparison — vì sao chọn Random Forest cho cả hai hệ?</h2>
+<p>Model selection là <strong>quyết định đa tiêu chí</strong> (Slide 01
+trang 54), không phải max(accuracy):</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tiêu chí</th>
+<th>Đánh giá cho cả 2 hệ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hiệu năng</td>
+<td>RF cao nhất + <strong>ổn định nhất</strong> (IQR hẹp nhất qua
+folds)</td>
+</tr>
+<tr>
+<td>Metric ưu tiên ứng dụng</td>
+<td>Tim: Recall cao nhất (0.929); Nhà: MAE thấp nhất</td>
+</tr>
+<tr>
+<td>Diễn giải</td>
+<td>Có feature importance (<code>OverallQual</code> trội ở nhà;
+<code>ca</code>, <code>thal</code> ở tim)</td>
+</tr>
+<tr>
+<td>Chi phí inference</td>
+<td>100 cây × vài ms — vô hình với web app</td>
+</tr>
+<tr>
+<td>Robust</td>
+<td>Tim: không cần scale → pipeline app ít rủi ro mismatch; Nhà: bất
+biến với outlier</td>
+</tr>
+<tr>
+<td>Ổn định tham số</td>
+<td>Exp 2: bão hòa từ B≈100 → không nhạy</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="representation-analysis-bằng-kênh-triết-lý-slide-01">10.
+Representation Analysis — bằng kênh triết lý Slide 01</h2>
+<p>Ba nguồn bằng chứng độc lập hội tụ trong cả hai hệ:</p>
+<ol type="1">
+<li><strong>EDA</strong> (histogram theo lớp, scatter, correlation):
+nhận diện feature mạnh;</li>
+<li><strong>LR weights/coefficients</strong>: xác nhận hướng + sức ảnh
+hưởng;</li>
+<li><strong>RF feature importance</strong>: xác nhận ranking.</li>
+</ol>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>🫀 Bệnh tim</th>
+<th>🏠 Giá nhà</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Feature trội</td>
+<td><code>ca</code> (số mạch hẹp), <code>thal</code>, <code>cp</code>,
+<code>oldpeak</code>, <code>thalach</code></td>
+<td><code>OverallQual</code> (0.55+), <code>GrLivArea</code>,
+<code>TotalBsmtSF</code>, <code>GarageCars</code></td>
+</tr>
+<tr>
+<td>Feature yếu</td>
+<td><code>chol</code>, <code>trestbps</code></td>
+<td>các tiện nghi hiếm</td>
+</tr>
+<tr>
+<td>Redundancy</td>
+<td>không có cặp ρ&gt;0.6</td>
+<td>Garage↔︎GarageArea 0.88, Bsmt↔︎1stFlr 0.81</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kết luận trung tâm (trả lời trực tiếp Slide 01):</strong>
+<em>Representation không phải lựa chọn trung tính</em>:</p>
+<ul>
+<li>Cùng KNN, đổi raw → standardized: <strong>+0.208 F1</strong>;</li>
+<li>Cùng SVM: <strong>+0.313 F1</strong>;</li>
+<li>Cùng RF hệ nhà, đổi target raw → log: R² cải thiện rõ;</li>
+<li>Nhưng cùng RF hệ tim: <strong>~0 thay đổi</strong> khi scale.</li>
+</ul>
+<p>→ Ảnh hưởng của representation <strong>phụ thuộc cơ chế học của
+model</strong> (khoảng cách/margin nhạy, split theo ngưỡng miễn dịch) —
+mỗi cặp (representation, model) là một quyết định thiết kế phải thử
+nghiệm, không suy ra được trên giấy.</p>
+<hr />
+<h2 id="intelligent-application">11. Intelligent Application</h2>
+<h3 id="kiến-trúc-ứng-dụng-cả-hai-hệ">11.1 Kiến trúc ứng dụng (cả hai
+hệ)</h3>
+<pre><code>Người dùng (web) → Streamlit UI → predict() → one-hot reindex đúng cột huấn luyện → RF model → kết quả + khuyến nghị</code></pre>
+<p><strong>Nguyên lý bắt buộc:</strong> <em>cùng representation dùng lúc
+huấn luyện được tái dựng chính xác cho input mới</em> — app lưu
+<code>enc_columns</code> + danh sách categorical trong artifacts
+.joblib, hàm predict
+<code>reindex(columns=enc_columns, fill_value=0)</code> đảm bảo vector
+18/271 chiều đúng hệt.</p>
+<h3 id="hệ-tim-appsheart_app">11.2 Hệ tim
+(<code>apps/heart_app/</code>)</h3>
+<ul>
+<li>Form 13 chỉ số (slider/selectbox tiếng Việt kèm giải thích y
+khoa);</li>
+<li>Output: xác suất + ngưỡng 0.5 + kết luận + <strong>cảnh báo vùng mơ
+hồ 0.35–0.65</strong>;</li>
+<li>3 preset case demo 1-click (nguy cơ thấp/cao/biên);</li>
+<li>Disclaimer y tế.</li>
+</ul>
+<h3 id="hệ-nhà-appshouse_app">11.3 Hệ nhà
+(<code>apps/house_app/</code>)</h3>
+<ul>
+<li>3 tab input (chất lượng, diện tích, vị trí) — người dùng nhập 8
+feature quyết định, feature phụ dùng median/mode train (thiết kế từ Exp
+3b);</li>
+<li>Output: giá ước tính + <strong>dải tham chiếu ±MAE/RMSE</strong> +
+so median Ames;</li>
+<li>Cảnh báo độ tin cậy thấp ở phân khúc cao cấp;</li>
+<li>3 preset phân khúc.</li>
+</ul>
+<h3 id="deploy">11.4 Deploy</h3>
+<p>Cả hai app <strong>Streamlit deploy lên Hugging Face Spaces</strong>
+(miễn phí, không cần thẻ tín dụng) — hướng dẫn từng bước tiếng Việt
+trong <code>apps/HUONG_DAN_DEPLOY.md</code>. Đã test local end-to-end
+bằng browser automation: cả 2 app chạy đúng (case nguy cơ cao → “CÓ BỆNH
+TIM” 96%; nhà cao cấp NridgHt → $302,408).</p>
+<hr />
+<h2 id="limitations">12. Limitations</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Hạng mục</th>
+<th>🫀 Bệnh tim</th>
+<th>🏠 Giá nhà</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dữ liệu</td>
+<td>303 mẫu — nhỏ; 1 trung tâm y tế (Cleveland) — hạn chế khái quát đa
+dân số</td>
+<td>1 thị trường nhỏ, 2006–2010 (bao gồm khủng hoảng BĐS) — stale theo
+thời gian</td>
+</tr>
+<tr>
+<td>Representation</td>
+<td>Mất ECG chuỗi thời gian, ảnh siêu âm, hồ sơ văn bản, quan hệ
+bệnh–thuốc</td>
+<td>Mất ảnh hiện trạng, mô tả listing, động lực bán, xu hướng vĩ mô</td>
+</tr>
+<tr>
+<td>Model</td>
+<td>RF không cho khoảng tin cậy chuẩn; không extrapolate ngoài phạm vi
+feature đã thấy</td>
+<td>Không dự đoán ngoài max giá train ($755k); cần retrain khi thị
+trường đổi</td>
+</tr>
+<tr>
+<td>Ứng dụng</td>
+<td>Sàng lọc tham khảo — KHÔNG thay thế bác sĩ; 13 chỉ số nhập tay</td>
+<td>8 feature chính; feature phụ cố định median — không phản ánh nhà bất
+thường</td>
+</tr>
+<tr>
+<td>Đánh giá</td>
+<td>1 split 80/20 (+CV) — với N=303 khoảng tin cậy còn rộng</td>
+<td>Tương tự; chưa kiểm tra drift theo YrSold</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="reflection">13. Reflection</h2>
+<h3 id="điều-gì-làm-hệ-thống-intelligent-mục-18-đề-7-câu">13.1 Điều gì
+làm hệ thống “intelligent”? (mục 18 đề — 7 câu)</h3>
+<p>Trả lời đầy đủ trong notebook mục 21 của mỗi hệ. Cốt lõi:</p>
+<ul>
+<li><strong>Phần intelligent hợp lý:</strong> <em>học từ ví dụ + khái
+quát + dự đoán đúng trên input chưa thấy</em> — năng lực không ai lập
+trình luật tường minh. Bằng chứng: Recall 0.93 trên 61 bệnh nhân / R²
+0.89 trên 292 nhà model chưa từng thấy;</li>
+<li><strong>Vì sao xử lý được input mới:</strong> model học <strong>cấu
+trúc quan hệ</strong> (pattern) chứ không ghi nhớ mẫu — với input cùng
+phân phối, pattern hội tụ cho dự đoán đúng;</li>
+<li><strong>Trained model ≠ complete intelligent system:</strong> model
+chỉ 1 thành phần. Hệ thống hoàn chỉnh = input handling + representation
++ preprocessing + prediction + output + <strong>application
+deploy</strong> + (tương lai) feedback loop.</li>
+</ul>
+<h3 id="representation-reflection-mục-19-đề-8-câu">13.2 Representation
+reflection (mục 19 đề — 8 câu)</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Câu hỏi</th>
+<th>🫀 Bệnh tim</th>
+<th>🏠 Giá nhà</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vì sao phù hợp?</td>
+<td>13 chỉ số là tín hiệu lâm sàng chuẩn, đủ thưa để học với 303
+mẫu</td>
+<td>Thuộc tính hồ sơ là thứ người định giá thật sự xem</td>
+</tr>
+<tr>
+<td>Giữ gìn?</td>
+<td>chỉ số đo đếm chính xác</td>
+<td>quan hệ giá–thuộc tính tính toán được</td>
+</tr>
+<tr>
+<td>Mất gì?</td>
+<td>ECG thô, ảnh, ngữ cảnh lâm sàng</td>
+<td>ảnh, mô tả văn bản, động lực bán, chuỗi thời gian</td>
+</tr>
+<tr>
+<td>Image?</td>
+<td>ảnh siêu âm/MRI → CNN (A4)</td>
+<td>ảnh mặt tiền/nội thất → CNN (kiểu Zestimate)</td>
+</tr>
+<tr>
+<td>Sequence?</td>
+<td>chuỗi ECG → RNN/Transformer (A3)</td>
+<td>chuỗi giá giao dịch khu vực → time-series</td>
+</tr>
+<tr>
+<td>Graph?</td>
+<td>đồ thị bệnh–triệu chứng–thuốc → GNN/KG (A4)</td>
+<td>đồ thị nhà–đường–trường học → GNN không gian</td>
+</tr>
+<tr>
+<td>Embedding?</td>
+<td>embedding bệnh nhân từ hồ sơ (A5)</td>
+<td>embedding mô tả listing (A5)</td>
+</tr>
+<tr>
+<td>Đổi thì sao?</td>
+<td>nhiều thông tin hơn → trần cao hơn, nhưng mất diễn giải + cần deep
+learning + dữ liệu lớn</td>
+<td>tương tự</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Thông điệp kết nối course roadmap:</strong> <em>Different
+information representations ⇒ different learning methods</em> — chính là
+lý do A3 (deep learning), A4 (graph), A5 (embedding/RAG) tồn tại sau
+A1.</p>
+<hr />
+<h2 id="conclusion">14. Conclusion</h2>
+<p><strong>Hiện thực hóa khung Understand → Represent → Implement →
+Experiment → Apply cho hai hệ:</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>🫀 Bệnh tim</th>
+<th>🏠 Giá nhà</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Understand</td>
+<td>Sàng lọc nhị phân từ 13 chỉ số</td>
+<td>Ước giá regression từ 74 thuộc tính</td>
+</tr>
+<tr>
+<td>Represent</td>
+<td>one-hot 18 chiều</td>
+<td>one-hot 271 chiều + <strong>log-target</strong></td>
+</tr>
+<tr>
+<td>Implement</td>
+<td>baseline + 4 classifier</td>
+<td>baseline + 4 regressor</td>
+</tr>
+<tr>
+<td>Experiment</td>
+<td>3 experiments — RF≈SVM&gt;LR&gt;KNN; B bão hòa 50; scale +0.21/+0.31
+cho KNN/SVM</td>
+<td>3 experiments — RF&gt;DT&gt;LR&gt;SVR; depth 8–12; log-target tốt
+hơn mọi model</td>
+</tr>
+<tr>
+<td>Apply</td>
+<td>RF (F1 0.88, Recall 0.93) → Streamlit app</td>
+<td>RF (R² 0.89, MAE $17k) → Streamlit app</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ba thông điệp lớn của Assignment 01</strong> (khớp Slide
+01):</p>
+<ol type="1">
+<li><strong>Representation là xương sống</strong> — model không nhận thế
+giới thực mà nhận representation của thông tin được chọn; đổi
+representation (scale, log-target, chọn feature) thay đổi kết quả học
+theo cách phụ thuộc cơ chế model;</li>
+<li><strong>Baseline + controlled experiments + metric đúng</strong> là
+điều kiện để nói “model học được điều gì hữu ích” — không phải con số
+accuracy trơ trọi;</li>
+<li><strong>Model ≠ hệ thống</strong> — chỉ khi bọc model trong pipeline
+Input → Representation → Preprocessing → Model → Prediction → Output và
+<strong>deploy thành web app</strong> thì mới có intelligent system nhỏ
+hoàn chỉnh. Đây là intelligent system đầu tiên của lộ trình 5
+assignment; các assignment sau sẽ thay representation (tensor, graph,
+embedding) và mở rộng năng lực học.</li>
+</ol>
+<hr />
+<h2 id="phụ-lục-đối-chiếu-14-explicit-requirements-r1r14">Phụ lục: Đối
+chiếu 14 Explicit Requirements (R1–R14)</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>Yêu cầu</th>
+<th>Bằng chứng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R1</td>
+<td>Real dataset</td>
+<td>UCI Heart Disease + Kaggle Ames (nguồn + citation trong notebook mục
+3)</td>
+</tr>
+<tr>
+<td>R2</td>
+<td>System definition</td>
+<td>System statement + diagram (notebook mục 1–2)</td>
+</tr>
+<tr>
+<td>R3</td>
+<td>Representation</td>
+<td>3 tầng raw/encoded/input + bảng feature (mục 5)</td>
+</tr>
+<tr>
+<td>R4</td>
+<td>Feature analysis</td>
+<td>EDA 4 biểu đồ + giải thích từng cái (mục 6 + 4)</td>
+</tr>
+<tr>
+<td>R5</td>
+<td>Problem formulation</td>
+<td>Câu formal 1 câu + công thức <span class="math inline">\(D,
+f_\theta, \theta^*\)</span> (mục 1)</td>
+</tr>
+<tr>
+<td>R6</td>
+<td>Baseline</td>
+<td>DummyClassifier/DummyRegressor + phân tích “vì sao cần” (mục 9)</td>
+</tr>
+<tr>
+<td>R7</td>
+<td>≥4 models</td>
+<td>LR, KNN, SVM, RF (tim) / LR, DT, RF, SVR (nhà) — hiểu model 7 câu
+mỗi cái</td>
+</tr>
+<tr>
+<td>R8</td>
+<td>≥3 experiments</td>
+<td>Model comparison + hyperparameter + representation — mỗi cái có câu
+hỏi trước</td>
+</tr>
+<tr>
+<td>R9</td>
+<td>Metrics + giải thích</td>
+<td>Tim: 4 metric + CM + ROC; Nhà: MAE/MSE/RMSE/R² + residual — kèm vì
+sao chọn</td>
+</tr>
+<tr>
+<td>R10</td>
+<td>Scientific analysis</td>
+<td>Mỗi kết quả có “vì sao” (scale/margin/variance…)</td>
+</tr>
+<tr>
+<td>R11</td>
+<td>Application</td>
+<td>2 app Streamlit + hàm predict đúng representation</td>
+</tr>
+<tr>
+<td>R12</td>
+<td>System demonstration</td>
+<td>3 case mỗi hệ qua pipeline đầy đủ + screenshot app</td>
+</tr>
+<tr>
+<td>R13</td>
+<td>Reflection</td>
+<td>7+8 câu trả lời đầy đủ (mục 21 notebook)</td>
+</tr>
+<tr>
+<td>R14</td>
+<td>Reproducibility</td>
+<td>RANDOM_STATE=42, data local, requirements, notebook chạy
+end-to-end</td>
+</tr>
+</tbody>
+</table>
+<h2 id="phụ-lục-cấu-trúc-deliverables-nộp-kèm">Phụ lục: Cấu trúc
+deliverables nộp kèm</h2>
+<pre><code>assignment01/
+├── docs/
+│   ├── phan1_ly_thuyet.md/.pdf      ← Phần 1: lý thuyết (11 trang)
+│   ├── phan2_bao_cao_ky_thuat.md    ← file này
+│   └── phan2_bao_cao_ky_thuat.pdf
+├── notebooks/
+│   ├── 01_heart_disease_system.ipynb  (73 cells, output đầy đủ)
+│   └── 02_house_price_system.ipynb    (70 cells, output đầy đủ)
+├── data/
+│   ├── heart_clean.csv              (303 × 14 — nguồn: UCI)
+│   ├── ames_clean.csv               (1460 × 75 — nguồn: Kaggle)
+│   └── ames_train.csv               (gốc Kaggle tải về)
+├── artifacts/
+│   ├── heart_model.joblib           (RF classifier + metadata representation)
+│   └── ames_model.joblib            (RF regressor + metadata)
+├── apps/
+│   ├── heart_app/ (app.py + model + requirements)
+│   ├── house_app/ (app.py + model + requirements)
+│   └── HUONG_DAN_DEPLOY.md          ← hướng dẫn deploy HF Spaces tiếng Việt
+├── figures/                          (26 biểu đồ + 2 screenshot app)
+└── README.md                         ← hướng dẫn chạy toàn bộ</code></pre>
+</body>
+</html>
