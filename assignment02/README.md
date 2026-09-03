@@ -86,10 +86,10 @@ cd diabetes/web && streamlit run app.py          # :8501 (tự gọi API 8001)
 # mobile: mở diabetes/mobile/index.html bằng browser (tự gọi API 8001)
 ```
 
-### 4. Deploy công khai (nộp link)
+### 4. Deploy công khai (đã lên Render)
 
-Xem **`DEPLOY_HUONG_DAN.md`** — script `deploy/deploy-all.py` tạo 6 HF Spaces
-(3 API Docker + 3 web Streamlit), tự cài URL chéo, ~10 phút.
+Xem **`RENDER_HUONG_DAN.md`** — 6 services Render free đã chạy (link ở bảng cuối README).
+Phương án dự phòng HF Spaces: `DEPLOY_HUONG_DAN.md` + script `deploy/deploy-all.py`.
 
 ---
 
@@ -149,13 +149,16 @@ text nâng macro-F1 RF 0.163→0.291; **mục 18.6**: demo MiniLM embedding $B \
 | Dataset references | README mục Nguồn dữ liệu |
 | README | file này |
 
-## 🔗 Link demo (điền sau khi deploy)
+## 🔗 Link demo (Render — đã deploy, verify end-to-end)
 
 | Hệ thống | Web | API (Swagger) | Mobile |
 |---|---|---|---|
-| Diabetes | … | … | …/mobile |
-| House Price | … | … | …/mobile |
-| Customer | … | … | …/mobile |
+| Diabetes | https://diabetes-web-0jv0.onrender.com | https://diabetes-api-4991.onrender.com/docs | https://diabetes-api-4991.onrender.com/mobile |
+| House Price | https://house-web-0g9o.onrender.com | https://house-api-odk5.onrender.com/docs | https://house-api-odk5.onrender.com/mobile |
+| Customer | https://customer-web-eocp.onrender.com | https://customer-api-8is4.onrender.com/docs | https://customer-api-8is4.onrender.com/mobile |
+
+> Deploy trên Render free (region Singapore) — service ngủ sau 15 phút không dùng,
+> mở link là tự thức dậy sau ~50 giây (cold start). Repo: https://github.com/HieuGM/PTHTTM_PTIT
 
 ---
 

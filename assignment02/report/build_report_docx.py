@@ -363,6 +363,27 @@ bullet("Training ≠ Inference: model train trong notebook, lưu pipeline; deplo
        "transform + predict. Không fit scaler/encoder/imputer trên dữ liệu user (đề cảnh báo data leakage).")
 fig("api_swagger_diabetes.png", "Hình 7.1 — Swagger UI API Diabetes: POST /predict, schema Pydantic hiện đầy đủ")
 
+fig("render_web_diabetes.png", "Hình 7.2 — Web app Diabetes ĐÃ DEPLOY trên Render (URL công khai, gọi API thật)")
+fig("render_mobile_diabetes.png", "Hình 7.3 — Mobile app Diabetes trên Render: dự đoán CÓ TIỂU ĐƯỜNG 90.0%", width_cm=8)
+fig("render_web_house.png", "Hình 7.4 — Web app House Price trên Render: định giá nhà qua API công khai")
+fig("render_mobile_house.png", "Hình 7.5 — Mobile House Price trên Render", width_cm=8)
+fig("render_web_customer.png", "Hình 7.6 — Web app Customer Behavior trên Render")
+fig("render_mobile_customer.png", "Hình 7.7 — Mobile Customer trên Render: interest + top-3", width_cm=8)
+
+LINKS = {
+    "Diabetes": ("https://diabetes-web-0jv0.onrender.com", "https://diabetes-api-4991.onrender.com"),
+    "House Price": ("https://house-web-0g9o.onrender.com", "https://house-api-odk5.onrender.com"),
+    "Customer": ("https://customer-web-eocp.onrender.com", "https://customer-api-8is4.onrender.com"),
+}
+p("Link công khai đã deploy (Render free, Singapore — tự thức dậy sau ~50s nếu ngủ):", bold=True)
+table([
+    ["Hệ thống", "Web", "API (Swagger)"],
+    ["Diabetes", LINKS["Diabetes"][0], LINKS["Diabetes"][1]],
+    ["House Price", LINKS["House Price"][0], LINKS["House Price"][1]],
+    ["Customer", LINKS["Customer"][0], LINKS["Customer"][1]],
+])
+p("Mobile: mở <api-url>/mobile trên điện thoại (host ngay trong API service, gọi same-origin).")
+
 # ============================ 8. DISCUSSION QUESTIONS ============================
 doc.add_page_break()
 h1("8. Discussion Questions (15 câu chung + 6 câu e-commerce)")
