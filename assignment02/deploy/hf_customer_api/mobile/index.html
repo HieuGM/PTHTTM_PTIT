@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sở thích Khách hàng — ISD A02</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; }
+  body { background:#0f172a; color:#e2e8f0; min-height:100vh; max-width:420px; margin:0 auto; padding:16px; }
+  .app-header { text-align:center; padding:18px 0 8px; }
+  .app-header .icon { font-size:44px; }
+  .app-header h1 { font-size:20px; margin-top:6px; }
+  .app-header p { font-size:12px; color:#94a3b8; margin-top:4px; }
+  .card { background:#1e293b; border-radius:14px; padding:16px; margin-top:14px; box-shadow:0 4px 14px rgba(0,0,0,.3); }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .field.full { grid-column:1 / -1; }
+  .field label { display:block; font-size:11px; color:#94a3b8; margin-bottom:4px; }
+  .field input, .field textarea { width:100%; padding:10px; border-radius:9px; border:1px solid #334155; background:#0f172a; color:#e2e8f0; font-size:15px; }
+  .field textarea { font-size:13px; height:110px; resize:vertical; }
+  .field input:focus, .field textarea:focus { outline:2px solid #8b5cf6; }
+  .btn { width:100%; margin-top:16px; padding:14px; border:none; border-radius:11px; background:linear-gradient(135deg,#8b5cf6,#ec4899); color:#fff; font-size:16px; font-weight:600; }
+  .btn:active { transform:scale(.98); }
+  .btn:disabled { opacity:.6; }
+  .result { text-align:center; padding:10px 0; }
+  .result .big { font-size:26px; font-weight:800; margin:8px 0; }
+  .result .conf { font-size:13px; color:#94a3b8; }
+  .top3 { margin-top:14px; text-align:left; }
+  .top3 .row { margin:8px 0; }
+  .top3 .lbl { display:flex; justify-content:space-between; font-size:12px; margin-bottom:3px; }
+  .top3 .bar { height:8px; background:#334155; border-radius:999px; overflow:hidden; }
+  .top3 .bar > div { height:100%; background:linear-gradient(90deg,#8b5cf6,#ec4899); }
+  .hint { font-size:11px; color:#64748b; margin-top:8px; }
+  .arch { font-size:10.5px; color:#64748b; text-align:center; margin-top:14px; line-height:1.5; }
+  .err { background:#7f1d1d; color:#fecaca; padding:12px; border-radius:10px; font-size:13px; margin-top:12px; }
+  .settings { text-align:center; margin-top:10px; }
+  .settings input { width:100%; padding:8px; border-radius:8px; border:1px solid #334155; background:#0f172a; color:#94a3b8; font-size:12px; }
+</style>
+</head>
+<body>
+  <div class="app-header">
+    <div class="icon">🛒</div>
+    <h1>Sở thích Khách hàng</h1>
+    <p>ISD Assignment 02 · App 3 · Mobile client</p>
+  </div>
+
+  <div class="card">
+    <div class="form-grid">
+      <div class="field"><label>Recency (ngày)</label><input id="recency_days" type="number" value="5" min="0" max="400"></div>
+      <div class="field"><label>Frequency (số đơn)</label><input id="frequency" type="number" value="4" min="1" max="100"></div>
+      <div class="field"><label>Monetary (USD)</label><input id="monetary" type="number" value="665" min="1" max="100000"></div>
+      <div class="field"><label>Tổng sản phẩm</label><input id="total_items" type="number" value="403" min="1" max="50000"></div>
+      <div class="field full"><label>Giá trị TB 1 dòng đơn (USD)</label><input id="avg_order_value" type="number" value="12" min="0.5" max="500" step="0.5"></div>
+      <div class="field full">
+        <label>Văn bản giỏ hàng (sản phẩm đã mua)</label>
+        <textarea id="basket_text">white hanging heart t-light holder metal lantern candle holder vintage</textarea>
+        <div class="hint">→ Tokens → Token IDs → TF-IDF → dự đoán interest</div>
+      </div>
+    </div>
+    <button class="btn" onclick="predict()">🎯 Dự đoán sở thích</button>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+    <div class="result">
+      <div style="font-size:12px;color:#94a3b8">Interest dự đoán</div>
+      <div class="big" id="interest">—</div>
+      <div class="conf" id="conf"></div>
+      <div class="top3" id="top3"></div>
+      <div class="hint" id="biz"></div>
+    </div>
+  </div>
+
+  <div class="card settings">
+    <label style="font-size:11px;color:#64748b">Địa chỉ REST API (cấu hình khi deploy)</label>
+    <input id="apiUrl" value="http://localhost:8003" oninput="localStorage.setItem('csApi',this.value)">
+  </div>
+
+  <div class="arch">
+    Mobile UI → REST API FastAPI → RFM scale ⊕ TF-IDF text embedding → Linear SVM → Interest → Mobile UI
+  </div>
+
+<script>
+  document.getElementById("apiUrl").value = localStorage.getItem("csApi") || "http://localhost:8003";
+
+  async function predict() {
+    const api = document.getElementById("apiUrl").value.replace(/\/$/, "");
+    const body = {
+      recency_days: +document.getElementById("recency_days").value,
+      frequency: +document.getElementById("frequency").value,
+      monetary: +document.getElementById("monetary").value,
+      total_items: +document.getElementById("total_items").value,
+      avg_order_value: +document.getElementById("avg_order_value").value,
+      basket_text: document.getElementById("basket_text").value
+    };
+    const btn = document.querySelector(".btn");
+    btn.disabled = true; btn.textContent = "Đang phân tích...";
+    try {
+      const res = await fetch(api + "/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const r = await res.json();
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("interest").textContent = r.interest;
+      document.getElementById("conf").textContent = "Confidence: " + (r.confidence * 100).toFixed(1) + "%";
+      const top3 = document.getElementById("top3");
+      top3.innerHTML = "<div style='font-size:11px;color:#64748b'>TOP-3 PHÂN KHÚC</div>";
+      r.top3_interests.forEach(t => {
+        top3.innerHTML += `<div class="row">
+          <div class="lbl"><span>${t.interest}</span><span>${(t.probability*100).toFixed(1)}%</span></div>
+          <div class="bar"><div style="width:${Math.min(t.probability*100,100)}%"></div></div>
+        </div>`;
+      });
+      document.getElementById("biz").textContent =
+        "Ứng dụng: gợi ý sản phẩm + ưu đãi targeted cho nhóm " + r.interest + ".";
+    } catch (e) {
+      const card = document.getElementById("resultCard");
+      card.style.display = "block";
+      card.innerHTML = '<div class="err">⚠️ Không gọi được API: ' + e.message + '</div>';
+    } finally {
+      btn.disabled = false; btn.textContent = "🎯 Dự đoán sở thích";
+    }
+  }
+</script>
+</body>
+</html>

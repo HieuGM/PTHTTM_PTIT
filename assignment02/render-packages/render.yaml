@@ -1,0 +1,65 @@
+# Render Blueprint — Assignment 02: 3 API (FastAPI) + 3 Web (Streamlit)
+# Repo cấu trúc: mỗi service 1 thư mục con trong render-packages/
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  # ============ 3 REST API (FastAPI, load model + host mobile /mobile) ============
+  - type: web
+    name: diabetes-api
+    runtime: python
+    plan: free
+    rootDir: render-packages/diabetes-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+
+  - type: web
+    name: house-api
+    runtime: python
+    plan: free
+    rootDir: render-packages/house-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+
+  - type: web
+    name: customer-api
+    runtime: python
+    plan: free
+    rootDir: render-packages/customer-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+
+  # ============ 3 Web UI (Streamlit — gọi API, không chứa model) ============
+  - type: web
+    name: diabetes-web
+    runtime: python
+    plan: free
+    rootDir: render-packages/diabetes-web
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: DIABETES_API_URL
+        value: https://diabetes-api-a02.onrender.com
+
+  - type: web
+    name: house-web
+    runtime: python
+    plan: free
+    rootDir: render-packages/house-web
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: HOUSE_API_URL
+        value: https://house-api-a02.onrender.com
+
+  - type: web
+    name: customer-web
+    runtime: python
+    plan: free
+    rootDir: render-packages/customer-web
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: CUSTOMER_API_URL
+        value: https://customer-api-a02.onrender.com

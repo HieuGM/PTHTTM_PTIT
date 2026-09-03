@@ -116,13 +116,56 @@ def table(headers, rows, widths=None):
     return t
 
 
-# ============ TRANG BÌA (theo mẫu) ============
+# ============ TRANG BÌA (theo mẫu: khung trang trí + logo PTIT) ============
+# Nền khung trang trí PTIT: ảnh lớn căn giữa, nằm sau văn bản
+def add_cover_frame():
+    """Chèn khung trang trí làm ảnh nổi (floating) phủ toàn trang bìa, sau text."""
+    par = doc.add_paragraph()
+    par.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = par.add_run()
+    pic = run.add_picture(os.path.join(BASE, "docs", "ptit_frame.png"), width=Cm(21.0), height=Cm(29.7))
+    # chuyển inline -> floating behindDocument
+    inline = run._r.findall(qn("w:drawing"))[0][0]
+    import copy
+    ext = inline.find(qn("wp:extent"))
+    cx, cy = int(ext.get("cx")), int(ext.get("cy"))
+    docPr = inline.find(qn("wp:docPr"))
+    anchor_el = copy.deepcopy(inline)
+    # Tạo wp:anchor thay cho wp:inline
+    from lxml import etree
+    WPE = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+    anchor = etree.SubElement(inline.getparent(), qn("wp:anchor"))
+    for k, v in [("distT", "0"), ("distB", "0"), ("distL", "0"), ("distR", "0"),
+                 ("simplePos", "0"), ("relativeHeight", "0"), ("behindDoc", "1"),
+                 ("locked", "0"), ("layoutInCell", "1"), ("allowOverlap", "1")]:
+        anchor.set(k, v)
+    sp = etree.SubElement(anchor, qn("wp:simplePos")); sp.set("x", "0"); sp.set("y", "0")
+    ph = etree.SubElement(anchor, qn("wp:positionH")); ph.set("relativeFrom", "page")
+    po = etree.SubElement(ph, qn("wp:posOffset")); po.text = "0"
+    pv = etree.SubElement(anchor, qn("wp:positionV")); pv.set("relativeFrom", "page")
+    po2 = etree.SubElement(v if False else pv, qn("wp:posOffset")); po2.text = "0"
+    e2 = etree.SubElement(anchor, qn("wp:extent")); e2.set("cx", str(cx)); e2.set("cy", str(cy))
+    wra = etree.SubElement(anchor, qn("wp:wrapNone"))
+    dp2 = etree.SubElement(anchor, qn("wp:docPr"))
+    dp2.set("id", docPr.get("id", "1")); dp2.set("name", "cover-frame")
+    # copy graphic
+    graphic = inline.find(qn("a:graphic"))
+    anchor.append(copy.deepcopy(graphic))
+    # remove inline, insert anchor
+    inline.getparent().remove(inline)
+
+add_cover_frame()
 p("HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG", bold=True, align="center", size=14)
 p("KHOA CÔNG NGHỆ THÔNG TIN 1", bold=True, align="center", size=14)
-for _ in range(5):
+# Logo PTIT căn giữa (như mẫu: dưới header, trên tiêu đề)
+logo_par = doc.add_paragraph()
+logo_par.alignment = WD_ALIGN_PARAGRAPH.CENTER
+logo_run = logo_par.add_run()
+logo_run.add_picture(os.path.join(BASE, "docs", "ptit_logo.png"), height=Cm(3.2))
+for _ in range(3):
     doc.add_paragraph()
 p("ASSIGNMENT 01 – INTELLIGENT SYSTEM DEVELOPMENT", bold=True, align="center", size=22)
-for _ in range(3):
+for _ in range(2):
     doc.add_paragraph()
 
 t = doc.add_table(rows=4, cols=2)

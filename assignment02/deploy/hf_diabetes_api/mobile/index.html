@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dự đoán Tiểu đường — ISD A02</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; }
+  body { background:#0f172a; color:#e2e8f0; min-height:100vh; max-width:420px; margin:0 auto; padding:16px; }
+  .app-header { text-align:center; padding:18px 0 8px; }
+  .app-header .icon { font-size:44px; }
+  .app-header h1 { font-size:20px; margin-top:6px; }
+  .app-header p { font-size:12px; color:#94a3b8; margin-top:4px; }
+  .card { background:#1e293b; border-radius:14px; padding:16px; margin-top:14px; box-shadow:0 4px 14px rgba(0,0,0,.3); }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .field label { display:block; font-size:11px; color:#94a3b8; margin-bottom:4px; }
+  .field input { width:100%; padding:10px; border-radius:9px; border:1px solid #334155; background:#0f172a; color:#e2e8f0; font-size:15px; }
+  .field input:focus { outline:2px solid #3b82f6; }
+  .btn { width:100%; margin-top:16px; padding:14px; border:none; border-radius:11px; background:linear-gradient(135deg,#3b82f6,#8b5cf6); color:#fff; font-size:16px; font-weight:600; }
+  .btn:active { transform:scale(.98); }
+  .btn:disabled { opacity:.6; }
+  .result { text-align:center; padding:10px 0; }
+  .result .big { font-size:40px; font-weight:800; margin:8px 0; }
+  .result .prob { font-size:14px; color:#94a3b8; }
+  .badge { display:inline-block; padding:4px 14px; border-radius:999px; font-size:12px; font-weight:600; }
+  .badge.sick { background:#7f1d1d; color:#fecaca; }
+  .badge.ok { background:#14532d; color:#bbf7d0; }
+  .bar { height:10px; background:#334155; border-radius:999px; overflow:hidden; margin:12px 0; }
+  .bar > div { height:100%; background:linear-gradient(90deg,#f59e0b,#ef4444); border-radius:999px; transition:width .6s; }
+  .warn { font-size:12px; color:#fbbf24; background:rgba(251,191,36,.1); border-radius:8px; padding:10px; margin-top:10px; text-align:left; }
+  .arch { font-size:10.5px; color:#64748b; text-align:center; margin-top:14px; line-height:1.5; }
+  .err { background:#7f1d1d; color:#fecaca; padding:12px; border-radius:10px; font-size:13px; margin-top:12px; }
+  .settings { text-align:center; margin-top:10px; }
+  .settings input { width:100%; padding:8px; border-radius:8px; border:1px solid #334155; background:#0f172a; color:#94a3b8; font-size:12px; }
+</style>
+</head>
+<body>
+  <div class="app-header">
+    <div class="icon">🩸</div>
+    <h1>Dự đoán Tiểu đường</h1>
+    <p>ISD Assignment 02 · App 1 · Mobile client</p>
+  </div>
+
+  <div class="card">
+    <div class="form-grid">
+      <div class="field"><label>Số lần mang thai</label><input id="Pregnancies" type="number" value="1" min="0" max="20"></div>
+      <div class="field"><label>Tuổi</label><input id="Age" type="number" value="33" min="1" max="120"></div>
+      <div class="field"><label>Glucose (mg/dL)</label><input id="Glucose" type="number" value="120" min="0" max="300"></div>
+      <div class="field"><label>Huyết áp (mmHg)</label><input id="BloodPressure" type="number" value="70" min="0" max="200"></div>
+      <div class="field"><label>Độ dày da (mm)</label><input id="SkinThickness" type="number" value="20" min="0" max="100"></div>
+      <div class="field"><label>Insulin (0=không đo)</label><input id="Insulin" type="number" value="79" min="0" max="900"></div>
+      <div class="field"><label>BMI</label><input id="BMI" type="number" value="32" min="0" max="70" step="0.1"></div>
+      <div class="field"><label>Pedigree</label><input id="DiabetesPedigreeFunction" type="number" value="0.45" min="0" max="3" step="0.01"></div>
+    </div>
+    <button class="btn" onclick="predict()">🩺 Dự đoán</button>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+    <div class="result">
+      <span class="badge" id="badge">...</span>
+      <div class="big" id="prob">—</div>
+      <div class="prob">xác suất tiểu đường type 2</div>
+      <div class="bar"><div id="barFill" style="width:0%"></div></div>
+      <div class="prob" id="advice"></div>
+    </div>
+    <div class="warn" id="fuzzy" style="display:none">⚖️ Vùng mơ hồ (0.35–0.65): khuyến nghị xét nghiệm HbA1c xác nhận.</div>
+  </div>
+
+  <div class="card settings">
+    <label style="font-size:11px;color:#64748b">Địa chỉ REST API (cấu hình khi deploy)</label>
+    <input id="apiUrl" value="http://localhost:8001" oninput="localStorage.setItem('dmApi',this.value)">
+  </div>
+
+  <div class="arch">
+    Mobile UI → REST API FastAPI → Preprocessing (impute+scale) → RandomForest → Prediction → Mobile UI<br>
+    Mobile KHÔNG huấn luyện lại model — chỉ gọi API dùng model đã lưu.
+  </div>
+
+<script>
+  const FIELDS = ["Pregnancies","Glucose","BloodPressure","SkinThickness","Insulin","BMI","DiabetesPedigreeFunction","Age"];
+  document.getElementById("apiUrl").value = localStorage.getItem("dmApi") || "http://localhost:8001";
+
+  async function predict() {
+    const api = document.getElementById("apiUrl").value.replace(/\/$/, "");
+    const body = {};
+    FIELDS.forEach(f => body[f] = parseFloat(document.getElementById(f).value) || 0);
+    const btn = document.querySelector(".btn");
+    btn.disabled = true; btn.textContent = "Đang gửi request...";
+    try {
+      const res = await fetch(api + "/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const r = await res.json();
+      const p = r.probability_diabetic;
+      const sick = r.prediction === "diabetic";
+      document.getElementById("resultCard").style.display = "block";
+      const badge = document.getElementById("badge");
+      badge.className = "badge " + (sick ? "sick" : "ok");
+      badge.textContent = sick ? "CÓ TIỂU ĐƯỜNG" : "KHÔNG TIỂU ĐƯỜNG";
+      document.getElementById("prob").textContent = (p * 100).toFixed(1) + "%";
+      document.getElementById("barFill").style.width = Math.min(p * 100, 100) + "%";
+      document.getElementById("advice").textContent = sick
+        ? "Khuyến nghị xét nghiệm HbA1c xác nhận."
+        : "Chỉ số trong vùng an toàn theo model.";
+      document.getElementById("fuzzy").style.display = (p >= 0.35 && p <= 0.65) ? "block" : "none";
+    } catch (e) {
+      const card = document.getElementById("resultCard");
+      card.style.display = "block";
+      card.innerHTML = '<div class="err">⚠️ Không gọi được API: ' + e.message +
+        '<br>Kiểm tra API đang chạy và địa chỉ trong ô cấu hình.</div>';
+    } finally {
+      btn.disabled = false; btn.textContent = "🩺 Dự đoán";
+    }
+  }
+</script>
+</body>
+</html>
