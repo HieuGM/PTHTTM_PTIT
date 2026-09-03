@@ -78,7 +78,7 @@
 <script>
   const FIELDS = ["sqft_living","sqft_lot","sqft_above","sqft_basement","bedrooms","bathrooms",
                   "floors","waterfront","view","condition","grade","yr_built","yr_renovated","lat","long","zipcode"];
-  document.getElementById("apiUrl").value = localStorage.getItem("hsApi") || "http://localhost:8002";
+  document.getElementById("apiUrl").value = "https://house-api-odk5.onrender.com";
 
   async function predict() {
     const api = document.getElementById("apiUrl").value.replace(/\/$/, "");

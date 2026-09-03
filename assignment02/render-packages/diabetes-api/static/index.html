@@ -78,7 +78,7 @@
 
 <script>
   const FIELDS = ["Pregnancies","Glucose","BloodPressure","SkinThickness","Insulin","BMI","DiabetesPedigreeFunction","Age"];
-  document.getElementById("apiUrl").value = localStorage.getItem("dmApi") || "http://localhost:8001";
+  document.getElementById("apiUrl").value = "https://diabetes-api-4991.onrender.com";
 
   async function predict() {
     const api = document.getElementById("apiUrl").value.replace(/\/$/, "");

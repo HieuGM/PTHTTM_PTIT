@@ -79,7 +79,7 @@
   </div>
 
 <script>
-  document.getElementById("apiUrl").value = localStorage.getItem("csApi") || "http://localhost:8003";
+  document.getElementById("apiUrl").value = "https://customer-api-8is4.onrender.com";
 
   async function predict() {
     const api = document.getElementById("apiUrl").value.replace(/\/$/, "");
