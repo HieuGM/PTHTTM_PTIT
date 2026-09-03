@@ -11,7 +11,7 @@ import os
 import urllib.request
 import streamlit as st
 
-API_URL = os.environ.get("DIABETES_API_URL", "https://diabetes-api-a02.onrender.com")
+API_URL = os.environ.get("DIABETES_API_URL", "https://diabetes-api-4991.onrender.com")
 
 st.set_page_config(page_title="Dự đoán tiểu đường — ISD Assignment 02",
                    page_icon="🩸", layout="wide")

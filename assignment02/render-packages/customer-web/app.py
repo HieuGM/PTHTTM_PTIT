@@ -11,7 +11,7 @@ import os
 import urllib.request
 import streamlit as st
 
-API_URL = os.environ.get("CUSTOMER_API_URL", "https://customer-api-a02.onrender.com")
+API_URL = os.environ.get("CUSTOMER_API_URL", "https://customer-api-8is4.onrender.com")
 
 st.set_page_config(page_title="Sở thích khách hàng — ISD Assignment 02",
                    page_icon="🛒", layout="wide")

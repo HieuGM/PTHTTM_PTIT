@@ -40,7 +40,7 @@ services:
     startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
     envVars:
       - key: DIABETES_API_URL
-        value: https://diabetes-api-a02.onrender.com
+        value: https://diabetes-api-4991.onrender.com
 
   - type: web
     name: house-web
@@ -51,7 +51,7 @@ services:
     startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
     envVars:
       - key: HOUSE_API_URL
-        value: https://house-api-a02.onrender.com
+        value: https://house-api-odk5.onrender.com
 
   - type: web
     name: customer-web
@@ -62,4 +62,4 @@ services:
     startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
     envVars:
       - key: CUSTOMER_API_URL
-        value: https://customer-api-a02.onrender.com
+        value: https://customer-api-8is4.onrender.com

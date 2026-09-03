@@ -11,7 +11,7 @@ import os
 import urllib.request
 import streamlit as st
 
-API_URL = os.environ.get("HOUSE_API_URL", "https://house-api-a02.onrender.com")
+API_URL = os.environ.get("HOUSE_API_URL", "https://house-api-odk5.onrender.com")
 
 st.set_page_config(page_title="Định giá nhà — ISD Assignment 02",
                    page_icon="🏠", layout="wide")
