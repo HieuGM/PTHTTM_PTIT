@@ -69,20 +69,76 @@ def fig(name, caption, width_cm=15.5):
     else:
         p(f"[Hình: {name} — {caption}]", italic=True, size=10, center=True)
 
-# ============================ TRANG BÌA ============================
-p("", size=12); p("", size=12)
-p("HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG", bold=True, size=16, center=True)
-p("POSTS AND TELECOMMUNICATIONS INSTITUTE OF TECHNOLOGY", size=12, center=True)
-p("", size=12)
-p("INTELLIGENT SYSTEM DEVELOPMENT", bold=True, size=20, center=True)
-p("ASSIGNMENT 02", bold=True, size=24, center=True)
+# ============================ TRANG BÌA (khung trang trí + logo PTIT — như mẫu A01) ============================
+import copy as _copy
+from docx.oxml.ns import qn as _qn
+from lxml import etree as _etree
+
+
+def add_cover_frame():
+    """Chèn khung trang trí PTIT làm ảnh nổi (floating behindDoc) phủ toàn trang bìa."""
+    par = doc.add_paragraph()
+    par.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = par.add_run()
+    pic = run.add_picture(str(FIG.parent / "report" / "ptit_frame.png"),
+                          width=Cm(21.0), height=Cm(29.7))
+    # chuyển inline -> floating behindDocument
+    inline = run._r.findall(_qn("w:drawing"))[0][0]
+    ext = inline.find(_qn("wp:extent"))
+    cx, cy = int(ext.get("cx")), int(ext.get("cy"))
+    docPr = inline.find(_qn("wp:docPr"))
+    anchor = _etree.SubElement(inline.getparent(), _qn("wp:anchor"))
+    for k, v in [("distT", "0"), ("distB", "0"), ("distL", "0"), ("distR", "0"),
+                 ("simplePos", "0"), ("relativeHeight", "0"), ("behindDoc", "1"),
+                 ("locked", "0"), ("layoutInCell", "1"), ("allowOverlap", "1")]:
+        anchor.set(k, v)
+    sp = _etree.SubElement(anchor, _qn("wp:simplePos")); sp.set("x", "0"); sp.set("y", "0")
+    ph = _etree.SubElement(anchor, _qn("wp:positionH")); ph.set("relativeFrom", "page")
+    po = _etree.SubElement(ph, _qn("wp:posOffset")); po.text = "0"
+    pv = _etree.SubElement(anchor, _qn("wp:positionV")); pv.set("relativeFrom", "page")
+    po2 = _etree.SubElement(pv, _qn("wp:posOffset")); po2.text = "0"
+    e2 = _etree.SubElement(anchor, _qn("wp:extent"))
+    e2.set("cx", str(cx)); e2.set("cy", str(cy))
+    wra = _etree.SubElement(anchor, _qn("wp:wrapNone"))
+    dp2 = _etree.SubElement(anchor, _qn("wp:docPr"))
+    dp2.set("id", docPr.get("id", "1")); dp2.set("name", "cover-frame")
+    graphic = inline.find(_qn("a:graphic"))
+    anchor.append(_copy.deepcopy(graphic))
+    inline.getparent().remove(inline)
+
+
+add_cover_frame()
+p("HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG", bold=True, size=14, center=True)
+p("KHOA CÔNG NGHỆ THÔNG TIN 1", bold=True, size=14, center=True)
+# Logo PTIT căn giữa (dưới header, trên tiêu đề — như mẫu)
+logo_par = doc.add_paragraph()
+logo_par.alignment = WD_ALIGN_PARAGRAPH.CENTER
+logo_run = logo_par.add_run()
+logo_run.add_picture(str(FIG.parent / "report" / "ptit_logo.png"), height=Cm(3.2))
+for _ in range(3):
+    doc.add_paragraph()
+p("ASSIGNMENT 02 – INTELLIGENT SYSTEM DEVELOPMENT", bold=True, size=22, center=True)
 p("From Data Representation to Deployable Intelligent Systems", italic=True, size=14, center=True)
-p("", size=12); p("", size=12)
-p("Sinh viên: ............................................", size=13)
-p("MSSV: ............................................", size=13)
-p("Lớp: ............................................", size=13)
-p("Giảng viên: PGS. TS. Trần Đình Quế", size=13)
-p("Học kỳ: I.2026", size=13)
+for _ in range(2):
+    doc.add_paragraph()
+
+_cover_tbl = doc.add_table(rows=4, cols=2)
+_cover_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
+_cover_info = [
+    ("Học phần:", "Phát triển các hệ thống thông minh"),
+    ("Giảng viên hướng dẫn:", "Thầy Trần Đình Quế"),
+    ("Sinh viên thực hiện:", "................................"),
+    ("Mã sinh viên:", "................................"),
+]
+for i, (k, v) in enumerate(_cover_info):
+    r1 = _cover_tbl.rows[i].cells[0].paragraphs[0].add_run(k)
+    r1.bold = True
+    r1.font.size = Pt(14)
+    r2 = _cover_tbl.rows[i].cells[1].paragraphs[0].add_run(v)
+    r2.font.size = Pt(14)
+for _ in range(3):
+    doc.add_paragraph()
+p("Hà Nội – 2026", bold=True, size=14, center=True)
 doc.add_page_break()
 
 # ============================ 1. EXECUTIVE SUMMARY ============================
