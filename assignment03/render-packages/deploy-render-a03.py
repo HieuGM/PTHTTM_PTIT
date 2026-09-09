@@ -82,22 +82,21 @@ def main():
     print(f"\nĐăng nhập Render OK — owner: {owner.get('name', owner_id)}")
 
     # Bỏ qua service đã tồn tại (chạy lại sau rate limit không tạo trùng)
-    _, svc_list = call("GET", "/services?v2=true&limit=100", key)
+    _, svc_list = call("GET", "/services?limit=100", key)
     existing = {}
+    existing_urls = {}
     if isinstance(svc_list, list):
         for item in svc_list:
             svc = item.get("service", item)
             existing[svc.get("name")] = svc.get("id")
+            existing_urls[svc.get("name")] = svc.get("serviceDetails", {}).get("url")
 
     created = {}
     for name, root, start, env in SERVICES:
         if name in existing:
             print(f"\n==> {name}: ĐÃ TỒN TẠI (id {existing[name]}) — bỏ qua")
-            sid = existing[name]
-            st, svc = call("GET", f"/services/{sid}", key)
-            url = (svc.get("serviceDetails", {}).get("url")
-                   if st == 200 else f"https://{name}.onrender.com")
-            created[name] = (sid, url)
+            created[name] = (existing[name], existing_urls.get(name)
+                             or f"https://{name}.onrender.com")
             continue
         print(f"\n==> Tạo service {name} ...")
         body = {
@@ -127,10 +126,17 @@ def main():
         }
         status, res = call("POST", "/services", key, body)
         if status in (200, 201):
-            sid = res["id"]
-            url = res.get("serviceDetails", {}).get("url", f"https://{name}.onrender.com")
-            created[name] = (sid, url)
-            print(f"    OK: {url} (id {sid})")
+            svc = res.get("service", res)
+            sid = svc.get("id") or res.get("id")
+            url = (svc.get("serviceDetails", {}).get("url")
+                   or res.get("serviceDetails", {}).get("url")
+                   or f"https://{name}.onrender.com")
+            if not sid:
+                print(f"    OK nhưng không lấy được id — response: "
+                      f"{json.dumps(res, ensure_ascii=False)[:200]}")
+            else:
+                created[name] = (sid, url)
+                print(f"    OK: {url} (id {sid})")
         else:
             print(f"    LỖI {status}: {json.dumps(res, ensure_ascii=False)[:300]}")
         time.sleep(3)
