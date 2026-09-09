@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Cảm xúc Comment — DL</title>
+<style>
+  :root { --brand:#4c9f70; --neg:#c94c5f; --neu:#e5a83b; --bg:#f6f7fb; }
+  * { box-sizing:border-box; margin:0; padding:0; font-family:system-ui,-apple-system,sans-serif; }
+  body { background:var(--bg); color:#222; padding:16px 14px calc(24px + env(safe-area-inset-bottom)); max-width:480px; margin:0 auto; }
+  header { text-align:center; margin-bottom:14px; }
+  h1 { font-size:1.15rem; }
+  .sub { font-size:.75rem; color:#777; margin-top:4px; }
+  .card { background:#fff; border-radius:14px; padding:14px; box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:12px; }
+  label { display:block; font-size:.72rem; font-weight:600; color:#555; margin:10px 0 4px; }
+  textarea { width:100%; padding:12px; border:1.5px solid #ddd; border-radius:9px; font-size:15px; min-height:120px; resize:vertical; }
+  textarea:focus { outline:none; border-color:var(--brand); }
+  button { width:100%; padding:14px; background:var(--brand); color:#fff; border:none; border-radius:11px; font-size:1rem; font-weight:700; margin-top:14px; }
+  button:active { transform:scale(.98); }
+  .chips { display:flex; gap:8px; margin-top:8px; }
+  .chip { flex:1; padding:8px; font-size:.7rem; border:1px solid #ddd; border-radius:8px; background:#fafafa; color:#555; }
+  #result { display:none; }
+  .verdict { font-size:1.3rem; font-weight:800; text-align:center; padding:14px; border-radius:11px; margin-bottom:12px; }
+  .pos { background:#e7f5ec; color:var(--brand); }
+  .neg { background:#fdecee; color:var(--neg); }
+  .neu { background:#fdf5e0; color:#a07d1c; }
+  .prow { display:flex; align-items:center; gap:8px; margin:8px 0; font-size:.8rem; }
+  .prow .lbl { width:86px; }
+  .bar { flex:1; height:10px; background:#e8e8ee; border-radius:6px; overflow:hidden; }
+  .fill { height:100%; border-radius:6px; }
+  .pct { width:52px; text-align:right; font-variant-numeric:tabular-nums; color:#555; }
+  .meta { font-size:.68rem; color:#888; text-align:center; margin-top:8px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>💬 Phân tích Cảm xúc Comment</h1>
+  <div class="sub">TF-IDF + Deep Learning MLP 5000→64→32→3 · Amazon 100k · ISD A03</div>
+</header>
+
+<div class="card">
+  <label>Comment sản phẩm (tiếng Anh)</label>
+  <textarea id="comment">Best granola I have ever bought. Crunchy, fresh and not too sweet. Will order again!</textarea>
+  <div class="chips">
+    <button class="chip" onclick="setExample(0)">😊 Tích cực</button>
+    <button class="chip" onclick="setExample(1)">😐 Trung lập</button>
+    <button class="chip" onclick="setExample(2)">😞 Tiêu cực</button>
+  </div>
+  <button onclick="predict()">🔍 Phân tích</button>
+</div>
+
+<div class="card" id="result">
+  <div class="verdict" id="verdict">—</div>
+  <div class="prow"><span class="lbl">😞 Tiêu cực</span><div class="bar"><div class="fill" id="b0" style="width:0%;background:var(--neg)"></div></div><span class="pct" id="p0">–</span></div>
+  <div class="prow"><span class="lbl">😐 Trung lập</span><div class="bar"><div class="fill" id="b1" style="width:0%;background:var(--neu)"></div></div><span class="pct" id="p1">–</span></div>
+  <div class="prow"><span class="lbl">😊 Tích cực</span><div class="bar"><div class="fill" id="b2" style="width:0%;background:var(--brand)"></div></div><span class="pct" id="p2">–</span></div>
+  <div class="meta" id="meta"></div>
+</div>
+
+<script>
+const API = localStorage.getItem("COMMENTS_API_URL") || "https://comments3-api.onrender.com";
+const EXAMPLES = [
+  "Amazing product! Great taste and fast delivery. Five stars!",
+  "The taste is okay, nothing special. Probably won't buy again but it's fine for the price.",
+  "Terrible. Arrived melted and stale. Customer service ignored my emails. Waste of money.",
+];
+function setExample(i) { document.getElementById("comment").value = EXAMPLES[i]; }
+async function predict() {
+  const comment = document.getElementById("comment").value.trim();
+  if (comment.length < 2) { alert("Comment quá ngắn"); return; }
+  document.getElementById("result").style.display = "block";
+  document.getElementById("verdict").textContent = "⏳ Đang phân tích...";
+  document.getElementById("verdict").className = "verdict";
+  try {
+    const r = await fetch(API + "/predict", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ comment }),
+    });
+    const d = await r.json();
+    const icon = { negative: "😞", neutral: "😐", positive: "😊" };
+    const el = document.getElementById("verdict");
+    el.textContent = icon[d.prediction] + " " + d.prediction_label_vi +
+                     " — " + (d.confidence * 100).toFixed(1) + "%";
+    el.className = "verdict " + (d.prediction === "positive" ? "pos" :
+                                 d.prediction === "negative" ? "neg" : "neu");
+    const p = d.probabilities;
+    document.getElementById("b0").style.width = (p.negative * 100) + "%";
+    document.getElementById("b1").style.width = (p.neutral * 100) + "%";
+    document.getElementById("b2").style.width = (p.positive * 100) + "%";
+    document.getElementById("p0").textContent = (p.negative * 100).toFixed(1) + "%";
+    document.getElementById("p1").textContent = (p.neutral * 100).toFixed(1) + "%";
+    document.getElementById("p2").textContent = (p.positive * 100).toFixed(1) + "%";
+    document.getElementById("meta").textContent = "Model: " + d.model;
+  } catch (e) {
+    document.getElementById("verdict").textContent = "❌ Không gọi được API";
+    document.getElementById("verdict").className = "verdict neg";
+  }
+}
+</script>
+</body>
+</html>

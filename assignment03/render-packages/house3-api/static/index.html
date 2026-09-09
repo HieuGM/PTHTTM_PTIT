@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Định giá BĐS NYC — DL</title>
+<style>
+  :root { --brand:#3f72af; --ok:#4c9f70; --bg:#f6f7fb; }
+  * { box-sizing:border-box; margin:0; padding:0; font-family:system-ui,-apple-system,sans-serif; }
+  body { background:var(--bg); color:#222; padding:16px 14px calc(24px + env(safe-area-inset-bottom)); max-width:480px; margin:0 auto; }
+  header { text-align:center; margin-bottom:14px; }
+  h1 { font-size:1.15rem; }
+  .sub { font-size:.75rem; color:#777; margin-top:4px; }
+  .card { background:#fff; border-radius:14px; padding:14px; box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:12px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  label { display:block; font-size:.72rem; font-weight:600; color:#555; margin:10px 0 4px; }
+  input, select { width:100%; padding:10px; border:1.5px solid #ddd; border-radius:9px; font-size:15px; background:#fff; }
+  input:focus, select:focus { outline:none; border-color:var(--brand); }
+  button { width:100%; padding:14px; background:var(--brand); color:#fff; border:none; border-radius:11px; font-size:1rem; font-weight:700; margin-top:16px; }
+  button:active { transform:scale(.98); }
+  #result { display:none; }
+  .price { font-size:1.75rem; font-weight:800; text-align:center; color:var(--brand); padding:10px 0; }
+  .range { text-align:center; font-size:.8rem; color:#666; }
+  .meta { font-size:.68rem; color:#888; text-align:center; margin-top:10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🏠 Định giá BĐS New York</h1>
+  <div class="sub">Deep Learning MLP 133→64→32→1 · NYC 84,548 giao dịch · ISD Assignment 03</div>
+</header>
+
+<div class="card">
+  <label>Borough (quận)</label>
+  <select id="borough">
+    <option value="1">Manhattan</option>
+    <option value="2">Bronx</option>
+    <option value="3" selected>Brooklyn</option>
+    <option value="4">Queens</option>
+    <option value="5">Staten Island</option>
+  </select>
+  <label>Loại bất động sản</label>
+  <select id="bldg_class">
+    <option>01 ONE FAMILY DWELLINGS</option>
+    <option>02 TWO FAMILY DWELLINGS</option>
+    <option>09 COOPS - WALKUP APARTMENTS</option>
+    <option>10 COOPS - ELEVATOR APARTMENTS</option>
+    <option>13 CONDOS - ELEVATOR APARTMENTS</option>
+  </select>
+  <div class="row2">
+    <div><label>ZIP code</label><input type="number" id="zip" value="11211" min="10001" max="11697"></div>
+    <div><label>Lớp thuế</label><select id="tax_class"><option>1</option><option>2</option><option>4</option></select></div>
+  </div>
+  <div class="row2">
+    <div><label>Số căn hộ</label><input type="number" id="res_units" value="3" min="0" max="500"></div>
+    <div><label>Số đơn vị TM</label><input type="number" id="com_units" value="0" min="0" max="500"></div>
+  </div>
+  <div class="row2">
+    <div><label>Diện tích đất (sqft)</label><input type="number" id="land_sf" value="2000" min="0"></div>
+    <div><label>Diện tích sàn (sqft)</label><input type="number" id="gross_sf" value="1800" min="100"></div>
+  </div>
+  <label>Năm xây (0 = không biết)</label><input type="number" id="year_built" value="1940" min="0" max="2025">
+  <button onclick="predict()">💰 Định giá</button>
+</div>
+
+<div class="card" id="result">
+  <div class="price" id="price">—</div>
+  <div class="range" id="range"></div>
+  <div class="meta" id="meta"></div>
+</div>
+
+<script>
+const API = localStorage.getItem("HOUSE_API_URL") || "https://house3-api.onrender.com";
+async function predict() {
+  const v = id => parseFloat(document.getElementById(id).value);
+  const payload = {
+    borough: v("borough"),
+    bldg_class: document.getElementById("bldg_class").value,
+    zip: v("zip"), tax_class: v("tax_class"),
+    res_units: v("res_units"), com_units: v("com_units"),
+    land_sf: v("land_sf") > 0 ? v("land_sf") : null,
+    gross_sf: v("gross_sf"),
+    year_built: v("year_built") > 0 ? v("year_built") : null,
+  };
+  document.getElementById("result").style.display = "block";
+  document.getElementById("price").textContent = "⏳ Đang định giá...";
+  try {
+    const r = await fetch(API + "/predict", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload),
+    });
+    const d = await r.json();
+    document.getElementById("price").textContent = d.predicted_price_display;
+    const [lo, hi] = d.price_range;
+    document.getElementById("range").textContent =
+      "Khoảng tham khảo: $" + Number(lo).toLocaleString() + " – $" + Number(hi).toLocaleString();
+    document.getElementById("meta").textContent = "Model: " + d.model;
+  } catch (e) {
+    document.getElementById("price").textContent = "❌ Không gọi được API";
+  }
+}
+</script>
+</body>
+</html>

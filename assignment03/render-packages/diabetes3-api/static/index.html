@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Dự đoán Tiểu đường — DL</title>
+<style>
+  :root { --brand:#c94c5f; --ok:#4c9f70; --bg:#f6f7fb; }
+  * { box-sizing:border-box; margin:0; padding:0; font-family:system-ui,-apple-system,sans-serif; }
+  body { background:var(--bg); color:#222; padding:16px 14px calc(24px + env(safe-area-inset-bottom)); max-width:480px; margin:0 auto; }
+  header { text-align:center; margin-bottom:14px; }
+  h1 { font-size:1.15rem; }
+  .sub { font-size:.75rem; color:#777; margin-top:4px; }
+  .card { background:#fff; border-radius:14px; padding:14px; box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:12px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  label { display:block; font-size:.72rem; font-weight:600; color:#555; margin:10px 0 4px; }
+  input, select { width:100%; padding:10px; border:1.5px solid #ddd; border-radius:9px; font-size:15px; background:#fff; }
+  input:focus, select:focus { outline:none; border-color:var(--brand); }
+  button { width:100%; padding:14px; background:var(--brand); color:#fff; border:none; border-radius:11px; font-size:1rem; font-weight:700; margin-top:16px; }
+  button:active { transform:scale(.98); }
+  #result { display:none; }
+  .verdict { font-size:1.3rem; font-weight:800; text-align:center; padding:14px; border-radius:11px; margin-bottom:10px; }
+  .pos { background:#e7f5ec; color:var(--ok); }
+  .neg { background:#fdecee; color:var(--brand); }
+  .bar { height:10px; background:#e8e8ee; border-radius:6px; overflow:hidden; margin:6px 0 14px; }
+  .fill { height:100%; background:linear-gradient(90deg,var(--ok),var(--brand)); border-radius:6px; transition:width .6s; }
+  .meta { font-size:.68rem; color:#888; text-align:center; }
+  .warn { background:#fff7e0; border-radius:8px; padding:8px; font-size:.75rem; margin-top:8px; text-align:center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🩸 Dự đoán Tiểu đường</h1>
+  <div class="sub">Deep Learning MLP 21→64→32→1 · CDC 253,680 · ISD Assignment 03</div>
+</header>
+
+<div class="card">
+  <div class="row2">
+    <div><label>Cao huyết áp</label><select id="HighBP"><option value="0">Không</option><option value="1">Có</option></select></div>
+    <div><label>Cao cholesterol</label><select id="HighChol"><option value="0">Không</option><option value="1">Có</option></select></div>
+  </div>
+  <label>BMI (kg/m²)</label><input type="number" id="BMI" value="27" min="10" max="100" step="0.5">
+  <div class="row2">
+    <div><label>Sức khỏe chung (1 xấu – 5 tốt)</label><input type="number" id="GenHlth" value="3" min="1" max="5"></div>
+    <div><label>Nhóm tuổi (1=18-24 … 13=80+)</label><input type="number" id="Age" value="6" min="1" max="13"></div>
+  </div>
+  <div class="row2">
+    <div><label>Ngày tinh thần kém /30</label><input type="number" id="MentHlth" value="0" min="0" max="30"></div>
+    <div><label>Ngày thể chất kém /30</label><input type="number" id="PhysHlth" value="0" min="0" max="30"></div>
+  </div>
+  <div class="row2">
+    <div><label>Vận động 30 ngày</label><select id="PhysActivity"><option value="1">Có</option><option value="0">Không</option></select></div>
+    <div><label>Hút thuốc</label><select id="Smoker"><option value="0">Không</option><option value="1">Có</option></select></div>
+  </div>
+  <div class="row2">
+    <div><label>Khó đi bộ</label><select id="DiffWalk"><option value="0">Không</option><option value="1">Có</option></select></div>
+    <div><label>Giới tính</label><select id="Sex"><option value="0">Nữ</option><option value="1">Nam</option></select></div>
+  </div>
+  <div class="row2">
+    <div><label>Học vấn (1–6)</label><input type="number" id="Education" value="4" min="1" max="6"></div>
+    <div><label>Thu nhập (1–8)</label><input type="number" id="Income" value="5" min="1" max="8"></div>
+  </div>
+  <!-- các cột nhị phân còn lại dùng mặc định như training mode -->
+  <input type="hidden" id="HighChol2"><input type="hidden" id="placeholder">
+  <button onclick="predict()">🔍 Dự đoán</button>
+</div>
+
+<div class="card" id="result">
+  <div class="verdict" id="verdict">—</div>
+  <div class="meta" id="probtxt"></div>
+  <div class="bar"><div class="fill" id="fill" style="width:0%"></div></div>
+  <div class="warn" id="warn" style="display:none">⚠️ Vùng mơ hồ (0.35–0.65) — khuyến nghị xét nghiệm HbA1c xác nhận.</div>
+  <div class="meta" id="meta"></div>
+</div>
+
+<script>
+const API = localStorage.getItem("DIABETES_API_URL") || "https://diabetes3-api.onrender.com";
+async function predict() {
+  const v = id => parseFloat(document.getElementById(id).value);
+  const payload = {
+    HighBP: v("HighBP"), HighChol: v("HighChol"), CholCheck: 1, BMI: v("BMI"),
+    Smoker: v("Smoker"), Stroke: 0, HeartDiseaseorAttack: 0,
+    PhysActivity: v("PhysActivity"), Fruits: 1, Veggies: 1, HvyAlcoholConsump: 0,
+    AnyHealthcare: 1, NoDocbcCost: 0, GenHlth: v("GenHlth"),
+    MentHlth: v("MentHlth"), PhysHlth: v("PhysHlth"), DiffWalk: v("DiffWalk"),
+    Sex: v("Sex"), Age: v("Age"), Education: v("Education"), Income: v("Income"),
+  };
+  document.getElementById("result").style.display = "block";
+  document.getElementById("verdict").textContent = "⏳ Đang dự đoán...";
+  try {
+    const r = await fetch(API + "/predict", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload),
+    });
+    const d = await r.json();
+    const el = document.getElementById("verdict");
+    el.textContent = (d.prediction === "diabetic" ? "⚠️ " : "✅ ") + d.prediction_label_vi;
+    el.className = "verdict " + (d.prediction === "diabetic" ? "neg" : "pos");
+    document.getElementById("probtxt").textContent =
+      "P(tiểu đường) = " + (d.probability_diabetic * 100).toFixed(1) + "%";
+    document.getElementById("fill").style.width = (d.probability_diabetic * 100) + "%";
+    document.getElementById("warn").style.display =
+      (d.probability_diabetic >= 0.35 && d.probability_diabetic <= 0.65) ? "block" : "none";
+    document.getElementById("meta").textContent = "Model: " + d.model;
+  } catch (e) {
+    document.getElementById("verdict").textContent = "❌ Không gọi được API";
+    document.getElementById("verdict").className = "verdict neg";
+  }
+}
+</script>
+</body>
+</html>
