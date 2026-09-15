@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Phân tích cảm xúc comment — Text CNN (ASM04 App 3)</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; }
+  body { background:#0f172a; color:#e2e8f0; min-height:100vh; padding:16px; max-width:480px; margin:0 auto; }
+  h1 { font-size:1.2rem; text-align:center; margin-bottom:4px; }
+  .sub { text-align:center; font-size:.8rem; color:#94a3b8; margin-bottom:16px; }
+  .card { background:#1e293b; border-radius:14px; padding:16px; margin-bottom:14px; border:1px solid #334155; }
+  textarea { width:100%; min-height:120px; background:#0f172a; color:#e2e8f0; border:1px solid #334155;
+             border-radius:10px; padding:12px; font-size:.95rem; resize:vertical; }
+  .btn { width:100%; padding:14px; border:0; border-radius:10px; font-size:1rem; font-weight:600; margin-top:10px; cursor:pointer; background:#10b981; color:#fff; }
+  .big { text-align:center; font-size:1.7rem; font-weight:800; }
+  .conf { text-align:center; color:#94a3b8; font-size:.85rem; }
+  .bar-row { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:.8rem; }
+  .bar-label { width:84px; color:#cbd5e1; }
+  .bar-track { flex:1; background:#0f172a; border-radius:6px; height:16px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:6px; transition:width .4s; }
+  .bar-val { width:48px; color:#94a3b8; font-size:.72rem; }
+  .emo { font-size:2.6rem; text-align:center; }
+</style>
+</head>
+<body>
+  <h1>💬 Phân tích cảm xúc comment</h1>
+  <div class="sub">Text CNN Conv1D · Amazon Fine Food 100k · ASM04 App 3</div>
+
+  <div class="card">
+    <div style="font-weight:600;margin-bottom:8px">✍️ Comment về sản phẩm thức ăn</div>
+    <textarea id="comment" placeholder="Ví dụ: Best coffee ever, will buy again!"></textarea>
+    <button class="btn" onclick="predict()">🔍 Phân tích cảm xúc</button>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+    <div class="emo" id="emo">😐</div>
+    <div class="big" id="label">?</div>
+    <div class="conf" id="conf"></div>
+  </div>
+  <div class="card" id="probsCard" style="display:none">
+    <div style="font-weight:600;margin-bottom:8px">Xác suất 3 lớp (softmax)</div>
+    <div id="bars"></div>
+  </div>
+
+<script>
+const COLORS = { negative:'#ef4444', neutral:'#f59e0b', positive:'#22c55e' };
+const EMO = { negative:'😠', neutral:'😐', positive:'😊' };
+
+async function predict(){
+  const comment = document.getElementById('comment').value.trim();
+  if (!comment) return alert('Hãy nhập comment');
+  const btn = document.querySelector('.btn'); btn.disabled = true; btn.textContent = '⏳ Đang phân tích...';
+  try {
+    const res = await fetch('/predict', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ comment }) });
+    if (!res.ok) throw new Error((await res.json()).detail || res.status);
+    const r = await res.json();
+    document.getElementById('resultCard').style.display = 'block';
+    document.getElementById('emo').textContent = EMO[r.prediction];
+    const lab = document.getElementById('label');
+    lab.textContent = r.prediction_label_vi;
+    lab.style.color = COLORS[r.prediction];
+    document.getElementById('conf').textContent =
+      `Độ tin cậy ${(r.confidence*100).toFixed(1)}% · ${r.n_tokens} tokens · ${r.model}`;
+    const bars = document.getElementById('bars'); bars.innerHTML = '';
+    Object.entries(r.probabilities).forEach(([k, v]) => {
+      const top = k === r.prediction;
+      bars.insertAdjacentHTML('beforeend',
+        `<div class="bar-row"><div class="bar-label">${k}</div>
+         <div class="bar-track"><div class="bar-fill" style="width:${(v*100).toFixed(1)}%;background:${COLORS[k]}"></div></div>
+         <div class="bar-val">${(v*100).toFixed(1)}%</div></div>`);
+    });
+    document.getElementById('probsCard').style.display = 'block';
+  } catch (e) { alert('Lỗi gọi API: ' + e.message); }
+  btn.disabled = false; btn.textContent = '🔍 Phân tích cảm xúc';
+}
+</script>
+</body>
+</html>

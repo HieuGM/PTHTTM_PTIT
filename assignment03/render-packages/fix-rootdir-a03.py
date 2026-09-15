@@ -2,13 +2,14 @@
 """Fix rootDir cho 5 services A03 — PATCH top-level rootDir (bài học A02:
 rootDir KHÔNG nằm trong serviceDetails mà ở top level của PATCH body)."""
 import json
+import os
 import sys
 import time
 import urllib.request
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-KEY = "rnd_DowSbLLt8R98PvFBrsuTqh1Ed6Lo"
+KEY = os.environ.get("RENDER_API_KEY", "")  # không hardcode key!
 FIX = {
     "srv-daggkuh42hec73c8ptl0": ("diabetes3-api", "assignment03/render-packages/diabetes3-api"),
     "srv-daggm1qjnfac73dku0d0": ("house3-api", "assignment03/render-packages/house3-api"),
