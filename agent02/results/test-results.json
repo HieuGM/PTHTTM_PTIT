@@ -1,0 +1,11 @@
+{
+  "passed": 6,
+  "checks": [
+    "Q and terminal target",
+    "Rule and simultaneous transitions",
+    "Binomial sales and profit",
+    "Frozen paired evaluation oracle",
+    "Exact reference training parity",
+    "Persisted result integrity"
+  ]
+}

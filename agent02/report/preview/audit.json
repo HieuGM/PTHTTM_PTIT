@@ -1,0 +1,27 @@
+{
+  "pages": 14,
+  "checks": {
+    "all_ten_questions": true,
+    "no_unfilled_placeholders": true,
+    "identity": true,
+    "cover_identity": true,
+    "cover_assignment": true,
+    "cover_no_template_student": true,
+    "figures": true,
+    "source_files": true,
+    "no_replacement_glyph": true,
+    "text_within_page_margins": true,
+    "page_count": true,
+    "baseline_rewards": true,
+    "training_total": true,
+    "notebook_executed": true,
+    "notebook_no_errors": true,
+    "numerical_tests": true,
+    "full_seed_groups": true
+  },
+  "all_passed": true,
+  "outliers": [],
+  "visual_review": "all 14 final pages inspected",
+  "cover_review": "Reference PTIT cover retained; correct student identity",
+  "notebook_revision": "Standalone complete code; 17 executed code cells; 31 fresh full runs; 5 embedded PNGs"
+}

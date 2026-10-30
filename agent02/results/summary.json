@@ -1,0 +1,147 @@
+{
+  "environment": {
+    "python": "3.14.6 | packaged by Anaconda, Inc. | (main, Jul  9 2026, 14:29:05) [MSC v.1942 64 bit (AMD64)]",
+    "numpy": "2.4.6",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "training_seeds": [
+    11,
+    22,
+    33,
+    44,
+    55
+  ],
+  "baseline_seed": 42,
+  "aggregate": [
+    {
+      "configuration": "alpha-0.01",
+      "strategy": "rl",
+      "n": 5,
+      "mean_reward": 35.0728,
+      "sample_sd": 0.14564537411123035,
+      "mean_discount_rate": 0.0
+    },
+    {
+      "configuration": "alpha-0.01",
+      "strategy": "rule",
+      "n": 5,
+      "mean_reward": 35.0728,
+      "sample_sd": 0.14564537411123035,
+      "mean_discount_rate": 0.0
+    },
+    {
+      "configuration": "alpha-0.50",
+      "strategy": "rl",
+      "n": 5,
+      "mean_reward": 33.79302,
+      "sample_sd": 1.838952358545484,
+      "mean_discount_rate": 0.2002
+    },
+    {
+      "configuration": "alpha-0.50",
+      "strategy": "rule",
+      "n": 5,
+      "mean_reward": 35.0728,
+      "sample_sd": 0.14564537411123035,
+      "mean_discount_rate": 0.0
+    },
+    {
+      "configuration": "baseline",
+      "strategy": "rl",
+      "n": 5,
+      "mean_reward": 35.0728,
+      "sample_sd": 0.14564537411123035,
+      "mean_discount_rate": 0.0
+    },
+    {
+      "configuration": "baseline",
+      "strategy": "rule",
+      "n": 5,
+      "mean_reward": 35.0728,
+      "sample_sd": 0.14564537411123035,
+      "mean_discount_rate": 0.0
+    },
+    {
+      "configuration": "discount-0.05",
+      "strategy": "rl",
+      "n": 5,
+      "mean_reward": 36.931779999999996,
+      "sample_sd": 0.4339351702731639,
+      "mean_discount_rate": 0.7641600000000001
+    },
+    {
+      "configuration": "discount-0.05",
+      "strategy": "rule",
+      "n": 5,
+      "mean_reward": 35.0728,
+      "sample_sd": 0.14564537411123035,
+      "mean_discount_rate": 0.0
+    },
+    {
+      "configuration": "epsilon-0.05",
+      "strategy": "rl",
+      "n": 5,
+      "mean_reward": 34.56506,
+      "sample_sd": 1.0423783588505673,
+      "mean_discount_rate": 0.08158
+    },
+    {
+      "configuration": "epsilon-0.05",
+      "strategy": "rule",
+      "n": 5,
+      "mean_reward": 35.0728,
+      "sample_sd": 0.14564537411123035,
+      "mean_discount_rate": 0.0
+    },
+    {
+      "configuration": "epsilon-0.30",
+      "strategy": "rl",
+      "n": 5,
+      "mean_reward": 28.867220000000003,
+      "sample_sd": 3.8253881550765545,
+      "mean_discount_rate": 0.5016
+    },
+    {
+      "configuration": "epsilon-0.30",
+      "strategy": "rule",
+      "n": 5,
+      "mean_reward": 35.0728,
+      "sample_sd": 0.14564537411123035,
+      "mean_discount_rate": 0.0
+    }
+  ],
+  "robustness_transfer": [
+    {
+      "seed": 11,
+      "transfer_reward": 35.1945,
+      "rule_reward": 35.1945,
+      "transfer_discount_rate": 0.0
+    },
+    {
+      "seed": 22,
+      "transfer_reward": 34.915,
+      "rule_reward": 34.915,
+      "transfer_discount_rate": 0.0
+    },
+    {
+      "seed": 33,
+      "transfer_reward": 34.9565,
+      "rule_reward": 34.9565,
+      "transfer_discount_rate": 0.0
+    },
+    {
+      "seed": 44,
+      "transfer_reward": 35.249,
+      "rule_reward": 35.249,
+      "transfer_discount_rate": 0.0
+    },
+    {
+      "seed": 55,
+      "transfer_reward": 35.049,
+      "rule_reward": 35.049,
+      "transfer_discount_rate": 0.0
+    }
+  ],
+  "elapsed_seconds": 711.5890870094299,
+  "protocol": "Reference training RNG and random ties. Evaluation: separate focal-policy-vs-rule matches, common demand and per-customer uniform tapes, greedy deterministic ties, frozen Q, seed=train_seed+500000."
+}

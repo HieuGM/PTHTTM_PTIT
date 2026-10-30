@@ -164,3 +164,14 @@ Xem **`apps/HUONG_DAN_DEPLOY.md`** — hướng dẫn từng bước deploy Hugg
 ---
 
 *Sinh viên thực hiện: ……………………… — lớp ……… — ngày ……… (điền trước khi nộp)*
+
+
+## Agent 02 — Q-learning và agent theo luật
+
+Bài của **Giáp Minh Hiếu — B23DCCN299**. Notebook chứa toàn bộ mã, tự chạy độc lập, có kết quả thực thi đủ 31 lượt và 5 biểu đồ nhúng.
+
+- [Notebook đầy đủ code](agent02/notebook/agent02_CT_04_hieugm.ipynb) — mở trên Jupyter hoặc Colab, chọn Restart Kernel and Run All.
+- [Báo cáo PDF](agent02/report/agent02_CT_04_hieugm.pdf) — 14 trang, bìa PTIT theo mẫu, đủ 10 câu hỏi.
+- [Notebook dạng HTML](agent02/notebook/agent02_CT_04_hieugm.html)
+- [Gói bài đầy đủ](agent02_CT_04_hieugm.zip)
+- [Hướng dẫn và kết quả](agent02/README.md)
