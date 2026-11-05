@@ -16,3 +16,16 @@
 Không sửa PDF/nội dung trong lượt QA. Audit tự động riêng đạt 15/15; kiểm tra ảnh này bổ sung xác minh bố cục trực quan.
 
 Câu hỏi chưa giải quyết: không có thuộc phạm vi visual QA. URL Render công khai vẫn cần tài khoản triển khai, theo báo cáo.
+
+
+## Cập nhật sau deploy Render — 05/11/2026
+
+Báo cáo vẫn25trang sau khi bổ sung URLpublic, commit, thời điểm live và bằng chứng13/13HTTP. Đã render lại toàn bộ trang và xem lại các trang thay đổi: PDF3(mục lục),21–22(7.5và kết luận),23(phụ lục tiếp nối); không tràn/chồng/chữ lỗi, linkURL rõ. Nội dung các chương khác không đổi. Audit15/15đạt.
+
+### Xác minh độc lập bản sau deploy
+
+Đã mở riêng ảnh mới của cả bốn trang PDF 3, 21, 22, 23 ở tỷ lệ 1,3×. **Đạt; không phát hiện lỗi bố cục mới.** Mục lục khớp; đoạn Render live, commit và 13/13 kiểm tra HTTP đọc được; URL `diacare-mas-hieugm299.onrender.com` không bị tràn/cắt. Phụ lục vẫn bắt đầu đúng trang, không có tiêu đề cô lập do thay đổi phần deploy.
+
+SHA256 PDF cuối: `98e03949e22c5d8883721888c40296414d652155c0e66d4e6cd128773bf9517d`.
+
+Ghi nhận “cloud chưa có URL công khai” ở lượt QA trước là trạng thái lịch sử, đã được thay bằng bằng chứng Render công khai trong bản PDF này. Không có câu hỏi còn lại thuộc phạm vi visual QA. Không sửa PDF trong lượt xác minh.

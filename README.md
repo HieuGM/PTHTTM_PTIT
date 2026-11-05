@@ -179,4 +179,4 @@ Bài của **Giáp Minh Hiếu — B23DCCN299**. Notebook chứa toàn bộ mã,
 
 ## Project01 — DiaCare MAS (05/11/2026)
 
-[Hệ đa Agent hỗ trợ bệnh đái tháo đường](project01_CT_04_HieuGM.299/README.md): hai MLP đã huấn luyện, KB tiếng Việt có nguồn, Rule/Q-learning minh họa, FastAPI và Docker. [Báo cáo PDF](project01_CT_04_HieuGM.299/report/project01_CT_04_HieuGM.299.pdf). Deploy Render bằng Blueprint `render.yaml` ở gốc repository.
+[Hệ đa Agent hỗ trợ bệnh đái tháo đường](project01_CT_04_HieuGM.299/README.md): hai MLP đã huấn luyện, KB tiếng Việt có nguồn, Rule/Q-learning minh họa, FastAPI và Docker. [Báo cáo PDF](project01_CT_04_HieuGM.299/report/project01_CT_04_HieuGM.299.pdf). [Demo Render đang hoạt động](https://diacare-mas-hieugm299.onrender.com) — Docker, gói Free, Singapore; kiểm tra HTTP13/13đạt. Blueprint `render.yaml` ở gốc repository phục vụ tái tạo cấu hình.

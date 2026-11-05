@@ -49,11 +49,13 @@ Một worker giúp giảm việc nhân đôi model/index. Số thread CPU đư�
 
 ## 7.5. Triển khai cloud và giới hạn bằng chứng
 
-Gói có render.yaml với runtime Docker, healthCheckPath /health và biến APP_DATA_DIR. Cấu hình dành cho một repository riêng chứa nội dung project ở root. Với monorepo cần đặt Root Directory tương ứng. Quy trình tạo service, kiểm tra tài nguyên và lệnh xác minh endpoint được ghi trong DEPLOY.md, dựa trên tài liệu Blueprint chính thức của Render.
+Repository HieuGM/PTHTTM_PTIT giữ project trong thư mục project01_CT_04_HieuGM.299. Bản triển khai thực được tạo qua Render MCP với runtime Docker, gói Free và vùng Singapore. Dockerfile và build context trỏ trực tiếp tới thư mục project tính từ gốc repository; PORT đặt 8000, APP_DATA_DIR đặt /tmp/diacare. Tệp render.yaml ở gốc repo vẫn cung cấp cấu hình Blueprint tương đương cho việc tái tạo; dịch vụ hiện tại dùng kiểm tra sẵn sàng TCP mặc định, còn endpoint /health được kiểm tra riêng qua HTTPS.
 
 Bản Docker đã được build từ đúng Dockerfile và chạy trên Docker Engine 29.9.2 trong môi trường Linux WSL2 riêng. Cả 13 kiểm tra HTTP đạt, gồm frontend/tài nguyên tĩnh, kiểm kê KB, suy luận hai mô hình, từ chối input thiếu, trả lời có nguồn, ưu tiên cảnh báo và xử lý NaN. Container báo healthy; một quan sát lúc nhàn rỗi sau kiểm tra ghi khoảng 254,9 MiB RAM, không phải benchmark tải. docker-verification.json giữ thời điểm, image ID và từng kết quả.
 
-Cloud là bước triển khai riêng: cần tài khoản/kết nối repository và phải kiểm tra endpoint sau deploy. Project chưa có URLcloud công khai được tạo trong phiên làm việc này; không dùng một URL dự kiến làm bằng chứng hệ thống đã phục vụ Internet.
+Render xác nhận deploy ở trạng thái live ngày 05/11/2026, lúc 17:16 giờ Việt Nam, với commit 6eb79dc0468bc76347b10c2ef0ab1a360974686a. Ứng dụng công khai tại [diacare-mas-hieugm299.onrender.com](https://diacare-mas-hieugm299.onrender.com). Cả 13/13 kiểm tra HTTP trên URL này đạt, bao gồm giao diện/tài nguyên tĩnh, KB, suy luận hai mô hình, từ chối dữ liệu thiếu/NaN, hỏi đáp có nguồn và ưu tiên cảnh báo. render-deployment.json giữ service ID, deploy ID và commit; render-http-verification.json ghi từng phép kiểm tra thực tế.
+
+Đây là kiểm chứng chức năng sau deploy tại thời điểm ghi nhận, chưa phải đánh giá tải hoặc bảo đảm thời gian hoạt động liên tục. Gói Free có thể ngủ khi không có truy cập; cần chờ khởi động lại ở lần mở tiếp theo. Hệ thống vẫn giữ các giới hạn về dữ liệu Mỹ, chất lượng mô hình và phạm vi giáo dục đã trình bày.
 
 ## 7.6. Kết luận và hướng phát triển
 

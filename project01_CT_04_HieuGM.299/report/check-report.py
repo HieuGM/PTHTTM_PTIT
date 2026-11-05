@@ -29,7 +29,8 @@ checks = {
     'rag_limit_explicit': 'không có LLM' in normalized,
     'rl_scope_explicit': 'contextual bandit' in text and '4.000 episode' in text,
     'remaining_error_kept': 'Q22' in text and '21/22' in text,
-    'cloud_status_honest': 'chưa có URLcloud' in text,
+    'cloud_deployment_evidence': all(x in normalized for x in [
+        'diacare-mas-hieugm299.onrender.com', '13/13', 'trạng thái live']),
     'no_replacement_glyph': '\ufffd' not in text and '\u25a0' not in text}
 overflow = []
 for i, page in enumerate(doc):

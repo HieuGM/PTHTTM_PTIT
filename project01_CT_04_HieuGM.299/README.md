@@ -2,7 +2,11 @@
 
 **Giáp Minh Hiếu · B23DCCN299 · Nhóm 04**
 
-Hệ đa vai trò hỗ trợ tìm hiểu bệnh đái tháo đường: hai MLP đã huấn luyện trên dữ liệu thật, KB24thẻ có19URLnguồn, truy xuất/trả lời trích xuất có nguồn, luật cảnh báo, Q-learning minh họa cách trình bày, FastAPI và web demo.
+Hệ đa vai trò hỗ trợ tìm hiểu bệnh đái tháo đường: hai MLP đã huấn luyện trên dữ liệu thật, KB 24 thẻ có 19 URL nguồn, truy xuất và trả lời trích xuất có nguồn, luật cảnh báo, Q-learning minh họa cách trình bày, FastAPI và web demo.
+
+**Demo công khai:** [DiaCare trên Render](https://diacare-mas-hieugm299.onrender.com) · [API](https://diacare-mas-hieugm299.onrender.com/docs) · [Kiểm tra sẵn sàng](https://diacare-mas-hieugm299.onrender.com/health).
+
+Dịch vụ Docker gói Free tại Singapore đã chuyển sang `live` lúc **17:16 ngày 05/11/2026**. Kiểm tra HTTP trên URL công khai đạt **13/13**; bằng chứng nằm trong `results/render-http-verification.json` và `results/render-deployment.json`. Gói Free có thể ngủ khi không có truy cập nên lần mở lại có thể chậm.
 
 ## Mở bài làm
 
@@ -31,7 +35,7 @@ python -m pip install -r requirements.txt -c requirements-lock.txt
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Khuyến nghị Python3.12 cho bản triển khai Linux; huấn luyện đã chạy bằng Python3.14 trên máy này. Trọng số `.pt` là state_dict nạp với `weights_only=True`, thống kê chuẩn hóa nằm trong JSON.
+Khuyến nghị Python 3.12 cho bản triển khai Linux; huấn luyện đã chạy bằng Python 3.14 trên máy này. Trọng số `.pt` là state_dict nạp với `weights_only=True`, thống kê chuẩn hóa nằm trong JSON.
 
 ## Kiểm thử và tái lập
 
@@ -42,15 +46,15 @@ python tests/evaluate-system.py
 python scripts/train-policy.py
 ```
 
-`55/55` pytest đạt trên máy phát triển, sau giải nén gói độc lập và trong container Linux. Docker cũng đạt 13/13 kiểm tra HTTP, healthcheck healthy. `results/system-evaluation.json` giữ từng trường hợp của30câu phát triển, gồm lỗi Q22 chọn thẻ tổng quát đầu tiên; đây không phải benchmark độc lập hoặc kiểm định y khoa. `results/docker-verification.json` ghi kiểm tra thực trong container và ngày chạy.
+`55/55` pytest đạt trên máy phát triển, sau giải nén gói độc lập và trong container Linux. Docker cũng đạt 13/13 kiểm tra HTTP, healthcheck healthy. `results/system-evaluation.json` giữ từng trường hợp của 30 câu phát triển, gồm lỗi Q22 chọn thẻ tổng quát đầu tiên; đây không phải benchmark độc lập hoặc kiểm định y khoa. `results/docker-verification.json` ghi kiểm tra thực trong container và ngày chạy.
 
 Kiểm chứng lại scaler và dự đoán từng dòng bằng `python scripts/test-models.py` cần cache `data/splits/`. Cache này không nằm trong ZIP. Trước tiên chạy tải và chuẩn bị dữ liệu theo README-models.md; các test API ở trên chỉ cần trọng số có sẵn.
 
 ## Dữ liệu và cách đọc kết quả
 
-- CDC:253.680dòng gốc, sau xử lý226.342vector độc nhất; MLP testAUC0,8274/AP0,4393. Nhãn dương gộp tiền đái tháo đường và đái tháo đường theo bộ binary.
-- Hospital:101.766lượt gốc,101.763sau loại3dòng gender không phù hợp; chia theo người bệnh không giao nhóm. MLP testAUC0,6334/AP0,1869 cho nhãn tái nhập viện dưới30ngày. Kết quả còn hạn chế.
-- Hai bài toán khác nhau; không so trực tiếp score/AUC để kết luận bên nào tốt hơn hoặc coi hai tập là externalvalidation.
+- CDC: 253.680 dòng gốc, sau xử lý còn 226.342 vector độc nhất; MLP test AUC 0,8274, AP 0,4393. Nhãn dương gộp tiền đái tháo đường và đái tháo đường theo bộ binary.
+- Hospital: 101.766 lượt gốc, 101.763 sau loại 3 dòng gender không phù hợp; chia theo người bệnh không giao nhóm. MLP test AUC 0,6334, AP 0,1869 cho nhãn tái nhập viện dưới 30 ngày. Kết quả còn hạn chế.
+- Hai bài toán khác nhau; không so trực tiếp score/AUC để kết luận bên nào tốt hơn hoặc coi hai tập là kiểm định ngoài miền cho nhau.
 - Các nguồn đều là dữ liệu Mỹ; chưa xác thực trên bệnh nhân Việt Nam. Điểm sigmoid chưa hiệu chuẩn cho quyết định lâm sàng.
 
 ## Cấu trúc
@@ -69,4 +73,4 @@ report/           Báo cáo và mã dựng PDF
 
 Không lưu câu hỏi/chỉ số sức khỏe của request. SQLite chỉ chứa thẻ tri thức. Không có LLM sinh tự do trong bản mặc định; câu trả lời được ghép trích xuất có nguồn. Q-learning là bandit mô phỏng một bước cho cách trình bày, không tối ưu điều trị. Dữ liệu `data/raw/` và `data/splits/` không nằm trong ZIP hoặc image.
 
-Triển khai cloud chưa được thực hiện vì chưa có tài khoản/credential hosting trong phiên làm việc. Gói Docker và `render.yaml` đã chuẩn bị để triển khai từ kho mã riêng; xem DEPLOY.md.
+Mã nguồn đã push lên [HieuGM/PTHTTM_PTIT](https://github.com/HieuGM/PTHTTM_PTIT). Dịch vụ Render hiện chạy từ commit `6eb79dc0468bc76347b10c2ef0ab1a360974686a`, nhánh `main`, Dockerfile và build context trong thư mục `project01_CT_04_HieuGM.299`. Dịch vụ được tạo trực tiếp qua MCP; Blueprint `render.yaml` ở gốc repo là cấu hình tái triển khai. Xem [DEPLOY.md](DEPLOY.md) để biết cấu hình thực tế và cách kiểm tra lại.

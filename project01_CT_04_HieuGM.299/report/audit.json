@@ -1,7 +1,7 @@
 {
   "pdf": "project01_CT_04_HieuGM.299.pdf",
   "pages": 25,
-  "sha256": "fac6bcb62cb652873ddfa15a8d196e4e1982176e75527f32189849af51accc1c",
+  "sha256": "98e03949e22c5d8883721888c40296414d652155c0e66d4e6cd128773bf9517d",
   "checks": {
     "nonempty_all_pages": true,
     "correct_student": true,
@@ -15,7 +15,7 @@
     "rag_limit_explicit": true,
     "rl_scope_explicit": true,
     "remaining_error_kept": true,
-    "cloud_status_honest": true,
+    "cloud_deployment_evidence": true,
     "no_replacement_glyph": true,
     "no_text_outside_page": true
   },
