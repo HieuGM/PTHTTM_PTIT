@@ -9,9 +9,34 @@
       "sha256": "720ba39765b675b0436a21e4c1759eade6bcf9616ad56fa5e81c3cc1f47f41e1"
     },
     {
+      "path": ".gitattributes",
+      "bytes": 51,
+      "sha256": "14cac8d41059ea8f3729d99040a72735a15e85f817ea65926917fa47620249c0"
+    },
+    {
       "path": ".gitignore",
       "bytes": 98,
       "sha256": "a4400b85fb614e2bb653238f3797a541d26e7ae6cbe8abb50f87e13bc8cd4b0b"
+    },
+    {
+      "path": "DEPLOY.md",
+      "bytes": 3485,
+      "sha256": "98b32c05ea349b4fd0cfd055c3043a60522a30789cede5c548a0deec8dcd716c"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 615,
+      "sha256": "d7e187f054d0b59862b9b291a6922cbc7dced8d9789bbd460a22c303ab80d9dd"
+    },
+    {
+      "path": "README-models.md",
+      "bytes": 3058,
+      "sha256": "412a6f43aaf368c5ac2038f44016d5d1aad3cec6868b725aba4686dd0ae88fbc"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4791,
+      "sha256": "ded69eabb281a4f97cb70c097ab473cdcbde745ac30641e6ce14d223a17f5b75"
     },
     {
       "path": "app/__init__.py",
@@ -114,16 +139,6 @@
       "sha256": "e08956830fa1c0b9c268118990cf3b6baf532af153cd5128deda3bf05d58e693"
     },
     {
-      "path": "DEPLOY.md",
-      "bytes": 3485,
-      "sha256": "98b32c05ea349b4fd0cfd055c3043a60522a30789cede5c548a0deec8dcd716c"
-    },
-    {
-      "path": "Dockerfile",
-      "bytes": 615,
-      "sha256": "d7e187f054d0b59862b9b291a6922cbc7dced8d9789bbd460a22c303ab80d9dd"
-    },
-    {
       "path": "models/cdc/logistic-baseline.npz",
       "bytes": 686,
       "sha256": "64a96660eeed6420a653aa00c8e4c253e22081b9c9717593b4197d1de74cd3ca"
@@ -164,19 +179,14 @@
       "sha256": "9d2b8a72e76a9087538c783eeace7807335c37e2818bedd087827afe1a2a95ea"
     },
     {
-      "path": "README-models.md",
-      "bytes": 3058,
-      "sha256": "412a6f43aaf368c5ac2038f44016d5d1aad3cec6868b725aba4686dd0ae88fbc"
-    },
-    {
-      "path": "README.md",
-      "bytes": 4791,
-      "sha256": "ded69eabb281a4f97cb70c097ab473cdcbde745ac30641e6ce14d223a17f5b75"
-    },
-    {
       "path": "render.yaml",
       "bytes": 235,
       "sha256": "99022fd48bc642dadeebbb58c66667290a60ef550d69c0f64052f241db667e74"
+    },
+    {
+      "path": "report/README.md",
+      "bytes": 937,
+      "sha256": "b53c59a1bf2de0e86b6ce30fe3c8ed5af265151523b7e666a0cba46e86a8c78a"
     },
     {
       "path": "report/assets/ptit-logo.png",
@@ -227,11 +237,6 @@
       "path": "report/project01_CT_04_HieuGM.299.pdf",
       "bytes": 924144,
       "sha256": "fac6bcb62cb652873ddfa15a8d196e4e1982176e75527f32189849af51accc1c"
-    },
-    {
-      "path": "report/README.md",
-      "bytes": 937,
-      "sha256": "b53c59a1bf2de0e86b6ce30fe3c8ed5af265151523b7e666a0cba46e86a8c78a"
     },
     {
       "path": "report/section-order.json",
