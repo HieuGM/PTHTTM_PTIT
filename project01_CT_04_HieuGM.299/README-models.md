@@ -2,7 +2,9 @@
 
 Hai MLP PyTorch được huấn luyện riêng: CDC BRFSS dự đoán nhãn gộp diabetes/prediabetes khảo sát; Hospital dự đoán tái nhập viện dưới 30 ngày trong hồ sơ người bệnh có đái tháo đường. Mỗi mô hình: số đặc trưng → 64 ReLU Dropout0.15 → 32 ReLU Dropout0.10 → 16 ReLU → 1 sigmoid. Logistic regression là baseline trên cùng split/scaler.
 
-Từ thư mục `project01_CT_04_HieuGM.299`:
+**Cách chạy chính:** mở [project01-diacare.ipynb](notebook/project01-diacare.ipynb), giữ `RUN_MODE="full"` rồi **Run All**. Mã tải/chia dữ liệu, train, metrics, plots và inference đã có trực tiếp trong notebook; không cần chạy các lệnh `.py` bên dưới. Các kết quả mới nằm trong `diacare-notebook-output/`, không ghi đè artifact triển khai.
+
+Các lệnh module tương đương dành cho bảo trì ứng dụng, từ thư mục `project01_CT_04_HieuGM.299`:
 
 ```powershell
 python scripts/fetch-data.py

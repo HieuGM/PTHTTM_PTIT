@@ -180,3 +180,6 @@ Bài của **Giáp Minh Hiếu — B23DCCN299**. Notebook chứa toàn bộ mã,
 ## Project01 — DiaCare MAS (05/11/2026)
 
 [Hệ đa Agent hỗ trợ bệnh đái tháo đường](project01_CT_04_HieuGM.299/README.md): hai MLP đã huấn luyện, KB tiếng Việt có nguồn, Rule/Q-learning minh họa, FastAPI và Docker. [Báo cáo PDF](project01_CT_04_HieuGM.299/report/project01_CT_04_HieuGM.299.pdf). [Demo Render đang hoạt động](https://diacare-mas-hieugm299.onrender.com) — Docker, gói Free, Singapore; kiểm tra HTTP13/13đạt. Blueprint `render.yaml` ở gốc repository phục vụ tái tạo cấu hình.
+
+
+Notebook Project01 chứa toàn bộ mã: [Mở notebook](project01_CT_04_HieuGM.299/notebook/project01-diacare.ipynb) · [Chạy bằng Google Colab](https://colab.research.google.com/github/HieuGM/PTHTTM_PTIT/blob/main/project01_CT_04_HieuGM.299/notebook/project01-diacare.ipynb). Chọn Run All; không cần chạy riêng các tệp Python.

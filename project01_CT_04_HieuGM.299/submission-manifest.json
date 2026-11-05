@@ -5,18 +5,18 @@
   "files": [
     {
       "path": ".dockerignore",
-      "bytes": 71,
-      "sha256": "720ba39765b675b0436a21e4c1759eade6bcf9616ad56fa5e81c3cc1f47f41e1"
+      "bytes": 132,
+      "sha256": "2b00a743abeaa175caf624746987fc8ea57079b89fe6188538e726db2201de63"
     },
     {
       "path": ".gitattributes",
-      "bytes": 51,
-      "sha256": "14cac8d41059ea8f3729d99040a72735a15e85f817ea65926917fa47620249c0"
+      "bytes": 71,
+      "sha256": "7409112dd181694db175ca5f6263e802785a4f04d77e5d75f600355662bc728b"
     },
     {
       "path": ".gitignore",
-      "bytes": 98,
-      "sha256": "a4400b85fb614e2bb653238f3797a541d26e7ae6cbe8abb50f87e13bc8cd4b0b"
+      "bytes": 145,
+      "sha256": "9296c6c2b62516b85f34a6527200fcf638436429d7cbfbbc356c5f7a4904096a"
     },
     {
       "path": "app/__init__.py",
@@ -164,19 +164,44 @@
       "sha256": "330503238f9a6b011f83025e9a99ee9caaaf1d9522993c7577d5edf95f14b8a4"
     },
     {
+      "path": "notebook/build-notebook.py",
+      "bytes": 9614,
+      "sha256": "f18cd41592de04eaa45ea22094b6d0ac05db2dddebb604e732f86ae960847a2b"
+    },
+    {
+      "path": "notebook/notebook-api-checks.py",
+      "bytes": 4750,
+      "sha256": "17aacc251b5222abae87b68707310f2086c20179d0de1c8b75165536014a5e0c"
+    },
+    {
+      "path": "notebook/notebook-demos.py",
+      "bytes": 3305,
+      "sha256": "eefeb45cf4da0650c6bcd815287ab9b2ed2fefa6cb0e0506880e6e0618f0a73d"
+    },
+    {
+      "path": "notebook/notebook-setup.py",
+      "bytes": 1614,
+      "sha256": "2fef8f29287306f4f5cfb76986cf7cda25dd71ede55667817506b186097c089b"
+    },
+    {
+      "path": "notebook/project01-diacare.ipynb",
+      "bytes": 1118006,
+      "sha256": "ea0261ff2817eedf3e9eb84661fd2afbaa67bfded8300e91bd59fce51c94cf21"
+    },
+    {
       "path": "package-delivery.py",
-      "bytes": 1939,
-      "sha256": "9d2b8a72e76a9087538c783eeace7807335c37e2818bedd087827afe1a2a95ea"
+      "bytes": 2005,
+      "sha256": "694b139b3eceb0588e2aa4320e5a397e8c7b963a9d80c817972c744de1147f94"
     },
     {
       "path": "README-models.md",
-      "bytes": 3058,
-      "sha256": "412a6f43aaf368c5ac2038f44016d5d1aad3cec6868b725aba4686dd0ae88fbc"
+      "bytes": 3521,
+      "sha256": "6458b51981cfef2f7841d45e400154e7f2deef37498fecbf90052ae05443b4cf"
     },
     {
       "path": "README.md",
-      "bytes": 5697,
-      "sha256": "da643e6cb9960e30e4b84f31c1ff79ec6bfcb1cdc8d921325775b2168c6b7101"
+      "bytes": 7158,
+      "sha256": "830689205a6d9c63355aa2b069f4c331f0a9c20b14ff96650852282025988478"
     },
     {
       "path": "render.yaml",
@@ -379,6 +404,11 @@
       "sha256": "6efb7be9c2a43865a987811a31198f316ff5f28b0168d90ad01ba2604bc0ccf2"
     },
     {
+      "path": "results/notebook-verification.json",
+      "bytes": 17254,
+      "sha256": "79e241de6af3ef87f3d2554855244d6872ed4aef4861e76745ea114f1c267c4b"
+    },
+    {
       "path": "results/package-verification.json",
       "bytes": 290,
       "sha256": "08100582c82f5af8cdf40c877e6dd7f56fd67d06cff03478838c8b88d5886e53"
@@ -472,6 +502,11 @@
       "path": "verification/ml-261105-project01.md",
       "bytes": 4067,
       "sha256": "5be81017ecc281fa94ac049c8e36b09da818e3cab28833c880116e823e147abe"
+    },
+    {
+      "path": "verification/notebook-tester.md",
+      "bytes": 3137,
+      "sha256": "0b5925c59c3a5ce2bb09a01d09ba975632cb31096e55584b6ed4f004b1743990"
     },
     {
       "path": "verification/reviewer-261105-project.md",

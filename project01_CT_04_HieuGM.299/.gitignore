@@ -8,3 +8,5 @@ data/raw/
 data/splits/
 .env.*
 *.env
+diacare-notebook-output/
+.ipynb_checkpoints/

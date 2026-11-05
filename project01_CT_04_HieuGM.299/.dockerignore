@@ -7,3 +7,6 @@ tests/
 *.zip
 .env
 .git
+notebook/
+**/diacare-notebook-output/
+**/.ipynb_checkpoints/

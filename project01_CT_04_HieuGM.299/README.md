@@ -10,11 +10,20 @@ Dịch vụ Docker gói Free tại Singapore đã chuyển sang `live` lúc **17
 
 ## Mở bài làm
 
+- **[Notebook chứa toàn bộ mã](notebook/project01-diacare.ipynb)** — mở Jupyter/VS Code/Colab và chọn **Run All**; không cần chạy từng file `.py`.
 - [Báo cáo PDF](report/project01_CT_04_HieuGM.299.pdf)
 - [Nguồn báo cáo Markdown](report/project01_CT_04_HieuGM.299.md)
 - [Chi tiết mô hình, kết quả và tái huấn luyện](README-models.md)
 - [Dữ liệu, giấy phép và tải lại](data/README.md)
 - [Hướng dẫn deploy](DEPLOY.md)
+
+## Chạy bằng notebook — cách dùng chính
+
+Chỉ cần tệp `notebook/project01-diacare.ipynb`, Python 3.12 và Internet lần đầu. Notebook tự cài thư viện còn thiếu, tải hai CSV thật từ UCI, làm sạch/chia dữ liệu, huấn luyện MLP và baseline, vẽ biểu đồ, dựng KB/luật/Q-learning/MAS và chạy demo. Schema, KB, bộ câu hỏi, API cùng HTML/CSS/JavaScript đều có mã trực tiếp trong các ô; không import module `.py` của bài.
+
+Ô cấu hình mặc định `RUN_MODE="full"`: tối đa 25 epoch/mô hình, patience 5. Chọn `"smoke"` để kiểm tra luồng với 2 epoch trên cùng toàn bộ dữ liệu và split. Kết quả mới ghi vào `diacare-notebook-output/` cạnh thư mục làm việc của kernel, tách khỏi kết quả đã nộp và dịch vụ Render. Số đo có thể khác nhẹ theo phiên bản thư viện; smoke không thay số liệu báo cáo.
+
+Sau huấn luyện có ô hỏi đáp, biểu mẫu nhập đặc trưng và bảng trace ngay trong notebook. Ô cuối kiểm tra API với model thật; tùy chọn `START_WEB=True` để mở giao diện tại `http://127.0.0.1:8000` trên máy cá nhân. Đầu ra raw CSV chỉ giữ cục bộ, không chia sẻ ID bệnh viện.
 
 ## Chạy nhanh bằng Docker
 

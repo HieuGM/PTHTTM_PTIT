@@ -8,7 +8,8 @@ ROOT = Path(__file__).resolve().parent
 STEM = ROOT.name
 archive = ROOT.parent / (STEM + '.zip')
 manifest_path = ROOT / 'submission-manifest.json'
-excluded_dirs = {'__pycache__', '.pytest_cache', 'runtime', 'preview', '.git'}
+excluded_dirs = {'__pycache__', '.pytest_cache', 'runtime', 'preview', '.git',
+                 '.ipynb_checkpoints', 'diacare-notebook-output'}
 
 
 def include(path):

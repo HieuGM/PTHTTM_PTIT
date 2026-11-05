@@ -2,3 +2,4 @@
 *.png binary
 *.npz binary
 *.pt binary
+*.ipynb text eol=lf
