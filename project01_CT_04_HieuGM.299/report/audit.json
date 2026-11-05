@@ -1,0 +1,73 @@
+{
+  "pdf": "project01_CT_04_HieuGM.299.pdf",
+  "pages": 25,
+  "sha256": "fac6bcb62cb652873ddfa15a8d196e4e1982176e75527f32189849af51accc1c",
+  "checks": {
+    "nonempty_all_pages": true,
+    "correct_student": true,
+    "confirmed_cover": true,
+    "no_sample_identity": true,
+    "seven_chapters": true,
+    "toc_present": true,
+    "fifty_five_tests": true,
+    "two_real_datasets": true,
+    "real_model_metrics": true,
+    "rag_limit_explicit": true,
+    "rl_scope_explicit": true,
+    "remaining_error_kept": true,
+    "cloud_status_honest": true,
+    "no_replacement_glyph": true,
+    "no_text_outside_page": true
+  },
+  "passed": 15,
+  "total": 15,
+  "overflow": [],
+  "chapter_outline": [
+    [
+      1,
+      "CHƯƠNG 1. GIỚI THIỆU ĐỀ TÀI",
+      4
+    ],
+    [
+      1,
+      "CHƯƠNG 2. HỆ ĐA AGENT VÀ KIẾN TRÚC",
+      6
+    ],
+    [
+      1,
+      "CHƯƠNG 3. DỮ LIỆU VÀ GIAO THỨC THỰC NGHIỆM",
+      9
+    ],
+    [
+      1,
+      "CHƯƠNG 4. MÔ HÌNH DEEP LEARNING",
+      12
+    ],
+    [
+      1,
+      "CHƯƠNG 5. KNOWLEDGE BASE VÀ TRUY XUẤT TĂNG CƯỜNG TRẢ LỜI",
+      16
+    ],
+    [
+      1,
+      "CHƯƠNG 6. ĐIỀU PHỐI, RULE VÀ REINFORCEMENT LEARNING",
+      18
+    ],
+    [
+      1,
+      "CHƯƠNG 7. KIỂM THỬ, DEMO VÀ TRIỂN KHAI",
+      20
+    ],
+    [
+      1,
+      "PHỤ LỤC. TÁI LẬP VÀ HỢP ĐỒNG DỮ LIỆU",
+      23
+    ],
+    [
+      1,
+      "TÀI LIỆU THAM KHẢO",
+      25
+    ]
+  ],
+  "visual_review": "Separate human-style PNG inspection required; not replaced by these checks."
+}

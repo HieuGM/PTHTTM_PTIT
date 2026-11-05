@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: diacare-mas-hieugm299
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    rootDir: project01_CT_04_HieuGM.299
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: APP_DATA_DIR
+        value: /tmp/diacare
+      - key: OMP_NUM_THREADS
+        value: "2"

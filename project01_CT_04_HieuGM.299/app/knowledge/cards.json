@@ -1,0 +1,218 @@
+[
+  {
+    "id": "KB01",
+    "title": "Đái tháo đường là gì?",
+    "text": "Đái tháo đường là bệnh mạn tính liên quan cơ thể không tạo đủ insulin hoặc sử dụng insulin kém hiệu quả, khiến glucose trong máu tăng. Kiểm soát bệnh cần phối hợp chăm sóc y tế, theo dõi và lối sống phù hợp.",
+    "topics": ["khái niệm", "tiểu đường", "đái tháo đường", "insulin", "glucose"],
+    "source_title": "WHO — Diabetes",
+    "url": "https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB02",
+    "title": "Đái tháo đường típ 1",
+    "text": "Ở típ 1, hệ miễn dịch phá hủy tế bào tạo insulin trong tụy. Bệnh có thể xuất hiện ở mọi tuổi. Người bệnh cần insulin theo kế hoạch điều trị; ăn uống và vận động không thay thế insulin.",
+    "topics": ["típ 1", "type 1", "tuýp 1", "tự miễn", "tụy"],
+    "source_title": "NIDDK — Type 1 Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-1-diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB03",
+    "title": "Đái tháo đường típ 2",
+    "text": "Ở típ 2, cơ thể sử dụng insulin kém hiệu quả hoặc không tạo đủ insulin. Đây là thể phổ biến nhất và có thể gặp cả ở người trẻ. Có thể phòng hoặc trì hoãn một số trường hợp bằng thay đổi lối sống và chăm sóc phù hợp.",
+    "topics": ["típ 2", "type 2", "tuýp 2", "kháng insulin"],
+    "source_title": "NIDDK — Type 2 Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-2-diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB04",
+    "title": "Đái tháo đường thai kỳ",
+    "text": "Đái tháo đường thai kỳ xuất hiện trong thời gian mang thai và thường ít triệu chứng. Bác sĩ chỉ định sàng lọc, thường vào tuần 24–28, và lập kế hoạch chăm sóc mẹ cùng thai nhi. Không áp dụng máy móc ngưỡng xét nghiệm của người không mang thai.",
+    "topics": ["thai kỳ", "mang thai", "24", "28", "gestational"],
+    "source_title": "NIDDK — Gestational Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/gestational",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB05",
+    "title": "Triệu chứng thường gặp",
+    "text": "Khát nhiều, tiểu nhiều, mệt mỏi, nhìn mờ và vết thương lâu lành có thể gặp ở người đái tháo đường. Một số người không có triệu chứng rõ. Triệu chứng đơn lẻ không xác nhận bệnh; hãy trao đổi với nhân viên y tế về xét nghiệm phù hợp.",
+    "topics": ["triệu chứng", "dấu hiệu", "khát", "tiểu nhiều", "mệt", "nhìn mờ"],
+    "source_title": "NIDDK — Symptoms & Causes of Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/symptoms-causes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB06",
+    "title": "Yếu tố liên quan nguy cơ típ 2",
+    "text": "Tiền sử gia đình, thừa cân hoặc béo phì, ít vận động, tiền đái tháo đường và từng mắc đái tháo đường thai kỳ liên quan nguy cơ típ 2 cao hơn. Có yếu tố nguy cơ không đồng nghĩa chắc chắn mắc bệnh; xét nghiệm và đánh giá y tế vẫn cần thiết.",
+    "topics": ["nguy cơ", "gia đình", "béo phì", "thừa cân", "ít vận động", "yếu tố"],
+    "source_title": "NIDDK — Type 2 Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-2-diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB07",
+    "title": "Xét nghiệm chẩn đoán",
+    "text": "Bác sĩ sử dụng xét nghiệm máu để chẩn đoán. Ở người không mang thai, glucose huyết tương đói từ 126 mg/dL hoặc HbA1c từ 6,5% là các ngưỡng cần được đánh giá cùng điều kiện xét nghiệm; thường cần kết quả xác nhận. Điểm dự đoán từ bảng hỏi không xác nhận bệnh.",
+    "topics": ["chẩn đoán", "xét nghiệm", "đói", "126", "6,5", "xác nhận"],
+    "source_title": "NIDDK — Diabetes Tests & Diagnosis",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB08",
+    "title": "Ý nghĩa HbA1c",
+    "text": "HbA1c phản ánh mức đường huyết trung bình khoảng ba tháng, khác phép đo đường huyết tại một thời điểm. Một số tình trạng như thiếu máu hoặc biến thể hemoglobin có thể ảnh hưởng độ tin cậy. Bác sĩ sẽ giải thích kết quả theo hoàn cảnh cá nhân.",
+    "topics": ["HbA1c", "A1C", "ba tháng", "trung bình", "thiếu máu"],
+    "source_title": "NIDDK — Diabetes Tests & Diagnosis",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB09",
+    "title": "Phòng ngừa và trì hoãn típ 2",
+    "text": "Chế độ ăn phù hợp, hoạt động thể lực thường xuyên, duy trì cân nặng khỏe mạnh và tránh thuốc lá giúp phòng hoặc trì hoãn đái tháo đường típ 2. Không suy rộng biện pháp phòng típ 2 thành bảo đảm phòng mọi thể đái tháo đường.",
+    "topics": ["phòng ngừa", "trì hoãn", "cân nặng", "thuốc lá", "lối sống"],
+    "source_title": "WHO — Diabetes",
+    "url": "https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB10",
+    "title": "Ăn uống và phương pháp chia đĩa",
+    "text": "Cách chia đĩa gợi ý nửa đĩa là rau không tinh bột, một phần tư là đạm và một phần tư là thực phẩm carbohydrate giàu chất xơ. Ưu tiên đồ uống ít hoặc không thêm đường. Kế hoạch bữa ăn cần điều chỉnh cùng đội chăm sóc.",
+    "topics": ["ăn uống", "dinh dưỡng", "chia đĩa", "rau", "carbohydrate", "thực phẩm"],
+    "source_title": "NIDDK — Healthy Living with Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB11",
+    "title": "Vận động thể lực",
+    "text": "Đa số người lớn có thể hướng tới ít nhất 150 phút vận động cường độ vừa mỗi tuần. Nên bắt đầu từ mức phù hợp và hỏi đội chăm sóc trước khi thay đổi hoạt động, nhất là khi có bệnh kèm, thai kỳ hoặc nguy cơ hạ đường huyết.",
+    "topics": ["vận động", "tập luyện", "150 phút", "thể dục", "đi bộ"],
+    "source_title": "NIDDK — Healthy Living with Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB12",
+    "title": "Thuốc cần được cá nhân hóa",
+    "text": "Loại thuốc điều trị phụ thuộc thể bệnh, kiểm soát đường huyết, bệnh kèm và hoàn cảnh cá nhân. Đội điều trị quyết định lựa chọn và liều. Hệ thống giáo dục không kê đơn, tính liều insulin, tăng giảm liều hoặc hướng dẫn ngừng thuốc cho cá nhân.",
+    "topics": ["thuốc", "điều trị", "insulin", "liều", "kê đơn", "ngừng thuốc"],
+    "source_title": "NIDDK — Insulin, Medicines, & Other Diabetes Treatments",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB13",
+    "title": "Hạ đường huyết khi còn tỉnh và nuốt được",
+    "text": "Đường huyết dưới 70 mg/dL được xem là thấp. Người lớn còn tỉnh và nuốt an toàn có thể dùng 15 g carbohydrate hấp thu nhanh, đợi 15 phút rồi đo lại; lặp lại nếu vẫn thấp. Trẻ nhỏ có thể cần lượng khác theo đội điều trị.",
+    "topics": ["hạ đường huyết", "70 mg/dL", "15 g", "15 phút", "tụt đường", "còn tỉnh"],
+    "source_title": "CDC — Treatment of Low Blood Sugar",
+    "url": "https://www.cdc.gov/diabetes/treatment/treatment-low-blood-sugar-hypoglycemia.html",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB14",
+    "title": "Hạ đường huyết nặng và mất ý thức",
+    "text": "Bất tỉnh, co giật hoặc không nuốt an toàn cần trợ giúp cấp cứu ngay. Không cho thức ăn hay nước vào miệng người bất tỉnh. Nếu có glucagon đã được kê và người biết sử dụng, làm theo hướng dẫn đó trong lúc tìm trợ giúp khẩn cấp.",
+    "topics": ["bất tỉnh", "co giật", "mất ý thức", "không nuốt", "hạ đường huyết nặng", "glucagon"],
+    "source_title": "NHS — Low blood sugar (hypoglycaemia)",
+    "url": "https://www.nhs.uk/conditions/low-blood-sugar-hypoglycaemia/",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB15",
+    "title": "Dấu hiệu cấp cứu nhiễm toan ceton",
+    "text": "Khó thở, hơi thở mùi trái cây, nôn không giữ được nước hoặc đường huyết duy trì từ 300 mg/dL là các dấu hiệu cần cấp cứu. Không đợi đủ mọi dấu hiệu hay chờ kết quả mô hình. Đường huyết dưới 300 mg/dL không loại trừ nhiễm toan ceton.",
+    "topics": ["nhiễm toan ceton", "DKA", "ketone", "khó thở", "nôn", "300", "cấp cứu"],
+    "source_title": "CDC — Diabetic Ketoacidosis",
+    "url": "https://www.cdc.gov/diabetes/about/diabetic-ketoacidosis.html",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB16",
+    "title": "Theo dõi đường huyết tại nhà",
+    "text": "Máy đo đường huyết kiểm tra một giọt máu tại thời điểm đo. Cảm biến CGM theo dõi thay đổi glucose qua cảm biến dưới da. Lịch đo và mục tiêu cần thống nhất với đội chăm sóc; ghi lại thời gian, kết quả cùng thông tin bữa ăn và vận động.",
+    "topics": ["theo dõi", "đo đường huyết", "CGM", "cảm biến", "nhật ký", "máy đo"],
+    "source_title": "NIDDK — Managing Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB17",
+    "title": "Biến chứng và chăm sóc lâu dài",
+    "text": "Đái tháo đường có thể ảnh hưởng tim, mắt, thận và thần kinh. Kiểm soát đường huyết, huyết áp, cholesterol và bỏ thuốc lá có thể giúp phòng hoặc trì hoãn biến chứng. Kế hoạch theo dõi và mục tiêu cụ thể cần được cá nhân hóa cùng đội chăm sóc.",
+    "topics": ["biến chứng", "tim", "thận", "mắt", "thần kinh", "huyết áp", "cholesterol"],
+    "source_title": "NIDDK — Managing Diabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB18",
+    "title": "Chăm sóc bàn chân",
+    "text": "Kiểm tra bàn chân mỗi ngày và mang giày phù hợp. Giảm cảm giác có thể làm vết thương không đau. Liên hệ nhân viên y tế sớm nếu vết thương chậm lành hoặc da đỏ, nóng, đau. Không tự cắt chai chân hay dùng chất tẩy chai chân.",
+    "topics": ["bàn chân", "vết loét", "vết thương", "chai chân", "giày", "giảm cảm giác"],
+    "source_title": "NIDDK — Diabetes & Foot Problems",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/foot-problems",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB19",
+    "title": "Kiểm tra biến chứng thận",
+    "text": "Bệnh thận do đái tháo đường thường chưa có triệu chứng rõ ở giai đoạn sớm. Nhân viên y tế dùng xét nghiệm máu đánh giá lọc thận và xét nghiệm albumin nước tiểu. Đừng đợi có đau thận mới hỏi về kiểm tra chức năng thận.",
+    "topics": ["thận", "lọc thận", "albumin", "nước tiểu", "biến chứng thận"],
+    "source_title": "NIDDK — Diabetic Kidney Disease",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/diabetic-kidney-disease",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB20",
+    "title": "Theo dõi biến chứng mắt",
+    "text": "Tổn thương mắt do đái tháo đường có thể không có dấu hiệu sớm. Khám mắt giãn đồng tử giúp phát hiện bệnh; lịch khám do đội chăm sóc xác định. Thay đổi thị lực đột ngột, chớp sáng hoặc màn che trước mắt cần được đánh giá y tế ngay.",
+    "topics": ["mắt", "võng mạc", "thị lực", "giãn đồng tử", "chớp sáng", "màn che"],
+    "source_title": "NIDDK — Diabetic Eye Disease",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/diabetic-eye-disease",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB21",
+    "title": "Nguồn hướng dẫn Việt Nam",
+    "text": "Cục Quản lý Khám chữa bệnh giới thiệu hướng dẫn đái tháo đường típ 2 theo Quyết định 5481/QĐ-BYT ngày 30/12/2020 và bản sửa đổi 1353/QĐ-BYT ngày 23/02/2021. Đây là tài liệu chuyên môn; cần đối chiếu phiên bản và hỏi nhân viên y tế khi áp dụng.",
+    "topics": ["Bộ Y tế", "Việt Nam", "hướng dẫn", "5481", "1353", "quyết định"],
+    "source_title": "Cục Quản lý Khám chữa bệnh — Hướng dẫn chẩn đoán và điều trị đái tháo đường típ 2",
+    "url": "https://daithaoduong.kcb.vn/huong-dan-chan-doan-va-dieu-tri-dai-thao-duong-tip-2",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB22",
+    "title": "Giới hạn dữ liệu CDC và mô hình",
+    "text": "CDC Diabetes Health Indicators gồm 253.680 phản hồi khảo sát tại Mỹ với 21 biến đầu vào. Nhãn nhị phân gộp tiền đái tháo đường và đái tháo đường. Mô hình học trạng thái khảo sát, không xác nhận bệnh, không dự báo chắc chắn tương lai và chưa được kiểm định cho người Việt Nam.",
+    "topics": ["CDC", "BRFSS", "dữ liệu", "Mỹ", "Việt Nam", "mô hình", "giới hạn", "253680"],
+    "source_title": "UCI — CDC Diabetes Health Indicators",
+    "url": "https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB23",
+    "title": "Ý nghĩa bài toán tái nhập viện",
+    "text": "Diabetes 130-US Hospitals có 101.766 lượt nội trú giai đoạn 1999–2008 tại Mỹ. Nhãn mô tả tái nhập viện, không phải chẩn đoán mới đái tháo đường. Vì một người có thể có nhiều lượt khám, cần tách train và test theo mã bệnh nhân để đánh giá tránh rò rỉ.",
+    "topics": ["tái nhập viện", "bệnh viện", "30 ngày", "101766", "hospital", "patient", "rò rỉ"],
+    "source_title": "UCI — Diabetes 130-US Hospitals for Years 1999-2008",
+    "url": "https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008",
+    "retrieved_at": "2026-11-05"
+  },
+  {
+    "id": "KB24",
+    "title": "Tiền đái tháo đường",
+    "text": "Tiền đái tháo đường là tình trạng glucose máu cao hơn bình thường nhưng chưa đạt ngưỡng chẩn đoán đái tháo đường. Tình trạng này liên quan nguy cơ típ 2 cao hơn. Nhân viên y tế đánh giá bằng xét nghiệm và hỗ trợ kế hoạch giảm nguy cơ phù hợp.",
+    "topics": ["tiền đái tháo đường", "prediabetes", "ranh giới", "nguy cơ típ 2"],
+    "source_title": "NIDDK — Insulin Resistance & Prediabetes",
+    "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/prediabetes-insulin-resistance",
+    "retrieved_at": "2026-11-05"
+  }
+]

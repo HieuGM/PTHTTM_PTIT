@@ -1,0 +1,90 @@
+{
+  "checked_at_utc": "2026-11-05T06:29:27.088250+00:00",
+  "url": "http://127.0.0.1:8012",
+  "checks": [
+    {
+      "name": "health",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "frontend",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "asset_app.js",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "asset_style.css",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "knowledge_inventory",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "prediction_cdc",
+      "passed": true,
+      "detail": "score=0.06448595225811005"
+    },
+    {
+      "name": "missing_fields_cdc",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "prediction_hospital",
+      "passed": true,
+      "detail": "score=0.09600487351417542"
+    },
+    {
+      "name": "missing_fields_hospital",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "grounded_answer",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "safety_priority",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "nonfinite_input",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "off_topic_refusal",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "passed": 13,
+  "total": 13,
+  "scope": "Live HTTP checks, no mocked model or network response.",
+  "image_id": "sha256:c29f3e73e12228490bb26ef17f10518b126d21323651efbedd2a5d3ff526fc9b",
+  "engine": "Docker Engine 29.9.2 in isolated Alpine WSL2 on D drive",
+  "dockerfile": "Distributable Dockerfile unchanged, FROM python:3.12-slim",
+  "health_status": "healthy",
+  "observed_idle_memory_mib": 254.9,
+  "memory_measurement": "Single idle observation after functional checks, not load benchmark",
+  "docker_desktop_status": "Original Docker Desktop Engine29.6.1 recovered on safe restart after disk space became available; verification remains on isolated task engine",
+  "container_pytest": {
+    "passed": 55,
+    "failed": 0,
+    "seconds": 4.45,
+    "warnings": 1,
+    "tests_source": "Current tests mounted read-only into verified image"
+  },
+  "container_app_sha256_matches_source": true,
+  "app_file_count": 18
+}

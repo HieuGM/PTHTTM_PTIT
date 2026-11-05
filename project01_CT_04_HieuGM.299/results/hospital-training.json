@@ -1,0 +1,223 @@
+{
+  "dataset": "hospital",
+  "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+  "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+  "seed": 42,
+  "epochs_run": 25,
+  "best_epoch": 25,
+  "best_val_roc_auc": 0.6344587703289251,
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.6669229828386947,
+      "val_roc_auc": 0.5119662945689968
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.37523839010987553,
+      "val_roc_auc": 0.5912474346934047
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.3503850967592498,
+      "val_roc_auc": 0.6151880961126744
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.34722326183309765,
+      "val_roc_auc": 0.6210745830034277
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.34528268907768367,
+      "val_roc_auc": 0.6234638632714696
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.34397973132515175,
+      "val_roc_auc": 0.6259132831849183
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.34272958134570025,
+      "val_roc_auc": 0.6271394880085457
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.34265593494931373,
+      "val_roc_auc": 0.6289018900913138
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.34195142295526665,
+      "val_roc_auc": 0.6300933220109814
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.3417978256392532,
+      "val_roc_auc": 0.6299400176605876
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.34045892125163035,
+      "val_roc_auc": 0.6312023982632682
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.34132758137276603,
+      "val_roc_auc": 0.6307537312107879
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.34037907716706123,
+      "val_roc_auc": 0.6322093176111973
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.34054849986889607,
+      "val_roc_auc": 0.631122733356313
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.3398865151777203,
+      "val_roc_auc": 0.6330260208952035
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.3397506190394139,
+      "val_roc_auc": 0.632149591928933
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.3399587958014881,
+      "val_roc_auc": 0.6317485996316833
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.33961969259605157,
+      "val_roc_auc": 0.6328476027808387
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.3395192934180366,
+      "val_roc_auc": 0.6333369992069386
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.3393927562810159,
+      "val_roc_auc": 0.6332974657268415
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.3392347688243307,
+      "val_roc_auc": 0.6325399591721951
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.33907612247207447,
+      "val_roc_auc": 0.6331416545996411
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.3393704141818999,
+      "val_roc_auc": 0.6336177352113277
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.3391482368260033,
+      "val_roc_auc": 0.6333373901721286
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.3386745030149428,
+      "val_roc_auc": 0.6344587703289251
+    }
+  ],
+  "test": {
+    "mlp": {
+      "n": 15125,
+      "positive": 1675,
+      "prevalence": 0.11074380165289256,
+      "threshold": 0.13450394570827484,
+      "roc_auc": 0.6334034067580314,
+      "average_precision": 0.1869223892788274,
+      "f1": 0.25045703839122485,
+      "precision": 0.18050065876152832,
+      "sensitivity": 0.408955223880597,
+      "specificity": 0.7687732342007435,
+      "accuracy": 0.7289256198347107,
+      "brier": 0.095820352435112,
+      "confusion_matrix": [
+        [
+          10340,
+          3110
+        ],
+        [
+          990,
+          685
+        ]
+      ],
+      "confusion_order": "rows=true0/1; columns=predicted0/1"
+    },
+    "logistic": {
+      "n": 15125,
+      "positive": 1675,
+      "prevalence": 0.11074380165289256,
+      "threshold": 0.11020425707101822,
+      "roc_auc": 0.6284576596571048,
+      "average_precision": 0.18488098830968075,
+      "f1": 0.23964944091870655,
+      "precision": 0.16042888933845842,
+      "sensitivity": 0.4734328358208955,
+      "specificity": 0.6914498141263941,
+      "accuracy": 0.667305785123967,
+      "brier": 0.0961315855383873,
+      "confusion_matrix": [
+        [
+          9300,
+          4150
+        ],
+        [
+          882,
+          793
+        ]
+      ],
+      "confusion_order": "rows=true0/1; columns=predicted0/1"
+    },
+    "always_negative": {
+      "n": 15125,
+      "positive": 1675,
+      "prevalence": 0.11074380165289256,
+      "threshold": 0.5,
+      "roc_auc": 0.5,
+      "average_precision": 0.11074380165289256,
+      "f1": 0.0,
+      "precision": 0.0,
+      "sensitivity": 0.0,
+      "specificity": 1.0,
+      "accuracy": 0.8892561983471075,
+      "brier": 0.11074380165289256,
+      "confusion_matrix": [
+        [
+          13450,
+          0
+        ],
+        [
+          1675,
+          0
+        ]
+      ],
+      "confusion_order": "rows=true0/1; columns=predicted0/1"
+    }
+  },
+  "train_seconds": 13.311935600009747,
+  "parameter_count": 3329,
+  "protocol": {
+    "checkpoint": "Maximum validation ROC-AUC; patience=5",
+    "threshold": "Maximum validation F1, frozen before test",
+    "optimizer": "Adam lr=0.001, weight_decay=0.00001, batch=2048",
+    "test_used_in_training_or_selection": false,
+    "single_seed_limitation": true,
+    "posthoc_calibration": false
+  }
+}

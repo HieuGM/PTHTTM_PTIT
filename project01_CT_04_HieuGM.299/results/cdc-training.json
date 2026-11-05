@@ -1,0 +1,223 @@
+{
+  "dataset": "cdc",
+  "task": "Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015",
+  "label_semantics": "1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó",
+  "seed": 42,
+  "epochs_run": 25,
+  "best_epoch": 21,
+  "best_val_roc_auc": 0.8256607286616676,
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.4978654420220303,
+      "val_roc_auc": 0.7961087500119801
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.340563393011447,
+      "val_roc_auc": 0.8167581797787755
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.3342964427564488,
+      "val_roc_auc": 0.8209398592375549
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.33199390561173503,
+      "val_roc_auc": 0.8225759614359801
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.330563648045712,
+      "val_roc_auc": 0.8235422984556937
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.32982713188831564,
+      "val_roc_auc": 0.8242221943513873
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.3292968880907208,
+      "val_roc_auc": 0.8245255761517849
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.329071559183342,
+      "val_roc_auc": 0.8246516308721771
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.3285011800004633,
+      "val_roc_auc": 0.8248838570190963
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.3281150341608768,
+      "val_roc_auc": 0.8250313316572055
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.3279987730237317,
+      "val_roc_auc": 0.8253007667897401
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.32796468909218696,
+      "val_roc_auc": 0.8253507397224719
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.32787903296941384,
+      "val_roc_auc": 0.82511113640601
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.3278468660125021,
+      "val_roc_auc": 0.8254058416099835
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.32743762015825384,
+      "val_roc_auc": 0.8254803627103316
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.3272626748222801,
+      "val_roc_auc": 0.8254783688807256
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.3271205916601341,
+      "val_roc_auc": 0.825413909744614
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.3268229211276383,
+      "val_roc_auc": 0.8254940960711533
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.3269273300559708,
+      "val_roc_auc": 0.8255123980518827
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.3268363201546491,
+      "val_roc_auc": 0.825476670687923
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.3264670467471737,
+      "val_roc_auc": 0.8256607286616676
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.3265310870720347,
+      "val_roc_auc": 0.8254728067836519
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.326795867043078,
+      "val_roc_auc": 0.8254367837828885
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.3264837522129958,
+      "val_roc_auc": 0.8253463154833285
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.3264239863756505,
+      "val_roc_auc": 0.8254736490047785
+    }
+  ],
+  "test": {
+    "mlp": {
+      "n": 33952,
+      "positive": 5030,
+      "prevalence": 0.1481503298774741,
+      "threshold": 0.2339537888765335,
+      "roc_auc": 0.8274255854816472,
+      "average_precision": 0.4393419699257328,
+      "f1": 0.4781667537508397,
+      "precision": 0.3828134337277399,
+      "sensitivity": 0.636779324055666,
+      "specificity": 0.8214507986999516,
+      "accuracy": 0.7940916588124411,
+      "brier": 0.1016601026058197,
+      "confusion_matrix": [
+        [
+          23758,
+          5164
+        ],
+        [
+          1827,
+          3203
+        ]
+      ],
+      "confusion_order": "rows=true0/1; columns=predicted0/1"
+    },
+    "logistic": {
+      "n": 33952,
+      "positive": 5030,
+      "prevalence": 0.1481503298774741,
+      "threshold": 0.20035642385482788,
+      "roc_auc": 0.8206404715335675,
+      "average_precision": 0.41558335426839277,
+      "f1": 0.4684723110826758,
+      "precision": 0.3646121500497953,
+      "sensitivity": 0.6550695825049702,
+      "specificity": 0.8014660120323629,
+      "accuracy": 0.7797773327049953,
+      "brier": 0.10380986332893372,
+      "confusion_matrix": [
+        [
+          23180,
+          5742
+        ],
+        [
+          1735,
+          3295
+        ]
+      ],
+      "confusion_order": "rows=true0/1; columns=predicted0/1"
+    },
+    "always_negative": {
+      "n": 33952,
+      "positive": 5030,
+      "prevalence": 0.1481503298774741,
+      "threshold": 0.5,
+      "roc_auc": 0.5,
+      "average_precision": 0.1481503298774741,
+      "f1": 0.0,
+      "precision": 0.0,
+      "sensitivity": 0.0,
+      "specificity": 1.0,
+      "accuracy": 0.8518496701225259,
+      "brier": 0.1481503298774741,
+      "confusion_matrix": [
+        [
+          28922,
+          0
+        ],
+        [
+          5030,
+          0
+        ]
+      ],
+      "confusion_order": "rows=true0/1; columns=predicted0/1"
+    }
+  },
+  "train_seconds": 32.3606116999872,
+  "parameter_count": 4033,
+  "protocol": {
+    "checkpoint": "Maximum validation ROC-AUC; patience=5",
+    "threshold": "Maximum validation F1, frozen before test",
+    "optimizer": "Adam lr=0.001, weight_decay=0.00001, batch=2048",
+    "test_used_in_training_or_selection": false,
+    "single_seed_limitation": true,
+    "posthoc_calibration": false
+  }
+}

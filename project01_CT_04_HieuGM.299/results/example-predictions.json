@@ -1,0 +1,222 @@
+{
+  "cdc": [
+    {
+      "features": {
+        "HighBP": 1.0,
+        "HighChol": 1.0,
+        "CholCheck": 1.0,
+        "BMI": 46.0,
+        "Smoker": 0.0,
+        "Stroke": 0.0,
+        "HeartDiseaseorAttack": 0.0,
+        "PhysActivity": 1.0,
+        "Fruits": 1.0,
+        "Veggies": 1.0,
+        "HvyAlcoholConsump": 0.0,
+        "AnyHealthcare": 1.0,
+        "NoDocbcCost": 0.0,
+        "GenHlth": 3.0,
+        "MentHlth": 0.0,
+        "PhysHlth": 2.0,
+        "DiffWalk": 0.0,
+        "Sex": 1.0,
+        "Age": 9.0,
+        "Education": 5.0,
+        "Income": 4.0
+      },
+      "prediction": {
+        "dataset": "cdc",
+        "risk_score": 0.5082685947418213,
+        "threshold": 0.2339537888765335,
+        "predicted_class": 1,
+        "task": "Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015",
+        "label_semantics": "1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó",
+        "model_name": "PyTorch MLP 64-32-16",
+        "clinical_use": false,
+        "score_semantics": "Điểm sigmoid của mô hình phân loại; chưa hiệu chỉnh/xác thực thành xác suất bệnh cho cá nhân tại Việt Nam.",
+        "limitations": [
+          "Dữ liệu Hoa Kỳ lịch sử; chưa kiểm chứng trên bệnh nhân Việt Nam.",
+          "Không dùng để chẩn đoán, kê đơn hoặc thay quyết định bác sĩ.",
+          "Hai bộ dữ liệu có nhãn và quần thể khác nhau; không so trực tiếp AUC."
+        ]
+      }
+    },
+    {
+      "features": {
+        "HighBP": 1.0,
+        "HighChol": 1.0,
+        "CholCheck": 1.0,
+        "BMI": 27.0,
+        "Smoker": 0.0,
+        "Stroke": 0.0,
+        "HeartDiseaseorAttack": 0.0,
+        "PhysActivity": 0.0,
+        "Fruits": 0.0,
+        "Veggies": 1.0,
+        "HvyAlcoholConsump": 0.0,
+        "AnyHealthcare": 1.0,
+        "NoDocbcCost": 0.0,
+        "GenHlth": 3.0,
+        "MentHlth": 0.0,
+        "PhysHlth": 2.0,
+        "DiffWalk": 0.0,
+        "Sex": 0.0,
+        "Age": 7.0,
+        "Education": 4.0,
+        "Income": 6.0
+      },
+      "prediction": {
+        "dataset": "cdc",
+        "risk_score": 0.2139427661895752,
+        "threshold": 0.2339537888765335,
+        "predicted_class": 0,
+        "task": "Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015",
+        "label_semantics": "1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó",
+        "model_name": "PyTorch MLP 64-32-16",
+        "clinical_use": false,
+        "score_semantics": "Điểm sigmoid của mô hình phân loại; chưa hiệu chỉnh/xác thực thành xác suất bệnh cho cá nhân tại Việt Nam.",
+        "limitations": [
+          "Dữ liệu Hoa Kỳ lịch sử; chưa kiểm chứng trên bệnh nhân Việt Nam.",
+          "Không dùng để chẩn đoán, kê đơn hoặc thay quyết định bác sĩ.",
+          "Hai bộ dữ liệu có nhãn và quần thể khác nhau; không so trực tiếp AUC."
+        ]
+      }
+    },
+    {
+      "features": {
+        "HighBP": 0.0,
+        "HighChol": 0.0,
+        "CholCheck": 1.0,
+        "BMI": 22.0,
+        "Smoker": 0.0,
+        "Stroke": 0.0,
+        "HeartDiseaseorAttack": 0.0,
+        "PhysActivity": 1.0,
+        "Fruits": 1.0,
+        "Veggies": 1.0,
+        "HvyAlcoholConsump": 0.0,
+        "AnyHealthcare": 1.0,
+        "NoDocbcCost": 0.0,
+        "GenHlth": 2.0,
+        "MentHlth": 5.0,
+        "PhysHlth": 7.0,
+        "DiffWalk": 0.0,
+        "Sex": 0.0,
+        "Age": 4.0,
+        "Education": 6.0,
+        "Income": 8.0
+      },
+      "prediction": {
+        "dataset": "cdc",
+        "risk_score": 0.002120131626725197,
+        "threshold": 0.2339537888765335,
+        "predicted_class": 0,
+        "task": "Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015",
+        "label_semantics": "1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó",
+        "model_name": "PyTorch MLP 64-32-16",
+        "clinical_use": false,
+        "score_semantics": "Điểm sigmoid của mô hình phân loại; chưa hiệu chỉnh/xác thực thành xác suất bệnh cho cá nhân tại Việt Nam.",
+        "limitations": [
+          "Dữ liệu Hoa Kỳ lịch sử; chưa kiểm chứng trên bệnh nhân Việt Nam.",
+          "Không dùng để chẩn đoán, kê đơn hoặc thay quyết định bác sĩ.",
+          "Hai bộ dữ liệu có nhãn và quần thể khác nhau; không so trực tiếp AUC."
+        ]
+      }
+    }
+  ],
+  "hospital": [
+    {
+      "features": {
+        "time_in_hospital": 3.0,
+        "num_lab_procedures": 59.0,
+        "num_procedures": 0.0,
+        "num_medications": 18.0,
+        "number_outpatient": 0.0,
+        "number_emergency": 0.0,
+        "number_inpatient": 0.0,
+        "number_diagnoses": 9.0,
+        "AgeGroup": 2.0,
+        "Gender": 0.0
+      },
+      "prediction": {
+        "dataset": "hospital",
+        "risk_score": 0.06170705333352089,
+        "threshold": 0.13450394570827484,
+        "predicted_class": 0,
+        "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+        "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+        "model_name": "PyTorch MLP 64-32-16",
+        "clinical_use": false,
+        "score_semantics": "Điểm sigmoid của mô hình phân loại; chưa hiệu chỉnh/xác thực thành xác suất bệnh cho cá nhân tại Việt Nam.",
+        "limitations": [
+          "Dữ liệu Hoa Kỳ lịch sử; chưa kiểm chứng trên bệnh nhân Việt Nam.",
+          "Không dùng để chẩn đoán, kê đơn hoặc thay quyết định bác sĩ.",
+          "Hai bộ dữ liệu có nhãn và quần thể khác nhau; không so trực tiếp AUC.",
+          "Đặc trưng chỉ đầy đủ lúc ra viện; không phải dự báo lúc nhập viện."
+        ]
+      }
+    },
+    {
+      "features": {
+        "time_in_hospital": 10.0,
+        "num_lab_procedures": 55.0,
+        "num_procedures": 1.0,
+        "num_medications": 31.0,
+        "number_outpatient": 0.0,
+        "number_emergency": 0.0,
+        "number_inpatient": 0.0,
+        "number_diagnoses": 8.0,
+        "AgeGroup": 9.0,
+        "Gender": 1.0
+      },
+      "prediction": {
+        "dataset": "hospital",
+        "risk_score": 0.13364440202713013,
+        "threshold": 0.13450394570827484,
+        "predicted_class": 0,
+        "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+        "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+        "model_name": "PyTorch MLP 64-32-16",
+        "clinical_use": false,
+        "score_semantics": "Điểm sigmoid của mô hình phân loại; chưa hiệu chỉnh/xác thực thành xác suất bệnh cho cá nhân tại Việt Nam.",
+        "limitations": [
+          "Dữ liệu Hoa Kỳ lịch sử; chưa kiểm chứng trên bệnh nhân Việt Nam.",
+          "Không dùng để chẩn đoán, kê đơn hoặc thay quyết định bác sĩ.",
+          "Hai bộ dữ liệu có nhãn và quần thể khác nhau; không so trực tiếp AUC.",
+          "Đặc trưng chỉ đầy đủ lúc ra viện; không phải dự báo lúc nhập viện."
+        ]
+      }
+    },
+    {
+      "features": {
+        "time_in_hospital": 12.0,
+        "num_lab_procedures": 75.0,
+        "num_procedures": 5.0,
+        "num_medications": 13.0,
+        "number_outpatient": 0.0,
+        "number_emergency": 0.0,
+        "number_inpatient": 0.0,
+        "number_diagnoses": 9.0,
+        "AgeGroup": 7.0,
+        "Gender": 1.0
+      },
+      "prediction": {
+        "dataset": "hospital",
+        "risk_score": 0.09524545818567276,
+        "threshold": 0.13450394570827484,
+        "predicted_class": 0,
+        "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+        "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+        "model_name": "PyTorch MLP 64-32-16",
+        "clinical_use": false,
+        "score_semantics": "Điểm sigmoid của mô hình phân loại; chưa hiệu chỉnh/xác thực thành xác suất bệnh cho cá nhân tại Việt Nam.",
+        "limitations": [
+          "Dữ liệu Hoa Kỳ lịch sử; chưa kiểm chứng trên bệnh nhân Việt Nam.",
+          "Không dùng để chẩn đoán, kê đơn hoặc thay quyết định bác sĩ.",
+          "Hai bộ dữ liệu có nhãn và quần thể khác nhau; không so trực tiếp AUC.",
+          "Đặc trưng chỉ đầy đủ lúc ra viện; không phải dự báo lúc nhập viện."
+        ]
+      }
+    }
+  ]
+}

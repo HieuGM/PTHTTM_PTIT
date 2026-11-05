@@ -1,0 +1,26 @@
+{
+  "models\\cdc\\logistic-baseline.npz": {
+    "size_bytes": 686,
+    "sha256": "64a96660eeed6420a653aa00c8e4c253e22081b9c9717593b4197d1de74cd3ca"
+  },
+  "models\\cdc\\metadata.json": {
+    "size_bytes": 8851,
+    "sha256": "63bc704d09246d2e8531dfcca62e9f2d23ce940dd4384e5767f9c988595757a1"
+  },
+  "models\\cdc\\model.pt": {
+    "size_bytes": 19377,
+    "sha256": "61789eefd0cdb33db9b43639e002c155b9d84b2ee49f483c46b7bba8d0bc35a9"
+  },
+  "models\\hospital\\logistic-baseline.npz": {
+    "size_bytes": 637,
+    "sha256": "dffcdef33d05a1d039f4d6649074803fb603d7a4e46117f8f0c809b3a11f5240"
+  },
+  "models\\hospital\\metadata.json": {
+    "size_bytes": 5061,
+    "sha256": "8061daddb779ffb0c2d937f9378d4dbdd09ef59ba0862ab96fd9d0f9bc777f3b"
+  },
+  "models\\hospital\\model.pt": {
+    "size_bytes": 16561,
+    "sha256": "976a8fd8287ed91fcbdffe67dbc9940486c4b9b0116c4f55688091b9be069b6b"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "checked_at_utc": "2026-11-05T05:13:41Z",
+  "status": "runtime_verification_blocked",
+  "initial_image": "diacare-hieugm299:1.0",
+  "initial_build": "Root reported successful build; contains an earlier app revision. Not accepted as final runtime verification.",
+  "target_verified_image": "diacare-hieugm299:verified",
+  "final_image_built": true,
+  "http_checks_executed": true,
+  "requested_http_url": "http://127.0.0.1:8012",
+  "blocker": "Docker Desktop Linux engine did not recover after host disk exhaustion during the second build. Backend init /ping repeatedly timed out; VM log recorded EXT4 read I/O errors on Docker disk sdd.",
+  "recovery_attempts": [
+    "Stopped only task-started Docker Desktop/backend/build/client processes.",
+    "Terminated docker-desktop WSL distribution once successfully.",
+    "Restarted official Docker Desktop executable hidden at 12:11 Asia/Saigon.",
+    "Docker version and direct docker-desktop shell failed to respond; Linux init control API did not become ready.",
+    "Stopped restarted task Docker processes. Subsequent docker-desktop termination commands also stalled; stopped those CLI processes only."
+  ],
+  "host_free_space_mb_last_observed": {
+    "C": 79,
+    "D": 86506
+  },
+  "existing_images_cache_vhd_modified_or_deleted": false,
+  "global_wsl_service_or_other_distributions_stopped": false,
+  "scope": "Infrastructure recovery diagnostics only. No claim that final code ran inside Linux Docker; Windows API/pytest results are separate evidence.",
+  "final_status": "Recovered using isolated task WSL Docker engine on D; original Desktop storage not repaired",
+  "http_passed": 13,
+  "http_total": 13,
+  "evidence": "results/docker-verification.json",
+  "original_desktop_final_status": "Docker Desktop Engine 29.6.1 responds after host free space recovered and official hidden restart; no VHD repair/deletion performed",
+  "host_free_space_gib_final": {
+    "C": 8.81,
+    "D": 82.23
+  }
+}

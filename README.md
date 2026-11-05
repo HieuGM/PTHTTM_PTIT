@@ -175,3 +175,8 @@ Bài của **Giáp Minh Hiếu — B23DCCN299**. Notebook chứa toàn bộ mã,
 - [Notebook dạng HTML](agent02/notebook/agent02_CT_04_hieugm.html)
 - [Gói bài đầy đủ](agent02_CT_04_hieugm.zip)
 - [Hướng dẫn và kết quả](agent02/README.md)
+
+
+## Project01 — DiaCare MAS (05/11/2026)
+
+[Hệ đa Agent hỗ trợ bệnh đái tháo đường](project01_CT_04_HieuGM.299/README.md): hai MLP đã huấn luyện, KB tiếng Việt có nguồn, Rule/Q-learning minh họa, FastAPI và Docker. [Báo cáo PDF](project01_CT_04_HieuGM.299/report/project01_CT_04_HieuGM.299.pdf). Deploy Render bằng Blueprint `render.yaml` ở gốc repository.

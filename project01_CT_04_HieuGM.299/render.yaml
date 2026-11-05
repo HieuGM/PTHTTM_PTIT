@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: diacare-mas-hieugm299
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: APP_DATA_DIR
+        value: /tmp/diacare
+      - key: OMP_NUM_THREADS
+        value: "2"

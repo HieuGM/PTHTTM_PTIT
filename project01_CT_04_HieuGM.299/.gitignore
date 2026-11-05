@@ -1,0 +1,10 @@
+runtime/
+data/raw/
+**/__pycache__/
+.pytest_cache/
+.env
+*.zip
+
+data/splits/
+.env.*
+*.env

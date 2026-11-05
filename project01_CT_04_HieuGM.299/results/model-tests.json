@@ -1,0 +1,21 @@
+{
+  "datasets": {
+    "cdc": {
+      "status": "passed",
+      "test_score_parity_rows": 30,
+      "scaler_train_only": true,
+      "invalid_input_cases": 10,
+      "clinical_use": false,
+      "group_overlap": 0
+    },
+    "hospital": {
+      "status": "passed",
+      "test_score_parity_rows": 30,
+      "scaler_train_only": true,
+      "invalid_input_cases": 10,
+      "clinical_use": false,
+      "group_overlap": 0
+    }
+  },
+  "status": "passed"
+}

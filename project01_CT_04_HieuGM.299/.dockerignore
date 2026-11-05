@@ -1,0 +1,9 @@
+data/
+report/
+runtime/
+tests/
+**/__pycache__/
+**/*.pyc
+*.zip
+.env
+.git
