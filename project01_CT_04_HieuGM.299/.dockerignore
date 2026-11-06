@@ -10,3 +10,9 @@ tests/
 notebook/
 **/diacare-notebook-output/
 **/.ipynb_checkpoints/
+data/database/
+data/documents/raw/
+runtime-audit/
+
+.env*
+*.env

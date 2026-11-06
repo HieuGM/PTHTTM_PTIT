@@ -1,0 +1,105 @@
+{
+  "model_id": "hist_gradient_boosting",
+  "model_name": "Histogram Gradient Boosting",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "max_iter": 100,
+    "max_depth": 6,
+    "early_stopping": false,
+    "random_state": 42
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.10753279617888521,
+    "roc_auc": 0.9326923076923077,
+    "average_precision": 0.9711874100700358,
+    "f1": 0.9090909090909091,
+    "precision": 0.8620689655172413,
+    "sensitivity": 0.9615384615384616,
+    "specificity": 0.6666666666666666,
+    "accuracy": 0.868421052631579,
+    "brier": 0.12044937149598456,
+    "confusion_matrix": [
+      [
+        8,
+        4
+      ],
+      [
+        1,
+        25
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.10753279617888521,
+    "roc_auc": 0.9519230769230769,
+    "average_precision": 0.9801329944002356,
+    "f1": 0.9090909090909091,
+    "precision": 0.8620689655172413,
+    "sensitivity": 0.9615384615384616,
+    "specificity": 0.6666666666666666,
+    "accuracy": 0.868421052631579,
+    "brier": 0.09080187102222458,
+    "confusion_matrix": [
+      [
+        8,
+        4
+      ],
+      [
+        1,
+        25
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.05494744999998602,
+  "dataset": "early",
+  "task": "Phân loại nhãn Positive/Negative trong khảo sát triệu chứng tại Sylhet, Bangladesh",
+  "label_semantics": "1 = Positive; 0 = Negative theo nhãn bộ Early Stage UCI529",
+  "database_source": {
+    "table": "prepared_early",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 175
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 38
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 38
+      }
+    ],
+    "raw_source_sha256": "7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137"
+  },
+  "weights": null,
+  "artifact_note": "Tree ensemble not shipped; exact config/seed/data and held-out scores retained for refit.",
+  "artifact_bytes": null,
+  "prediction_file": "results/benchmark/full/early/hist_gradient_boosting-seed42-predictions.npz",
+  "prediction_sha256": "8aaf8568046d62b21b1178b64e7251b9f95e56d32889f96c41adff54c76f2d51"
+}

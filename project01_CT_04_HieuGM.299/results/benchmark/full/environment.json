@@ -1,0 +1,15 @@
+{
+  "python": "3.12.16",
+  "torch": "2.15.0+cpu",
+  "numpy": "2.5.4",
+  "pandas": "3.1.1",
+  "sklearn": "1.9.1",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "mode": "full",
+  "model_seeds": [
+    42,
+    43,
+    44
+  ],
+  "split_seed": 42
+}

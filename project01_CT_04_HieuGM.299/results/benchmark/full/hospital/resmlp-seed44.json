@@ -1,0 +1,234 @@
+{
+  "model_id": "resmlp",
+  "model_name": "Residual MLP width32, two residual blocks",
+  "seed": 44,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 2048,
+    "epochs_max": 25,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.4703262415362306,
+      "val_roc_auc": 0.5141973719227935
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.3584527596984324,
+      "val_roc_auc": 0.5973440998707239
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.3453027794858815,
+      "val_roc_auc": 0.620002372468765
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.34238608627139616,
+      "val_roc_auc": 0.6244289493440662
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.3409299822057507,
+      "val_roc_auc": 0.6269846887912488
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.3405158309646889,
+      "val_roc_auc": 0.6293507641253653
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.3395118978620117,
+      "val_roc_auc": 0.6314083909225058
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.33906023667767043,
+      "val_roc_auc": 0.6332593121238858
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.33923283158511297,
+      "val_roc_auc": 0.6331118722513422
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.3385514801455625,
+      "val_roc_auc": 0.6334017844387207
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.33856621374337253,
+      "val_roc_auc": 0.6349534102881615
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.3382173568556142,
+      "val_roc_auc": 0.6357926515654753
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.33794976870527,
+      "val_roc_auc": 0.6362358911011998
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.3378379191313529,
+      "val_roc_auc": 0.6358175813458273
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.33773097006875913,
+      "val_roc_auc": 0.6359224980044678
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.33796024309020595,
+      "val_roc_auc": 0.6371439882478624
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.33774030617051365,
+      "val_roc_auc": 0.6362365120459135
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.3377205184422176,
+      "val_roc_auc": 0.6364451954655765
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.3375009069928792,
+      "val_roc_auc": 0.6371833837402453
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.3374888678817266,
+      "val_roc_auc": 0.6368836284292592
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.3373024663667977,
+      "val_roc_auc": 0.6368810986545002
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.3371579956428328,
+      "val_roc_auc": 0.6362794262250067
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.33694558080341525,
+      "val_roc_auc": 0.6373584441535664
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.33693476539269784,
+      "val_roc_auc": 0.6367274263368686
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.3369314746056299,
+      "val_roc_auc": 0.6372736737011884
+    }
+  ],
+  "best_epoch": 23,
+  "epochs_run": 25,
+  "parameter_count": 4609,
+  "validation": {
+    "n": 15055,
+    "positive": 1618,
+    "prevalence": 0.1074726004649618,
+    "threshold": 0.12879429757595062,
+    "roc_auc": 0.6373584441535664,
+    "average_precision": 0.1852415896577328,
+    "f1": 0.2555193630112197,
+    "precision": 0.18065506653019447,
+    "sensitivity": 0.4363411619283066,
+    "specificity": 0.7617027610329686,
+    "accuracy": 0.7267353038857522,
+    "brier": 0.0933094397187233,
+    "confusion_matrix": [
+      [
+        10235,
+        3202
+      ],
+      [
+        912,
+        706
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 15125,
+    "positive": 1675,
+    "prevalence": 0.11074380165289256,
+    "threshold": 0.12879429757595062,
+    "roc_auc": 0.6306151695056317,
+    "average_precision": 0.1852586507548241,
+    "f1": 0.2445759368836292,
+    "precision": 0.17478216299333674,
+    "sensitivity": 0.4071641791044776,
+    "specificity": 0.7605947955390334,
+    "accuracy": 0.7214545454545455,
+    "brier": 0.09592846035957336,
+    "confusion_matrix": [
+      [
+        10230,
+        3220
+      ],
+      [
+        993,
+        682
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 3.443484628999954,
+  "dataset": "hospital",
+  "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+  "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+  "database_source": {
+    "table": "prepared_hospital",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 71583
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 15055
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 15125
+      }
+    ],
+    "raw_source_sha256": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422"
+  },
+  "weights": "models/benchmark/full/hospital/resmlp-seed44.pt",
+  "weights_sha256": "a72fdcdfc6df06457361232571caafb5d241f9ef54845d1ff0ebc5773e7d87ff",
+  "artifact_bytes": 23723,
+  "prediction_file": "results/benchmark/full/hospital/resmlp-seed44-predictions.npz",
+  "prediction_sha256": "e32199483cee2219a7934a83d4a9963928703192844a8d2fc632e9148c59d4d6"
+}

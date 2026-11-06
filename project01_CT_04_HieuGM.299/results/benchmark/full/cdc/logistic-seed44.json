@@ -1,0 +1,104 @@
+{
+  "model_id": "logistic",
+  "model_name": "Logistic Regression",
+  "seed": 44,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "random_state": 44
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 33951,
+    "positive": 5029,
+    "prevalence": 0.14812523931548408,
+    "threshold": 0.20035624504089355,
+    "roc_auc": 0.8163094099860805,
+    "average_precision": 0.4105969080014013,
+    "f1": 0.47057140813845383,
+    "precision": 0.36743354925173105,
+    "sensitivity": 0.6542056074766355,
+    "specificity": 0.804162920959823,
+    "accuracy": 0.7819504580130188,
+    "brier": 0.10434596985578537,
+    "confusion_matrix": [
+      [
+        23258,
+        5664
+      ],
+      [
+        1739,
+        3290
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 33952,
+    "positive": 5030,
+    "prevalence": 0.1481503298774741,
+    "threshold": 0.20035624504089355,
+    "roc_auc": 0.8206404887183365,
+    "average_precision": 0.41558327073373275,
+    "f1": 0.4684723110826758,
+    "precision": 0.3646121500497953,
+    "sensitivity": 0.6550695825049702,
+    "specificity": 0.8014660120323629,
+    "accuracy": 0.7797773327049953,
+    "brier": 0.10380986332893372,
+    "confusion_matrix": [
+      [
+        23180,
+        5742
+      ],
+      [
+        1735,
+        3295
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.23454194499998948,
+  "dataset": "cdc",
+  "task": "Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015",
+  "label_semantics": "1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó",
+  "database_source": {
+    "table": "prepared_cdc",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 158439
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 33951
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 33952
+      }
+    ],
+    "raw_source_sha256": "19f367e3e3350768f0c144c5d73ee5b355f67a57eaaa86ca7bd8aec594d8b1d0"
+  },
+  "weights": "models/benchmark/full/cdc/logistic-seed44.npz",
+  "weights_sha256": "a126f32dc1ea7327a62cf1ca87b42b3ebcb5daea5b39174e4c11f82020588302",
+  "artifact_bytes": 685,
+  "prediction_file": "results/benchmark/full/cdc/logistic-seed44-predictions.npz",
+  "prediction_sha256": "48989a3c342b7c5986de91ae65a7ea7c34972135465be7b91b5340aa36bda888"
+}

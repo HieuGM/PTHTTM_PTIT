@@ -1,0 +1,244 @@
+{
+  "model_id": "resmlp",
+  "model_name": "Residual MLP width32, two residual blocks",
+  "seed": 44,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 32,
+    "epochs_max": 100,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.6703785009668304,
+      "val_roc_auc": 0.693
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.6026668508625563,
+      "val_roc_auc": 0.7643333333333333
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.543783751612935,
+      "val_roc_auc": 0.7853333333333334
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.49929632032827737,
+      "val_roc_auc": 0.7876666666666667
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.47793492563831963,
+      "val_roc_auc": 0.7939999999999999
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.46954836253791327,
+      "val_roc_auc": 0.7986666666666666
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.4617504380934731,
+      "val_roc_auc": 0.7973333333333333
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.4544867179469245,
+      "val_roc_auc": 0.8026666666666666
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.45341871598357375,
+      "val_roc_auc": 0.8033333333333333
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.44476178349507367,
+      "val_roc_auc": 0.8043333333333333
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.4391808464873436,
+      "val_roc_auc": 0.8046666666666666
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.43501275999808003,
+      "val_roc_auc": 0.8036666666666666
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.43282211492847467,
+      "val_roc_auc": 0.803
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.4268822108345103,
+      "val_roc_auc": 0.8053333333333333
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.4214876361843372,
+      "val_roc_auc": 0.8069999999999999
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.41045195452549826,
+      "val_roc_auc": 0.8006666666666666
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.4193361447066124,
+      "val_roc_auc": 0.808
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.414087530121457,
+      "val_roc_auc": 0.8029999999999999
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.409021592007003,
+      "val_roc_auc": 0.807
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.4068148669472842,
+      "val_roc_auc": 0.8063333333333333
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.3964945746644693,
+      "val_roc_auc": 0.803
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.39984611226193734,
+      "val_roc_auc": 0.8026666666666666
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.40081769272379814,
+      "val_roc_auc": 0.798
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.38888196244808104,
+      "val_roc_auc": 0.8023333333333333
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.37539325363143194,
+      "val_roc_auc": 0.8026666666666666
+    },
+    {
+      "epoch": 26,
+      "train_bce": 0.38211805494137985,
+      "val_roc_auc": 0.7996666666666666
+    },
+    {
+      "epoch": 27,
+      "train_bce": 0.3810366028070006,
+      "val_roc_auc": 0.7983333333333333
+    }
+  ],
+  "best_epoch": 17,
+  "epochs_run": 27,
+  "parameter_count": 4545,
+  "validation": {
+    "n": 115,
+    "positive": 40,
+    "prevalence": 0.34782608695652173,
+    "threshold": 0.27277275919914246,
+    "roc_auc": 0.808,
+    "average_precision": 0.6606745382604575,
+    "f1": 0.6938775510204082,
+    "precision": 0.5862068965517241,
+    "sensitivity": 0.85,
+    "specificity": 0.68,
+    "accuracy": 0.7391304347826086,
+    "brier": 0.17806270718574524,
+    "confusion_matrix": [
+      [
+        51,
+        24
+      ],
+      [
+        6,
+        34
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 116,
+    "positive": 41,
+    "prevalence": 0.35344827586206895,
+    "threshold": 0.27277275919914246,
+    "roc_auc": 0.8523577235772357,
+    "average_precision": 0.7764928476431934,
+    "f1": 0.7045454545454546,
+    "precision": 0.6595744680851063,
+    "sensitivity": 0.7560975609756098,
+    "specificity": 0.7866666666666666,
+    "accuracy": 0.7758620689655172,
+    "brier": 0.15640069544315338,
+    "confusion_matrix": [
+      [
+        59,
+        16
+      ],
+      [
+        10,
+        31
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.8836138599999686,
+  "dataset": "pima",
+  "task": "Phân loại nhãn xét nghiệm đái tháo đường trong cohort phụ nữ Pima từ 21 tuổi",
+  "label_semantics": "1 = tested_positive theo nhãn gốc; 0 = tested_negative",
+  "database_source": {
+    "table": "prepared_pima",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 537
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 115
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 116
+      }
+    ],
+    "raw_source_sha256": "123ce738f394095a201da0f65c5e174cdcb19cdf5ec1535aee65e2b0e1e2aae2"
+  },
+  "weights": "models/benchmark/full/pima/resmlp-seed44.pt",
+  "weights_sha256": "390f2f4b669a1416980c036292d4c620a9554609bf79f25d1cde77d2cab0f57a",
+  "artifact_bytes": 23467,
+  "prediction_file": "results/benchmark/full/pima/resmlp-seed44-predictions.npz",
+  "prediction_sha256": "76734d885dc512f376b589a982db04810b9f5f12861ba71ecac9603aaef670b8"
+}

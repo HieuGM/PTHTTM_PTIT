@@ -1,0 +1,249 @@
+{
+  "model_id": "resmlp",
+  "model_name": "Residual MLP width32, two residual blocks",
+  "seed": 43,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 32,
+    "epochs_max": 100,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.7058410603659494,
+      "val_roc_auc": 0.6442307692307693
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.651511469909123,
+      "val_roc_auc": 0.7243589743589743
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.608710560798645,
+      "val_roc_auc": 0.7852564102564104
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.5716150430270603,
+      "val_roc_auc": 0.8525641025641025
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.5366839640481131,
+      "val_roc_auc": 0.8814102564102564
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.5020272280488696,
+      "val_roc_auc": 0.8942307692307693
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.46906374182019916,
+      "val_roc_auc": 0.9102564102564102
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.4354744556971959,
+      "val_roc_auc": 0.9102564102564102
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.38996827380997795,
+      "val_roc_auc": 0.9198717948717949
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.3517209025791713,
+      "val_roc_auc": 0.9198717948717948
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.3172800081116813,
+      "val_roc_auc": 0.9262820512820513
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.2871057716437749,
+      "val_roc_auc": 0.9326923076923076
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.24377131053379603,
+      "val_roc_auc": 0.9294871794871794
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.2190478412594114,
+      "val_roc_auc": 0.9358974358974358
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.19355718672275543,
+      "val_roc_auc": 0.9358974358974359
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.16680511721542904,
+      "val_roc_auc": 0.9326923076923077
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.14253406026533672,
+      "val_roc_auc": 0.9358974358974359
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.12171647604022708,
+      "val_roc_auc": 0.9423076923076923
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.09917063189404351,
+      "val_roc_auc": 0.9358974358974359
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.08571912144976003,
+      "val_roc_auc": 0.9391025641025641
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.061893998576062065,
+      "val_roc_auc": 0.9391025641025641
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.057044765182903835,
+      "val_roc_auc": 0.9391025641025641
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.04256150206284864,
+      "val_roc_auc": 0.9391025641025641
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.032507942361491064,
+      "val_roc_auc": 0.9423076923076923
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.029299999640456268,
+      "val_roc_auc": 0.9358974358974359
+    },
+    {
+      "epoch": 26,
+      "train_bce": 0.023795437035816058,
+      "val_roc_auc": 0.9391025641025641
+    },
+    {
+      "epoch": 27,
+      "train_bce": 0.014265969768166542,
+      "val_roc_auc": 0.9423076923076923
+    },
+    {
+      "epoch": 28,
+      "train_bce": 0.014585527846855777,
+      "val_roc_auc": 0.9391025641025641
+    }
+  ],
+  "best_epoch": 18,
+  "epochs_run": 28,
+  "parameter_count": 4801,
+  "validation": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.14502479135990143,
+    "roc_auc": 0.9423076923076923,
+    "average_precision": 0.9765330154795036,
+    "f1": 0.9259259259259259,
+    "precision": 0.8928571428571429,
+    "sensitivity": 0.9615384615384616,
+    "specificity": 0.75,
+    "accuracy": 0.8947368421052632,
+    "brier": 0.1057162806391716,
+    "confusion_matrix": [
+      [
+        9,
+        3
+      ],
+      [
+        1,
+        25
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.14502479135990143,
+    "roc_auc": 0.9711538461538461,
+    "average_precision": 0.988491486266792,
+    "f1": 0.9122807017543859,
+    "precision": 0.8387096774193549,
+    "sensitivity": 1.0,
+    "specificity": 0.5833333333333334,
+    "accuracy": 0.868421052631579,
+    "brier": 0.05594863370060921,
+    "confusion_matrix": [
+      [
+        7,
+        5
+      ],
+      [
+        0,
+        26
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.29888396500007275,
+  "dataset": "early",
+  "task": "Phân loại nhãn Positive/Negative trong khảo sát triệu chứng tại Sylhet, Bangladesh",
+  "label_semantics": "1 = Positive; 0 = Negative theo nhãn bộ Early Stage UCI529",
+  "database_source": {
+    "table": "prepared_early",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 175
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 38
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 38
+      }
+    ],
+    "raw_source_sha256": "7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137"
+  },
+  "weights": "models/benchmark/full/early/resmlp-seed43.pt",
+  "weights_sha256": "72396cd11c3c766feed0be545e373519cfd7c9c4fb833709dd562e5a0b225783",
+  "artifact_bytes": 24491,
+  "prediction_file": "results/benchmark/full/early/resmlp-seed43-predictions.npz",
+  "prediction_sha256": "5e8e27c6f928d662d2537a4116f40015bf1528506c909c220ee17603db65cd15"
+}

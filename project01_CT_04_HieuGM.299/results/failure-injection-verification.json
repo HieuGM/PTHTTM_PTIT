@@ -1,0 +1,9 @@
+{
+  "scope": "Explicit failure injection: real Neo4j + genuine connection-refused loopback FPT endpoint; not positive provider evidence",
+  "status": "passed",
+  "graph_backend": "neo4j",
+  "workflow_status": "degraded",
+  "generation": "template",
+  "llm_status": "llm_unavailable",
+  "provider_error_type": "ConnectionError"
+}

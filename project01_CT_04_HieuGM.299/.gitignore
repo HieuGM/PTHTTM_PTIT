@@ -8,5 +8,9 @@ data/raw/
 data/splits/
 .env.*
 *.env
+!.env.example
 diacare-notebook-output/
 .ipynb_checkpoints/
+data/database/
+data/documents/raw/
+runtime-audit/

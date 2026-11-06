@@ -1,0 +1,234 @@
+{
+  "model_id": "mlp3",
+  "model_name": "MLP 64-32-16",
+  "seed": 43,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 2048,
+    "epochs_max": 25,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.5475962097565403,
+      "val_roc_auc": 0.49962359251381694
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.37390325620002113,
+      "val_roc_auc": 0.5852054816447363
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.34881557364228527,
+      "val_roc_auc": 0.6159494663233165
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.34474065076176913,
+      "val_roc_auc": 0.6229924282461586
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.34291935193942175,
+      "val_roc_auc": 0.6256537742905522
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.34218826240305045,
+      "val_roc_auc": 0.6267905170795213
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.3420945420231958,
+      "val_roc_auc": 0.6285173413299974
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.34116157825833826,
+      "val_roc_auc": 0.6287699048427523
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.3406152775104675,
+      "val_roc_auc": 0.630106085874538
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.341100480711347,
+      "val_roc_auc": 0.6305340087739948
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.3405833122513196,
+      "val_roc_auc": 0.6316707745609162
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.3403625523719464,
+      "val_roc_auc": 0.6321899303373626
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.34030648471198904,
+      "val_roc_auc": 0.6329201383225643
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.3399061756944016,
+      "val_roc_auc": 0.6328137267970209
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.34000038410825817,
+      "val_roc_auc": 0.6334211257166507
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.3397341076651904,
+      "val_roc_auc": 0.6337814576341382
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.33946715192376603,
+      "val_roc_auc": 0.63371368266855
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.33969091380873,
+      "val_roc_auc": 0.6336499093466714
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.339585171487271,
+      "val_roc_auc": 0.6338998740908104
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.33913366698338454,
+      "val_roc_auc": 0.6340872614065933
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.3390281565324287,
+      "val_roc_auc": 0.6345955851474808
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.339021710536107,
+      "val_roc_auc": 0.6345907785754388
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.3387354660620043,
+      "val_roc_auc": 0.6340791661273647
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.3388162308098936,
+      "val_roc_auc": 0.6358920257175982
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.33878744800312643,
+      "val_roc_auc": 0.6360935797720314
+    }
+  ],
+  "best_epoch": 25,
+  "epochs_run": 25,
+  "parameter_count": 3329,
+  "validation": {
+    "n": 15055,
+    "positive": 1618,
+    "prevalence": 0.1074726004649618,
+    "threshold": 0.12952344119548798,
+    "roc_auc": 0.6360935797720314,
+    "average_precision": 0.18556322383222826,
+    "f1": 0.251348999129678,
+    "precision": 0.17494548097891932,
+    "sensitivity": 0.446229913473424,
+    "specificity": 0.7465952221478008,
+    "accuracy": 0.7143141813351046,
+    "brier": 0.09330984950065613,
+    "confusion_matrix": [
+      [
+        10032,
+        3405
+      ],
+      [
+        896,
+        722
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 15125,
+    "positive": 1675,
+    "prevalence": 0.11074380165289256,
+    "threshold": 0.12952344119548798,
+    "roc_auc": 0.6358167674637962,
+    "average_precision": 0.1867018353668069,
+    "f1": 0.2510616612875828,
+    "precision": 0.17545109211775878,
+    "sensitivity": 0.4411940298507463,
+    "specificity": 0.7417843866171003,
+    "accuracy": 0.7084958677685951,
+    "brier": 0.09582490473985672,
+    "confusion_matrix": [
+      [
+        9977,
+        3473
+      ],
+      [
+        936,
+        739
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 3.570577379000042,
+  "dataset": "hospital",
+  "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+  "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+  "database_source": {
+    "table": "prepared_hospital",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 71583
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 15055
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 15125
+      }
+    ],
+    "raw_source_sha256": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422"
+  },
+  "weights": "models/benchmark/full/hospital/mlp3-seed43.pt",
+  "weights_sha256": "c9060a3ccc82addbd04ab97f2d6af4bfbad1373d7633b9fbc47288a6ea8c6179",
+  "artifact_bytes": 17093,
+  "prediction_file": "results/benchmark/full/hospital/mlp3-seed43-predictions.npz",
+  "prediction_sha256": "283387458d70ed3fa42d23ee8f1c242e9bc9a7bc8d09498fe5b3158ed6f0729e"
+}

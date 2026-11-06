@@ -1,4 +1,74 @@
-# Dữ liệu thực và quyền sử dụng
+# Dữ liệu thực, SQLite và benchmark bốn cohort
+
+## Bản nâng cấp 06/11/2026
+
+Benchmark mới dùng **bốn bộ dữ liệu độc lập**, sáu loại mô hình, ba seed mô hình:
+24 tổ hợp dataset–model, 72 lượt thực nghiệm trên split cố định. Mỗi cohort có nhãn,
+quần thể và thứ tự feature riêng; so sánh sáu mô hình trong từng cohort.
+
+| Bộ | Dòng gốc → sạch | Feature | Nhiệm vụ và nguồn |
+|---|---:|---:|---|
+| CDC BRFSS |253.680 →226.342|21|Binary gộp tiền đái tháo đường/đái tháo đường; UCI891/Kaggle Alex Teboul|
+| Hospital |101.766 →101.763|10 được chọn|Tái nhập viện<30 ngày, quan sát khi ra viện; UCI296, CC BY4.0|
+| Pima |768 →768|8|Nhãn tested_positive/negative trong cohort phụ nữ Pima≥21 tuổi; OpenML37 phân phối bản gốc UCI/NIDDK|
+| Early Stage |520 →251|16|Nhãn Positive/Negative tại Sylhet Diabetes Hospital, Bangladesh; UCI529, CC BY4.0|
+
+Early Stage có269 dòng trùng hoàn toàn, không có nhóm feature mâu thuẫn nhãn;
+bỏ trùng trước chia để cùng vector không lọt giữa train/validation/test. Số520
+là dòng nguồn, số251 là vector độc nhất dùng thực nghiệm. Tuổi thực tế16–90,
+khác khoảng tuổi trong phần mô tả tóm tắt UCI. Pima có0 duplicate/conflict;
+zero ở Glucose, BloodPressure, SkinThickness, Insulin, BMI được coi là missing,
+điền bằng median chỉ fit train. Pregnancies0 vẫn hợp lệ.
+
+### Nguồn bổ sung và giấy phép
+
+- Pima: [OpenML37](https://www.openml.org/d/37),
+  [API metadata](https://api.openml.org/api/v1/json/data/37),
+  [ARFF gốc được phân phối](https://openml.org/data/v1/download/37/diabetes.arff).
+  Metadata OpenML ghi licence=`Public`, original owner NIDDK, donor Vincent Sigillito,
+  nguồn UCI cũ. Endpoint Pima UCI cũ hiện không tải được; UCI34 là AIM94 time-series
+  khác nên không thay thế bằng dataset34. Toàn bộ768×8feature, nhãn và thứ tự ARFF
+  được đối chiếu bằng bản CSV của bài trước. ARFF MD5 khớp metadata OpenML:
+  `3cbaa3e54586aa88cf6aacb4033e4470`. Không tự đổi nhãn giấy phép thành CC0.
+- Early Stage: [UCI529](https://archive.ics.uci.edu/dataset/529/early+stage+diabetes+risk+prediction+dataset),
+  DOI [10.24432/C5VG8H](https://doi.org/10.24432/C5VG8H),
+  [ZIP chính thức](https://archive.ics.uci.edu/static/public/529/early+stage+diabetes+risk+prediction+dataset.zip).
+  CSV SHA256: `7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137`.
+
+### SQL được dùng thật trong luồng huấn luyện
+
+`app/ml/database.py` tải/kiểm kê CSV rồi ghi `raw_cdc`, `raw_hospital`, `raw_pima`,
+`raw_early` cùng bảng provenance vào `data/database/diabetes.sqlite3`.
+`datasets.prepare_database()` đọc lại bảng raw bằng SELECT để làm sạch/chia,
+fit median/mean/std chỉ train và lưu bảng `prepared_<dataset>` cùng thống kê.
+`datasets.load_prepared()` SELECT từng split theo `split_order`; các mảng nhận
+từ query này trực tiếp cấp vào tất cả các vòng fit, không lấy cache NPZ cũ.
+
+```sql
+SELECT Glucose, BMI, Age, target
+FROM prepared_pima WHERE split='train' ORDER BY split_order LIMIT 5;
+SELECT split, COUNT(*) AS rows, SUM(target) AS positives
+FROM prepared_early GROUP BY split;
+```
+
+Split train/val/test: CDC158439/33951/33952; Hospital71583/15055/15125;
+Pima537/115/116; Early175/38/38. Hospital giữ phân nhóm patient_nbr của giao thức
+cũ; các số patient không vào X hoặc bảng prepared. Bảng raw và DB chỉ ở máy
+cục bộ để chia nhóm, bị loại khỏi Git/image/ZIP; không cung cấp query tùy ý qua API.
+
+`results/benchmark/database-manifest.json` lưu số dòng, source hash, bảng, SQL,
+split và thống kê chuẩn hóa. `results/benchmark/full/` chứa từng run, dự đoán
+validation/test, CSV summary và hình; `models/benchmark/full/` giữ state_dict DL
+và hệ số logistic nhỏ. Không đưa cây RF/HGB lớn vào image; giữ config/seed và
+score để refit kiểm chứng. `models/cdc/`, `models/hospital/` và kết quả cũ được
+tái sử dụng nguyên vẹn; Pima/Early mới chọn DL phục vụ bằng validation AUC,
+không dùng test chọn mô hình. Không huấn luyện tại request hoặc startup.
+
+Ba seed trên một split đo độ nhạy khởi tạo của mô hình, không là khoảng tin cậy
+quần thể. Hai cohort nhỏ có test116/38 dòng; cần nêu giới hạn này khi bảo vệ.
+Không coi dữ liệu Mỹ/Bangladesh là xác thực trên người Việt hoặc score đã hiệu chuẩn.
+
+## Hồ sơ hai bộ dữ liệu ban đầu
 
 Hai bài toán độc lập; không gộp nhãn hoặc suy ra mô hình này tốt hơn mô hình kia từ AUC khác quần thể.
 

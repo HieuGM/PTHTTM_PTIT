@@ -1,0 +1,38 @@
+{
+  "status": "completed",
+  "generation": "fpt_cloud_llm",
+  "llm_status": "grounded",
+  "model": "DeepSeek-V4.1-Flash",
+  "error": null,
+  "usage": {
+    "completion_tokens": 388,
+    "completion_tokens_details": {
+      "reasoning_tokens": 256
+    },
+    "prompt_tokens": 1612,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 2000
+  },
+  "citations": [
+    {
+      "id": "KB08",
+      "title": "Ý nghĩa HbA1c",
+      "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis",
+      "page": null,
+      "document_id": "WEB05"
+    },
+    {
+      "id": "PDF01-P019-C001",
+      "title": "Bộ Y tế — Hướng dẫn chẩn đoán và điều trị đái tháo đường típ 2 (2020), bản do Sở Y tế Đồng Nai đăng tải",
+      "url": "https://syt.dongnai.gov.vn/vi/van-ban/detail/V-v-trien-khai-thuc-hien-Quyet-dinh-so-5481-QD-BYT-ngay-30-12-2020-cua-Bo-truong-Bo-Y-te-4905/?download=1&id=0",
+      "page": 19,
+      "document_id": "PDF01"
+    }
+  ],
+  "answer": "HbA1c phản ánh mức đường huyết trung bình khoảng ba tháng, khác với phép đo đường huyết tại một thời điểm [KB08][PDF01-P019-C001]. Một số tình trạng như thiếu máu hoặc biến thể hemoglobin có thể ảnh hưởng độ tin cậy của kết quả; bác sĩ sẽ giải thích kết quả theo hoàn cảnh cá nhân [KB08].",
+  "elapsed_seconds": 4.783755473000383,
+  "clinical_use": false,
+  "scope": "actual FPT provider call with synthetic schema defaults; not medical validation"
+}

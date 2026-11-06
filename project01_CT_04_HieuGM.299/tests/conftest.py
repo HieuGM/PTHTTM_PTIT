@@ -4,6 +4,10 @@ import sys
 from pathlib import Path
 import pytest
 
+# Unit/integration suite uses the real template path; paid provider is checked separately.
+os.environ['FPT_API_KEY'] = ''
+os.environ['NEO4J_URI'] = ''
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
@@ -29,7 +33,7 @@ def client(coordinator):
         yield instance
 
 
-@pytest.fixture(params=["cdc", "hospital"])
+@pytest.fixture(params=["cdc", "hospital", "pima", "early"])
 def model_case(request):
     from app.ml.predict import Predictor
     predictor = Predictor(ROOT)

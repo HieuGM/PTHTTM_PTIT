@@ -1,0 +1,106 @@
+{
+  "model_id": "random_forest",
+  "model_name": "Random Forest",
+  "seed": 43,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "n_estimators": 100,
+    "max_depth": 12,
+    "min_samples_leaf": 5,
+    "n_jobs": 2,
+    "random_state": 43
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 15055,
+    "positive": 1618,
+    "prevalence": 0.1074726004649618,
+    "threshold": 0.12251306786372189,
+    "roc_auc": 0.6335158312844457,
+    "average_precision": 0.1817612069694748,
+    "f1": 0.25262806607708993,
+    "precision": 0.17302857142857142,
+    "sensitivity": 0.46786155747836833,
+    "specificity": 0.7307434695244475,
+    "accuracy": 0.702490866821654,
+    "brier": 0.09346289653368701,
+    "confusion_matrix": [
+      [
+        9819,
+        3618
+      ],
+      [
+        861,
+        757
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 15125,
+    "positive": 1675,
+    "prevalence": 0.11074380165289256,
+    "threshold": 0.12251306786372189,
+    "roc_auc": 0.6236864229040671,
+    "average_precision": 0.17632834050778567,
+    "f1": 0.24334476563775928,
+    "precision": 0.16749100719424462,
+    "sensitivity": 0.44477611940298506,
+    "specificity": 0.7246840148698884,
+    "accuracy": 0.6936859504132231,
+    "brier": 0.09633649943794823,
+    "confusion_matrix": [
+      [
+        9747,
+        3703
+      ],
+      [
+        930,
+        745
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 2.2134030820000135,
+  "dataset": "hospital",
+  "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+  "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+  "database_source": {
+    "table": "prepared_hospital",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 71583
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 15055
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 15125
+      }
+    ],
+    "raw_source_sha256": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422"
+  },
+  "weights": null,
+  "artifact_note": "Tree ensemble not shipped; exact config/seed/data and held-out scores retained for refit.",
+  "artifact_bytes": null,
+  "prediction_file": "results/benchmark/full/hospital/random_forest-seed43-predictions.npz",
+  "prediction_sha256": "fd398836c26f2790db2906b871b225521a11fc4ee03427c3b060e0f8bb1f69b6"
+}

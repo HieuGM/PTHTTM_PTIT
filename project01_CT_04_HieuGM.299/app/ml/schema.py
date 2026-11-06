@@ -55,12 +55,36 @@ HOSPITAL = [
                 '6:50–59; 7:60–69; 8:70–79; 9:80–89; 10:90–99'),
     spec('Gender', 'Giới tính theo mã hồ sơ', 0, 1, 1, coding='0 = Female; 1 = Male'),
 ]
-SCHEMAS = {'cdc': CDC, 'hospital': HOSPITAL}
+PIMA = [
+    spec('Pregnancies', 'Số lần mang thai', 0, 17, 1),
+    spec('Glucose', 'Glucose sau nghiệm pháp 2 giờ (mg/dL)', 0, 199, 120),
+    spec('BloodPressure', 'Huyết áp tâm trương (mmHg)', 0, 122, 72),
+    spec('SkinThickness', 'Độ dày nếp da cơ tam đầu (mm)', 0, 99, 20),
+    spec('Insulin', 'Insulin huyết thanh sau 2 giờ (µU/mL)', 0, 846, 80),
+    spec('BMI', 'BMI (kg/m²)', 0, 67.1, 28, integer=False),
+    spec('DiabetesPedigreeFunction', 'Chỉ số phả hệ theo bộ Pima', .078, 2.42, .5, integer=False),
+    spec('Age', 'Tuổi (năm)', 21, 81, 35),
+]
+EARLY_NAMES = ['Polyuria', 'Polydipsia', 'sudden weight loss', 'weakness',
+    'Polyphagia', 'Genital thrush', 'visual blurring', 'Itching', 'Irritability',
+    'delayed healing', 'partial paresis', 'muscle stiffness', 'Alopecia', 'Obesity']
+EARLY_LABELS = ['Tiểu nhiều', 'Khát nhiều', 'Sụt cân đột ngột', 'Yếu sức',
+    'Ăn nhiều', 'Nấm sinh dục', 'Nhìn mờ', 'Ngứa', 'Dễ kích thích',
+    'Chậm lành vết thương', 'Yếu/liệt một phần', 'Cứng cơ', 'Rụng tóc', 'Béo phì']
+EARLY = [spec('Age', 'Tuổi (năm)', 16, 90, 40),
+         spec('Gender', 'Giới tính theo mã bộ dữ liệu', 0, 1, 1, coding='0 = Female; 1 = Male')]
+EARLY += [spec(name, label, 0, 1, 0, coding=YES_NO)
+          for name, label in zip(EARLY_NAMES, EARLY_LABELS)]
+SCHEMAS = {'cdc': CDC, 'hospital': HOSPITAL, 'pima': PIMA, 'early': EARLY}
 TASKS = {
     'cdc': 'Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015',
     'hospital': 'Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường',
+    'pima': 'Phân loại nhãn xét nghiệm đái tháo đường trong cohort phụ nữ Pima từ 21 tuổi',
+    'early': 'Phân loại nhãn Positive/Negative trong khảo sát triệu chứng tại Sylhet, Bangladesh',
 }
 LABELS = {
     'cdc': '1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó',
     'hospital': '1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu',
+    'pima': '1 = tested_positive theo nhãn gốc; 0 = tested_negative',
+    'early': '1 = Positive; 0 = Negative theo nhãn bộ Early Stage UCI529',
 }

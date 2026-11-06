@@ -1,0 +1,552 @@
+{
+  "status": "passed",
+  "scope": "independent recomputation from real SQL and score/weight artifacts",
+  "cohorts": [
+    {
+      "dataset": "cdc",
+      "clean_rows": 226342,
+      "source_rows": 253680,
+      "exact_source_preparation": "passed",
+      "group_disjoint": "passed",
+      "train_only_preprocessing": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "clean_rows": 101763,
+      "source_rows": 101766,
+      "exact_source_preparation": "passed",
+      "group_disjoint": "passed",
+      "train_only_preprocessing": "passed"
+    },
+    {
+      "dataset": "pima",
+      "clean_rows": 768,
+      "source_rows": 768,
+      "exact_source_preparation": "passed",
+      "group_disjoint": "passed",
+      "train_only_preprocessing": "passed"
+    },
+    {
+      "dataset": "early",
+      "clean_rows": 251,
+      "source_rows": 520,
+      "exact_source_preparation": "passed",
+      "group_disjoint": "passed",
+      "train_only_preprocessing": "passed"
+    }
+  ],
+  "runs": [
+    {
+      "dataset": "cdc",
+      "model": "logistic",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "logistic",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "logistic",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "random_forest",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "random_forest",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "random_forest",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "hist_gradient_boosting",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "hist_gradient_boosting",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "hist_gradient_boosting",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "mlp2",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "mlp2",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "mlp2",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "mlp3",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "mlp3",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "mlp3",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "resmlp",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "resmlp",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "cdc",
+      "model": "resmlp",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "logistic",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "logistic",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "logistic",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "random_forest",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "random_forest",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "random_forest",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "hist_gradient_boosting",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "hist_gradient_boosting",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "hist_gradient_boosting",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "mlp2",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "mlp2",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "mlp2",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "mlp3",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "mlp3",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "mlp3",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "resmlp",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "resmlp",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "hospital",
+      "model": "resmlp",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "logistic",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "logistic",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "logistic",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "random_forest",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "random_forest",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "random_forest",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "hist_gradient_boosting",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "hist_gradient_boosting",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "hist_gradient_boosting",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "mlp2",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "mlp2",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "mlp2",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "mlp3",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "mlp3",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "mlp3",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "resmlp",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "resmlp",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "pima",
+      "model": "resmlp",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "logistic",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "logistic",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "logistic",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "random_forest",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "random_forest",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "random_forest",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "hist_gradient_boosting",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "hist_gradient_boosting",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "hist_gradient_boosting",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "mlp2",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "mlp2",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "mlp2",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "mlp3",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "mlp3",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "mlp3",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "resmlp",
+      "seed": 42,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "resmlp",
+      "seed": 43,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    },
+    {
+      "dataset": "early",
+      "model": "resmlp",
+      "seed": 44,
+      "all_metrics": "passed",
+      "validation_threshold": "passed"
+    }
+  ],
+  "neural_weight_forward_checks": 36,
+  "summary_groups_checked": 24,
+  "legacy_files_compared_to_original_zip": 11,
+  "serving_selection_validation_only": "passed",
+  "limitations": [
+    "Tree ensembles not shipped, so tree prediction artifacts checked for metrics but not refitted.",
+    "Seed SD on fixed split does not estimate sampling uncertainty."
+  ]
+}

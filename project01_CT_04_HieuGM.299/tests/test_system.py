@@ -55,7 +55,7 @@ def test_trace_limit_enforced():
 def test_grounded_sources_and_trace(coordinator):
     response = coordinator.answer("HbA1c phản ánh đường huyết trong bao lâu?")
     assert response["status"] == "grounded"
-    known = {card["id"]: card for card in coordinator.kb.cards}
+    known = coordinator.kb.source_index
     assert response["sources"]
     for source in response["sources"]:
         assert source["url"] == known[source["id"]]["url"]
@@ -69,7 +69,10 @@ def test_source_database_has_no_query_persistence(coordinator):
     coordinator.answer(marker + " HbA1c là gì?")
     with closing(sqlite3.connect(coordinator.kb.db_path)) as connection:
         tables = connection.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
-        assert tables == [("cards",)]
+        assert {t[0] for t in tables} == {"cards", "documents", "chunks", "concepts", "mentions", "relations"}
+        for (table,) in tables:
+            all_rows = connection.execute('SELECT * FROM "'+table+'"').fetchall()
+            assert marker not in json.dumps(all_rows, ensure_ascii=False)
         rows = connection.execute("SELECT * FROM cards").fetchall()
     assert len(rows) == len(coordinator.kb.cards)
     assert marker not in json.dumps(rows, ensure_ascii=False)

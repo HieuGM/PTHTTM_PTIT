@@ -1,0 +1,106 @@
+{
+  "model_id": "random_forest",
+  "model_name": "Random Forest",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "n_estimators": 100,
+    "max_depth": 12,
+    "min_samples_leaf": 5,
+    "n_jobs": 2,
+    "random_state": 42
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 33951,
+    "positive": 5029,
+    "prevalence": 0.14812523931548408,
+    "threshold": 0.2525283997040178,
+    "roc_auc": 0.8223034358675563,
+    "average_precision": 0.4353121842744881,
+    "f1": 0.47645429362880887,
+    "precision": 0.40358868184955143,
+    "sensitivity": 0.5814277192284748,
+    "specificity": 0.8505981605698084,
+    "accuracy": 0.810727224529469,
+    "brier": 0.10247412993597152,
+    "confusion_matrix": [
+      [
+        24601,
+        4321
+      ],
+      [
+        2105,
+        2924
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 33952,
+    "positive": 5030,
+    "prevalence": 0.1481503298774741,
+    "threshold": 0.2525283997040178,
+    "roc_auc": 0.8246271283164716,
+    "average_precision": 0.43526692694002034,
+    "f1": 0.47454323995127895,
+    "precision": 0.40109814687714485,
+    "sensitivity": 0.5809145129224652,
+    "specificity": 0.8491459788396376,
+    "accuracy": 0.80940739868049,
+    "brier": 0.10225390546383446,
+    "confusion_matrix": [
+      [
+        24559,
+        4363
+      ],
+      [
+        2108,
+        2922
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 5.019938452000019,
+  "dataset": "cdc",
+  "task": "Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015",
+  "label_semantics": "1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó",
+  "database_source": {
+    "table": "prepared_cdc",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 158439
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 33951
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 33952
+      }
+    ],
+    "raw_source_sha256": "19f367e3e3350768f0c144c5d73ee5b355f67a57eaaa86ca7bd8aec594d8b1d0"
+  },
+  "weights": null,
+  "artifact_note": "Tree ensemble not shipped; exact config/seed/data and held-out scores retained for refit.",
+  "artifact_bytes": null,
+  "prediction_file": "results/benchmark/full/cdc/random_forest-seed42-predictions.npz",
+  "prediction_sha256": "ec5250824e6745b1c2d99ca7994616631c28df10fdc31fd335436ddca3f75343"
+}

@@ -1,0 +1,25 @@
+{
+  "n": 33952,
+  "positive": 5030,
+  "prevalence": 0.1481503298774741,
+  "threshold": 0.5,
+  "roc_auc": 0.5,
+  "average_precision": 0.1481503298774741,
+  "f1": 0.0,
+  "precision": 0.0,
+  "sensitivity": 0.0,
+  "specificity": 1.0,
+  "accuracy": 0.8518496701225259,
+  "brier": 0.1481503298774741,
+  "confusion_matrix": [
+    [
+      28922,
+      0
+    ],
+    [
+      5030,
+      0
+    ]
+  ],
+  "confusion_order": "rows=true0/1; columns=predicted0/1"
+}

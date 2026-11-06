@@ -1,0 +1,106 @@
+{
+  "model_id": "random_forest",
+  "model_name": "Random Forest",
+  "seed": 43,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "n_estimators": 100,
+    "max_depth": 12,
+    "min_samples_leaf": 5,
+    "n_jobs": 2,
+    "random_state": 43
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 115,
+    "positive": 40,
+    "prevalence": 0.34782608695652173,
+    "threshold": 0.2573769841269841,
+    "roc_auc": 0.812,
+    "average_precision": 0.67015124221842,
+    "f1": 0.7102803738317757,
+    "precision": 0.5671641791044776,
+    "sensitivity": 0.95,
+    "specificity": 0.6133333333333333,
+    "accuracy": 0.7304347826086957,
+    "brier": 0.1674314898851977,
+    "confusion_matrix": [
+      [
+        46,
+        29
+      ],
+      [
+        2,
+        38
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 116,
+    "positive": 41,
+    "prevalence": 0.35344827586206895,
+    "threshold": 0.2573769841269841,
+    "roc_auc": 0.8383739837398374,
+    "average_precision": 0.770889264230834,
+    "f1": 0.6938775510204082,
+    "precision": 0.5964912280701754,
+    "sensitivity": 0.8292682926829268,
+    "specificity": 0.6933333333333334,
+    "accuracy": 0.7413793103448276,
+    "brier": 0.15639710993726924,
+    "confusion_matrix": [
+      [
+        52,
+        23
+      ],
+      [
+        7,
+        34
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.3582564020000518,
+  "dataset": "pima",
+  "task": "Phân loại nhãn xét nghiệm đái tháo đường trong cohort phụ nữ Pima từ 21 tuổi",
+  "label_semantics": "1 = tested_positive theo nhãn gốc; 0 = tested_negative",
+  "database_source": {
+    "table": "prepared_pima",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 537
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 115
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 116
+      }
+    ],
+    "raw_source_sha256": "123ce738f394095a201da0f65c5e174cdcb19cdf5ec1535aee65e2b0e1e2aae2"
+  },
+  "weights": null,
+  "artifact_note": "Tree ensemble not shipped; exact config/seed/data and held-out scores retained for refit.",
+  "artifact_bytes": null,
+  "prediction_file": "results/benchmark/full/pima/random_forest-seed43-predictions.npz",
+  "prediction_sha256": "68071140a42989919712069089e63b33791ec9cdaa7aed63a1a0f7233a9f49b3"
+}

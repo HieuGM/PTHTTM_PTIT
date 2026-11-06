@@ -1,0 +1,246 @@
+{
+  "dataset": "pima",
+  "model_id": "mlp2",
+  "model_name": "MLP 64-32",
+  "model_version": "2.0-db-benchmark",
+  "feature_specs": [
+    {
+      "name": "Pregnancies",
+      "label": "Số lần mang thai",
+      "min": 0,
+      "max": 17,
+      "default": 1,
+      "integer": true
+    },
+    {
+      "name": "Glucose",
+      "label": "Glucose sau nghiệm pháp 2 giờ (mg/dL)",
+      "min": 0,
+      "max": 199,
+      "default": 120,
+      "integer": true
+    },
+    {
+      "name": "BloodPressure",
+      "label": "Huyết áp tâm trương (mmHg)",
+      "min": 0,
+      "max": 122,
+      "default": 72,
+      "integer": true
+    },
+    {
+      "name": "SkinThickness",
+      "label": "Độ dày nếp da cơ tam đầu (mm)",
+      "min": 0,
+      "max": 99,
+      "default": 20,
+      "integer": true
+    },
+    {
+      "name": "Insulin",
+      "label": "Insulin huyết thanh sau 2 giờ (µU/mL)",
+      "min": 0,
+      "max": 846,
+      "default": 80,
+      "integer": true
+    },
+    {
+      "name": "BMI",
+      "label": "BMI (kg/m²)",
+      "min": 0,
+      "max": 67.1,
+      "default": 28,
+      "integer": false
+    },
+    {
+      "name": "DiabetesPedigreeFunction",
+      "label": "Chỉ số phả hệ theo bộ Pima",
+      "min": 0.078,
+      "max": 2.42,
+      "default": 0.5,
+      "integer": false
+    },
+    {
+      "name": "Age",
+      "label": "Tuổi (năm)",
+      "min": 21,
+      "max": 81,
+      "default": 35,
+      "integer": true
+    }
+  ],
+  "task": "Phân loại nhãn xét nghiệm đái tháo đường trong cohort phụ nữ Pima từ 21 tuổi",
+  "label_semantics": "1 = tested_positive theo nhãn gốc; 0 = tested_negative",
+  "preprocessing": {
+    "mean": [
+      3.88268156424581,
+      121.56424581005587,
+      72.22718808193669,
+      28.886405959031656,
+      138.53445065176908,
+      32.61731843575415,
+      0.4805288640595903,
+      33.5512104283054
+    ],
+    "scale": [
+      3.3469764388491465,
+      29.92380247248962,
+      12.175339353329012,
+      8.251411567464164,
+      79.57664532814563,
+      6.724361466303783,
+      0.3349411849829437,
+      11.783651973905448
+    ],
+    "median": [
+      3.0,
+      117.0,
+      72.0,
+      29.0,
+      126.0,
+      32.4,
+      0.385,
+      30.0
+    ],
+    "zero_as_missing": [
+      "Glucose",
+      "BloodPressure",
+      "SkinThickness",
+      "Insulin",
+      "BMI"
+    ],
+    "fitted_on": "train rows only; validation/test excluded"
+  },
+  "threshold": 0.3690996766090393,
+  "threshold_selection": "maximum validation F1 only",
+  "seed": 42,
+  "best_epoch": 2,
+  "best_val_roc_auc": 0.8386666666666667,
+  "selection": "best validation ROC-AUC among neural architectures/seeds; test excluded",
+  "data_provenance": {
+    "dataset": "pima",
+    "source_url": "https://openml.org/data/v1/download/37/diabetes.arff",
+    "license": "OpenML37 metadata licence: Public; original NIDDK/UCI provenance",
+    "raw_rows": 768,
+    "raw_columns": [
+      "Pregnancies",
+      "Glucose",
+      "BloodPressure",
+      "SkinThickness",
+      "Insulin",
+      "BMI",
+      "DiabetesPedigreeFunction",
+      "Age",
+      "Outcome"
+    ],
+    "source_csv_sha256": "123ce738f394095a201da0f65c5e174cdcb19cdf5ec1535aee65e2b0e1e2aae2",
+    "raw_table": "raw_pima",
+    "exact_duplicate_rows": 0,
+    "conflicting_feature_rows_removed": 0,
+    "clean_rows": 768,
+    "features": [
+      "Pregnancies",
+      "Glucose",
+      "BloodPressure",
+      "SkinThickness",
+      "Insulin",
+      "BMI",
+      "DiabetesPedigreeFunction",
+      "Age"
+    ],
+    "group_unit": "unique feature vector",
+    "split": {
+      "train": {
+        "n": 537,
+        "positive": 187,
+        "groups": 537
+      },
+      "val": {
+        "n": 115,
+        "positive": 40,
+        "groups": 115
+      },
+      "test": {
+        "n": 116,
+        "positive": 41,
+        "groups": 116
+      }
+    },
+    "source_query": "SELECT * FROM \"raw_pima\" ORDER BY rowid",
+    "split_seed": 42,
+    "preprocessing": {
+      "mean": [
+        3.88268156424581,
+        121.56424581005587,
+        72.22718808193669,
+        28.886405959031656,
+        138.53445065176908,
+        32.61731843575415,
+        0.4805288640595903,
+        33.5512104283054
+      ],
+      "scale": [
+        3.3469764388491465,
+        29.92380247248962,
+        12.175339353329012,
+        8.251411567464164,
+        79.57664532814563,
+        6.724361466303783,
+        0.3349411849829437,
+        11.783651973905448
+      ],
+      "median": [
+        3.0,
+        117.0,
+        72.0,
+        29.0,
+        126.0,
+        32.4,
+        0.385,
+        30.0
+      ],
+      "zero_as_missing": [
+        "Glucose",
+        "BloodPressure",
+        "SkinThickness",
+        "Insulin",
+        "BMI"
+      ],
+      "fitted_on": "train rows only; validation/test excluded"
+    },
+    "group_overlap": 0,
+    "database_used": true,
+    "identifiers_in_features": false,
+    "prepared_table": "prepared_pima",
+    "training_queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 537
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 115
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 116
+      }
+    ]
+  },
+  "clinical_use": false,
+  "score_semantics": "Điểm sigmoid nghiên cứu; chưa hiệu chuẩn thành xác suất bệnh cá nhân tại Việt Nam.",
+  "limitations": [
+    "Cohort nhỏ, quần thể nước ngoài; chưa xác thực lâm sàng tại Việt Nam.",
+    "Không dùng chẩn đoán, kê đơn hoặc thay quyết định bác sĩ.",
+    "Split cố định; SD ba seed không bao gồm bất định chọn mẫu hoặc dịch chuyển miền."
+  ]
+}

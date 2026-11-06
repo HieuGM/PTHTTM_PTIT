@@ -1,0 +1,105 @@
+{
+  "model_id": "hist_gradient_boosting",
+  "model_name": "Histogram Gradient Boosting",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "max_iter": 100,
+    "max_depth": 6,
+    "early_stopping": false,
+    "random_state": 42
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 115,
+    "positive": 40,
+    "prevalence": 0.34782608695652173,
+    "threshold": 0.1325611466760192,
+    "roc_auc": 0.8306666666666667,
+    "average_precision": 0.6362192490571051,
+    "f1": 0.7572815533980582,
+    "precision": 0.6190476190476191,
+    "sensitivity": 0.975,
+    "specificity": 0.68,
+    "accuracy": 0.782608695652174,
+    "brier": 0.16699519395968596,
+    "confusion_matrix": [
+      [
+        51,
+        24
+      ],
+      [
+        1,
+        39
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 116,
+    "positive": 41,
+    "prevalence": 0.35344827586206895,
+    "threshold": 0.1325611466760192,
+    "roc_auc": 0.8104065040650406,
+    "average_precision": 0.727967622303076,
+    "f1": 0.6458333333333334,
+    "precision": 0.5636363636363636,
+    "sensitivity": 0.7560975609756098,
+    "specificity": 0.68,
+    "accuracy": 0.7068965517241379,
+    "brier": 0.19209558358194903,
+    "confusion_matrix": [
+      [
+        51,
+        24
+      ],
+      [
+        10,
+        31
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.10551396699997895,
+  "dataset": "pima",
+  "task": "Phân loại nhãn xét nghiệm đái tháo đường trong cohort phụ nữ Pima từ 21 tuổi",
+  "label_semantics": "1 = tested_positive theo nhãn gốc; 0 = tested_negative",
+  "database_source": {
+    "table": "prepared_pima",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 537
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 115
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 116
+      }
+    ],
+    "raw_source_sha256": "123ce738f394095a201da0f65c5e174cdcb19cdf5ec1535aee65e2b0e1e2aae2"
+  },
+  "weights": null,
+  "artifact_note": "Tree ensemble not shipped; exact config/seed/data and held-out scores retained for refit.",
+  "artifact_bytes": null,
+  "prediction_file": "results/benchmark/full/pima/hist_gradient_boosting-seed42-predictions.npz",
+  "prediction_sha256": "a211658d6258baf6d1fd7ebdf1a7aed1202caf166a4cb6172428ce24439af817"
+}

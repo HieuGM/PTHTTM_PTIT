@@ -3,12 +3,19 @@ from app.agents.contracts import Context
 from app.agents.rules import check, normalize
 from app.agents.policy import PresentationPolicy
 from app.knowledge.retrieval import KnowledgeBase
+from app.knowledge.generation import EvidenceGenerator
+from app.agents.workflow import ReportWorkflow
 
 
 class Coordinator:
     def __init__(self, root):
         self.kb = KnowledgeBase(root)
         self.policy = PresentationPolicy(root)
+        self.generator = EvidenceGenerator()
+        self.workflow = ReportWorkflow(root, self.kb, self.generator)
+
+    def report(self, dataset, features, question="", glucose=None, unit="mg/dL"):
+        return self.workflow.run(dataset, features, question, glucose, unit)
 
     def answer(self, question, glucose=None, unit="mg/dL"):
         ctx = Context(question, glucose, unit)
@@ -34,18 +41,24 @@ class Coordinator:
         if not evidence or action == "abstain":
             answer = "Kho tri thức hiện chưa có đủ bằng chứng phù hợp để trả lời câu hỏi này. Bạn có thể hỏi về kiến thức, theo dõi và phòng biến chứng đái tháo đường; với tình huống cá nhân, hãy trao đổi với nhân viên y tế."
             sources, status = [], "insufficient_evidence"
+            generation = "extractive"
+            llm_status = "not_requested"
         else:
             selected = hits[:2] if action == "detail" else hits[:1]
-            answer = "\n\n".join(f"{h['text']} [{h['id']}]" for h in selected)
+            generated = self.generator.generate(question, selected)
+            answer = generated["answer"]
+            generation = generated["generation"]
+            llm_status = generated["status"]
             sources = [{k: h[k] for k in ["id", "title", "url"]} for h in selected]
             status = "grounded"
         ctx.send("EducationAgent", "CriticAgent", "draft", "Ghép nội dung trích xuất với dẫn nguồn của từng đoạn.")
-        known = {card["id"] for card in self.kb.cards}
+        known = set(getattr(self.kb, "source_index", {c["id"]: c for c in self.kb.cards}))
         if any(s["id"] not in known or not s["url"].startswith("https://") for s in sources):
             raise RuntimeError("Nguồn dẫn không hợp lệ.")
         ctx.send("CriticAgent", "Coordinator", "verified", "Kiểm tra ID nguồn và định dạng; không xác thực chẩn đoán.")
         return {"answer": answer, "status": status, "sources": sources, "trace": ctx.trace,
-                "policy_action": action, "generation": "extractive", "retrieved_ids": [h["id"] for h in hits]}
+                "policy_action": action, "generation": generation, "llm_status": llm_status,
+                "retrieved_ids": [h["id"] for h in hits]}
 
     def analyze(self, dataset, features):
         from app.ml.predict import predict

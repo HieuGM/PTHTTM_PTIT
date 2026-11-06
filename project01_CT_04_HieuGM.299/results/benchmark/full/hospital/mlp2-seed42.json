@@ -1,0 +1,234 @@
+{
+  "model_id": "mlp2",
+  "model_name": "MLP 64-32",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 2048,
+    "epochs_max": 25,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.5340776755893117,
+      "val_roc_auc": 0.5268716124591131
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.3610563501235837,
+      "val_roc_auc": 0.5939281910095853
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.3474299566220979,
+      "val_roc_auc": 0.617330884327383
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.3459100244105476,
+      "val_roc_auc": 0.6231051412106472
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.34436592027400714,
+      "val_roc_auc": 0.6255736034286451
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.3432896015564404,
+      "val_roc_auc": 0.6271189968329979
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.34350486005649694,
+      "val_roc_auc": 0.6289290966689489
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.3425174556549651,
+      "val_roc_auc": 0.6291014663218446
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.34263835629490214,
+      "val_roc_auc": 0.6295168783352205
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.3414014176691861,
+      "val_roc_auc": 0.6313842660704863
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.3417988431764622,
+      "val_roc_auc": 0.6300737047576233
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.34141632893143664,
+      "val_roc_auc": 0.6311334963980146
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.3407866020653475,
+      "val_roc_auc": 0.6321230752898686
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.34104928392400924,
+      "val_roc_auc": 0.6321734868014292
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.34010789143846476,
+      "val_roc_auc": 0.6325061521822344
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.3408574908944725,
+      "val_roc_auc": 0.6319497167250218
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.3403836372716894,
+      "val_roc_auc": 0.6324627780440941
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.3406204200953521,
+      "val_roc_auc": 0.6328182343956823
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.34041379200155375,
+      "val_roc_auc": 0.6326447838390261
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.34019081962770914,
+      "val_roc_auc": 0.6333255462266661
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.3399874918104432,
+      "val_roc_auc": 0.6333459684083568
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.3403293879031169,
+      "val_roc_auc": 0.6321666794075322
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.3401396026586581,
+      "val_roc_auc": 0.6331589720577638
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.33985955195255213,
+      "val_roc_auc": 0.6339081993495628
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.33985260677492857,
+      "val_roc_auc": 0.6336444128360588
+    }
+  ],
+  "best_epoch": 24,
+  "epochs_run": 25,
+  "parameter_count": 2817,
+  "validation": {
+    "n": 15055,
+    "positive": 1618,
+    "prevalence": 0.1074726004649618,
+    "threshold": 0.1217585951089859,
+    "roc_auc": 0.6339081993495628,
+    "average_precision": 0.18533301019414866,
+    "f1": 0.25374771480804387,
+    "precision": 0.1801661474558671,
+    "sensitivity": 0.4289245982694685,
+    "specificity": 0.7649773014809853,
+    "accuracy": 0.7288608435735636,
+    "brier": 0.09330200403928757,
+    "confusion_matrix": [
+      [
+        10279,
+        3158
+      ],
+      [
+        924,
+        694
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 15125,
+    "positive": 1675,
+    "prevalence": 0.11074380165289256,
+    "threshold": 0.1217585951089859,
+    "roc_auc": 0.6342483937191367,
+    "average_precision": 0.18673943085188008,
+    "f1": 0.24656065749508665,
+    "precision": 0.17593064762876084,
+    "sensitivity": 0.41194029850746267,
+    "specificity": 0.7597026022304832,
+    "accuracy": 0.7211900826446281,
+    "brier": 0.09583789110183716,
+    "confusion_matrix": [
+      [
+        10218,
+        3232
+      ],
+      [
+        985,
+        690
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 4.128425610000022,
+  "dataset": "hospital",
+  "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+  "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+  "database_source": {
+    "table": "prepared_hospital",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 71583
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 15055
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 15125
+      }
+    ],
+    "raw_source_sha256": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422"
+  },
+  "weights": "models/benchmark/full/hospital/mlp2-seed42.pt",
+  "weights_sha256": "7491640b3d0b2a65cd05b94b410ab4b03b588af0aa0de9b23b54a116ba774260",
+  "artifact_bytes": 14469,
+  "prediction_file": "results/benchmark/full/hospital/mlp2-seed42-predictions.npz",
+  "prediction_sha256": "e5cb52c49d94c1b6e45415aee546325bb5e3d30f9cf6a81793c8c70778d7e2a5"
+}

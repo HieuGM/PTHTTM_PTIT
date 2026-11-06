@@ -1,0 +1,174 @@
+{
+  "model_id": "mlp2",
+  "model_name": "MLP 64-32",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 32,
+    "epochs_max": 100,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.6876363893917629,
+      "val_roc_auc": 0.875
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.65434394632067,
+      "val_roc_auc": 0.9326923076923078
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.611490273135049,
+      "val_roc_auc": 0.9583333333333333
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.5721117799622671,
+      "val_roc_auc": 0.9583333333333334
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.5308769045557294,
+      "val_roc_auc": 0.9551282051282052
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.48974947214126585,
+      "val_roc_auc": 0.9551282051282052
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.4518959219115121,
+      "val_roc_auc": 0.9551282051282052
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.40955803973334176,
+      "val_roc_auc": 0.9583333333333334
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.3746037449155535,
+      "val_roc_auc": 0.951923076923077
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.3426646060603006,
+      "val_roc_auc": 0.951923076923077
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.3141615120002202,
+      "val_roc_auc": 0.951923076923077
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.2972033038309642,
+      "val_roc_auc": 0.951923076923077
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.2726913169452122,
+      "val_roc_auc": 0.9551282051282052
+    }
+  ],
+  "best_epoch": 3,
+  "epochs_run": 13,
+  "parameter_count": 3201,
+  "validation": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.5187925100326538,
+    "roc_auc": 0.9583333333333333,
+    "average_precision": 0.9838173337253603,
+    "f1": 0.9615384615384616,
+    "precision": 0.9615384615384616,
+    "sensitivity": 0.9615384615384616,
+    "specificity": 0.9166666666666666,
+    "accuracy": 0.9473684210526315,
+    "brier": 0.19689759612083435,
+    "confusion_matrix": [
+      [
+        11,
+        1
+      ],
+      [
+        1,
+        25
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.5187925100326538,
+    "roc_auc": 0.9262820512820513,
+    "average_precision": 0.970191846578653,
+    "f1": 0.9090909090909091,
+    "precision": 0.8620689655172413,
+    "sensitivity": 0.9615384615384616,
+    "specificity": 0.6666666666666666,
+    "accuracy": 0.868421052631579,
+    "brier": 0.2012605220079422,
+    "confusion_matrix": [
+      [
+        8,
+        4
+      ],
+      [
+        1,
+        25
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 1.8134122330000082,
+  "dataset": "early",
+  "task": "Phân loại nhãn Positive/Negative trong khảo sát triệu chứng tại Sylhet, Bangladesh",
+  "label_semantics": "1 = Positive; 0 = Negative theo nhãn bộ Early Stage UCI529",
+  "database_source": {
+    "table": "prepared_early",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 175
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 38
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 38
+      }
+    ],
+    "raw_source_sha256": "7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137"
+  },
+  "weights": "models/benchmark/full/early/mlp2-seed42.pt",
+  "weights_sha256": "ca95c37976214d6051f90f35db67c9c82acb9fa55a20ab844f0d14e586fc428f",
+  "artifact_bytes": 16005,
+  "prediction_file": "results/benchmark/full/early/mlp2-seed42-predictions.npz",
+  "prediction_sha256": "28e38a802b11be727679310d056ed69deadcb7dd10892669a9091d5570f4d763"
+}

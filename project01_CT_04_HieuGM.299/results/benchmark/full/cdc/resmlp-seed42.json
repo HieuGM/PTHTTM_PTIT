@@ -1,0 +1,234 @@
+{
+  "model_id": "resmlp",
+  "model_name": "Residual MLP width32, two residual blocks",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 2048,
+    "epochs_max": 25,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.44009224815742565,
+      "val_roc_auc": 0.8023533796491242
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.3363197321554379,
+      "val_roc_auc": 0.8176000021395855
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.3318906437264289,
+      "val_roc_auc": 0.8207331128579471
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.33002375333165573,
+      "val_roc_auc": 0.8222512112824245
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.3290093269764537,
+      "val_roc_auc": 0.8233423585978449
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.32831081259890105,
+      "val_roc_auc": 0.8241806161288247
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.3275769429687661,
+      "val_roc_auc": 0.8245884264736626
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.3271070240662942,
+      "val_roc_auc": 0.8245407361320659
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.32678746813790716,
+      "val_roc_auc": 0.8249082229919381
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.3263425246925128,
+      "val_roc_auc": 0.8252812272595998
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.3263329035906003,
+      "val_roc_auc": 0.82544074737864
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.32589521547346284,
+      "val_roc_auc": 0.8255115970824031
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.32575359258780456,
+      "val_roc_auc": 0.8256084112603301
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.32558070051877663,
+      "val_roc_auc": 0.8255306381551417
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.325497705890355,
+      "val_roc_auc": 0.8256006043861309
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.3253812038902757,
+      "val_roc_auc": 0.8256513335990582
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.32519082075154326,
+      "val_roc_auc": 0.8255761043454362
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.32499737783585836,
+      "val_roc_auc": 0.8257073120840691
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.32497224621919363,
+      "val_roc_auc": 0.8256607664756774
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.32491204952885033,
+      "val_roc_auc": 0.8256914061365042
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.32475164929401246,
+      "val_roc_auc": 0.8257065145522267
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.32473782691955627,
+      "val_roc_auc": 0.8258089836434331
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.3243696201050698,
+      "val_roc_auc": 0.8255703359901274
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.3244136747883366,
+      "val_roc_auc": 0.8255600093278224
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.32433201130736683,
+      "val_roc_auc": 0.8257955081054055
+    }
+  ],
+  "best_epoch": 22,
+  "epochs_run": 25,
+  "parameter_count": 4961,
+  "validation": {
+    "n": 33951,
+    "positive": 5029,
+    "prevalence": 0.14812523931548408,
+    "threshold": 0.2486248016357422,
+    "roc_auc": 0.8258089836434331,
+    "average_precision": 0.43662021916649996,
+    "f1": 0.480225988700565,
+    "precision": 0.3966299416720674,
+    "sensitivity": 0.6084708689600318,
+    "specificity": 0.8390498582394025,
+    "accuracy": 0.8048952902712733,
+    "brier": 0.10179471224546432,
+    "confusion_matrix": [
+      [
+        24267,
+        4655
+      ],
+      [
+        1969,
+        3060
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 33952,
+    "positive": 5030,
+    "prevalence": 0.1481503298774741,
+    "threshold": 0.2486248016357422,
+    "roc_auc": 0.8270796320204765,
+    "average_precision": 0.43648048483757423,
+    "f1": 0.4780571607059191,
+    "precision": 0.39364711934156377,
+    "sensitivity": 0.6085487077534791,
+    "specificity": 0.8369753129105871,
+    "accuracy": 0.80313383600377,
+    "brier": 0.10181023180484772,
+    "confusion_matrix": [
+      [
+        24207,
+        4715
+      ],
+      [
+        1969,
+        3061
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 7.780769503999977,
+  "dataset": "cdc",
+  "task": "Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015",
+  "label_semantics": "1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó",
+  "database_source": {
+    "table": "prepared_cdc",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 158439
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 33951
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 33952
+      }
+    ],
+    "raw_source_sha256": "19f367e3e3350768f0c144c5d73ee5b355f67a57eaaa86ca7bd8aec594d8b1d0"
+  },
+  "weights": "models/benchmark/full/cdc/resmlp-seed42.pt",
+  "weights_sha256": "bd6874618c884533df74f779622c0fa3042a0ca3a8b0ad5ab894a574bf57930d",
+  "artifact_bytes": 25131,
+  "prediction_file": "results/benchmark/full/cdc/resmlp-seed42-predictions.npz",
+  "prediction_sha256": "9141e8ec47a4a224e24d491f42bec6bc367e0c6104c3362d1ad50628af5d55e9"
+}

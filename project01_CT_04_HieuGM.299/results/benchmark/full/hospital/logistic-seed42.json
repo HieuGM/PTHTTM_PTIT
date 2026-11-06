@@ -1,0 +1,104 @@
+{
+  "model_id": "logistic",
+  "model_name": "Logistic Regression",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "random_state": 42
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 15055,
+    "positive": 1618,
+    "prevalence": 0.1074726004649618,
+    "threshold": 0.11020423471927643,
+    "roc_auc": 0.6287106391195354,
+    "average_precision": 0.18070536712391294,
+    "f1": 0.248159509202454,
+    "precision": 0.16503467972256222,
+    "sensitivity": 0.5,
+    "specificity": 0.6953933169606311,
+    "accuracy": 0.6743938890733976,
+    "brier": 0.09360820800065994,
+    "confusion_matrix": [
+      [
+        9344,
+        4093
+      ],
+      [
+        809,
+        809
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 15125,
+    "positive": 1675,
+    "prevalence": 0.11074380165289256,
+    "threshold": 0.11020423471927643,
+    "roc_auc": 0.6284577262386949,
+    "average_precision": 0.18488106642328017,
+    "f1": 0.23964944091870655,
+    "precision": 0.16042888933845842,
+    "sensitivity": 0.4734328358208955,
+    "specificity": 0.6914498141263941,
+    "accuracy": 0.667305785123967,
+    "brier": 0.0961315855383873,
+    "confusion_matrix": [
+      [
+        9300,
+        4150
+      ],
+      [
+        882,
+        793
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.08152212499999223,
+  "dataset": "hospital",
+  "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+  "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+  "database_source": {
+    "table": "prepared_hospital",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 71583
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 15055
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 15125
+      }
+    ],
+    "raw_source_sha256": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422"
+  },
+  "weights": "models/benchmark/full/hospital/logistic-seed42.npz",
+  "weights_sha256": "49c70b2e229babfca5cc7b16051534ed071c9909e0b7aaa06be2f591d05ba15c",
+  "artifact_bytes": 637,
+  "prediction_file": "results/benchmark/full/hospital/logistic-seed42-predictions.npz",
+  "prediction_sha256": "091a615b1dbcbf1926fd8334baf22569a71a3f1596035bd8135eeca61d245e62"
+}

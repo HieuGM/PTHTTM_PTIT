@@ -1,0 +1,104 @@
+{
+  "model_id": "logistic",
+  "model_name": "Logistic Regression",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "random_state": 42
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 115,
+    "positive": 40,
+    "prevalence": 0.34782608695652173,
+    "threshold": 0.22164727747440338,
+    "roc_auc": 0.8096666666666665,
+    "average_precision": 0.6847826012524735,
+    "f1": 0.6909090909090909,
+    "precision": 0.5428571428571428,
+    "sensitivity": 0.95,
+    "specificity": 0.5733333333333334,
+    "accuracy": 0.7043478260869566,
+    "brier": 0.17739473283290863,
+    "confusion_matrix": [
+      [
+        43,
+        32
+      ],
+      [
+        2,
+        38
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 116,
+    "positive": 41,
+    "prevalence": 0.35344827586206895,
+    "threshold": 0.22164727747440338,
+    "roc_auc": 0.8624390243902438,
+    "average_precision": 0.7832249786711549,
+    "f1": 0.7291666666666666,
+    "precision": 0.6363636363636364,
+    "sensitivity": 0.8536585365853658,
+    "specificity": 0.7333333333333333,
+    "accuracy": 0.7758620689655172,
+    "brier": 0.14926959574222565,
+    "confusion_matrix": [
+      [
+        55,
+        20
+      ],
+      [
+        6,
+        35
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.018175905000020975,
+  "dataset": "pima",
+  "task": "Phân loại nhãn xét nghiệm đái tháo đường trong cohort phụ nữ Pima từ 21 tuổi",
+  "label_semantics": "1 = tested_positive theo nhãn gốc; 0 = tested_negative",
+  "database_source": {
+    "table": "prepared_pima",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 537
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 115
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 116
+      }
+    ],
+    "raw_source_sha256": "123ce738f394095a201da0f65c5e174cdcb19cdf5ec1535aee65e2b0e1e2aae2"
+  },
+  "weights": "models/benchmark/full/pima/logistic-seed42.npz",
+  "weights_sha256": "37aad09deceb98d99545599a3067cf3ae3addc139f7f332eefd1527e6a5968e1",
+  "artifact_bytes": 629,
+  "prediction_file": "results/benchmark/full/pima/logistic-seed42-predictions.npz",
+  "prediction_sha256": "19da8bb4b129e3a1ac3b047af8b7afbb644d62b217d3f9823bbc570d1f3ec7a7"
+}

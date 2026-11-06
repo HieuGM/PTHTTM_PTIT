@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "files": [
+    {
+      "path": "models/cdc/logistic-baseline.npz",
+      "sha256": "64a96660eeed6420a653aa00c8e4c253e22081b9c9717593b4197d1de74cd3ca",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "models/cdc/metadata.json",
+      "sha256": "63bc704d09246d2e8531dfcca62e9f2d23ce940dd4384e5767f9c988595757a1",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "models/cdc/model.pt",
+      "sha256": "61789eefd0cdb33db9b43639e002c155b9d84b2ee49f483c46b7bba8d0bc35a9",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "models/hospital/logistic-baseline.npz",
+      "sha256": "dffcdef33d05a1d039f4d6649074803fb603d7a4e46117f8f0c809b3a11f5240",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "models/hospital/metadata.json",
+      "sha256": "8061daddb779ffb0c2d937f9378d4dbdd09ef59ba0862ab96fd9d0f9bc777f3b",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "models/hospital/model.pt",
+      "sha256": "976a8fd8287ed91fcbdffe67dbc9940486c4b9b0116c4f55688091b9be069b6b",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "results/cdc-test-predictions.npz",
+      "sha256": "87c05187a312e2b675589e4353fcec01a446f94c31ec031d21850e386bc39ce1",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "results/cdc-training.json",
+      "sha256": "8dba5c3c6b6751c05b5c35e86a06d992dfef67603d2054db63c2f93fa9492231",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "results/data-manifest.json",
+      "sha256": "40082e78684984060b92f6c9e7077e76e99858f714b36492e057ee21fd261d36",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "results/hospital-test-predictions.npz",
+      "sha256": "0e2467e8e7437358634e9177aa45bde6fb81700ac9b155fbb0d88974112e939c",
+      "matches_previous_submission_manifest": true
+    },
+    {
+      "path": "results/hospital-training.json",
+      "sha256": "2a3fbf4e824e5139d979e4bf0616b7b9159723a88e6da573c70b26a6921f26da",
+      "matches_previous_submission_manifest": true
+    }
+  ],
+  "policy": "Existing CDC/Hospital trained models and historical results reused unchanged; new benchmark separate."
+}

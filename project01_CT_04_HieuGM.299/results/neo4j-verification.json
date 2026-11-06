@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "backend": "neo4j",
+  "graph_status": "connected",
+  "inventory": {
+    "cards": 24,
+    "documents": 12,
+    "reference_documents": 14,
+    "chunks": 340,
+    "concepts": 34,
+    "relations": 19,
+    "mentions": 2160,
+    "storage": "SQLite evidence cache",
+    "language": "vi/en",
+    "retriever": "word TF-IDF + character TF-IDF + LSA32 + graph evidence",
+    "semantic_method": "latent semantic analysis; not a neural embedding model",
+    "graph_backend": "neo4j",
+    "graph_status": "connected",
+    "corpus_version": "diacare-kg-rag-2.0",
+    "pdf_pages": 77
+  },
+  "neo4j_counts": {
+    "nodes": 400,
+    "edges": 2545
+  },
+  "initialization_seconds": 10.460186816999794,
+  "checks": [
+    "source/page/hash:WEB01",
+    "source/page/hash:WEB02",
+    "source/page/hash:WEB03",
+    "source/page/hash:WEB04",
+    "source/page/hash:WEB05",
+    "source/page/hash:WEB06",
+    "source/page/hash:WEB07",
+    "source/page/hash:PDF01",
+    "source/page/hash:VIN01",
+    "source/page/hash:VIN02",
+    "source/page/hash:VIN03",
+    "source/page/hash:VIN04",
+    "all19medicalrelations exact source evidence",
+    "actualNeo4jseed/counts",
+    "actualNeo4jseed idempotent",
+    "Neo4j/cache match:type2",
+    "Neo4j/cache match:a1c",
+    "Neo4j/cache match:type1,insulin",
+    "Neo4j/cache match:symptoms",
+    "3retrievalmethods actual30queries each, source IDs valid",
+    "citation parser contract fixture only, notsimulatedFPTnetwork"
+  ],
+  "fpt_configuration": {
+    "provider": "FPT Cloud",
+    "configured": true,
+    "missing": [],
+    "endpoint_configured": true,
+    "model": "DeepSeek-V4.1-Flash",
+    "transport": "HTTPS Chat Completions, Bearer authentication"
+  },
+  "fpt_live_generation_tested": false,
+  "corpus_sha256": "cd2f33278ea335a2e2f38568410b12b92ff491f0fb7eb80fb1f8267d88fbb9ef"
+}

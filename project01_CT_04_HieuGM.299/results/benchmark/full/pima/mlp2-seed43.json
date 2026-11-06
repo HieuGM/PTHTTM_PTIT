@@ -1,0 +1,274 @@
+{
+  "model_id": "mlp2",
+  "model_name": "MLP 64-32",
+  "seed": 43,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 32,
+    "epochs_max": 100,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.6827377742451218,
+      "val_roc_auc": 0.702
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.6412245178355851,
+      "val_roc_auc": 0.7786666666666666
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.5865229080731198,
+      "val_roc_auc": 0.802
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.527322359591223,
+      "val_roc_auc": 0.8036666666666666
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.49504945564536407,
+      "val_roc_auc": 0.8079999999999999
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.48012740219105554,
+      "val_roc_auc": 0.8043333333333333
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.4637104081929951,
+      "val_roc_auc": 0.8043333333333333
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.46604690044507857,
+      "val_roc_auc": 0.8076666666666666
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.45353113938976264,
+      "val_roc_auc": 0.8076666666666666
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.4518846162426627,
+      "val_roc_auc": 0.8069999999999999
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.4467195636511293,
+      "val_roc_auc": 0.8096666666666666
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.4398950404961016,
+      "val_roc_auc": 0.8143333333333332
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.4429114978184691,
+      "val_roc_auc": 0.812
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.43920096771677114,
+      "val_roc_auc": 0.812
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.4421885460892647,
+      "val_roc_auc": 0.811
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.4380091106869433,
+      "val_roc_auc": 0.8136666666666668
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.4284406781640577,
+      "val_roc_auc": 0.814
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.4186103242957614,
+      "val_roc_auc": 0.8146666666666667
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.4334907040582689,
+      "val_roc_auc": 0.813
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.4223041232515758,
+      "val_roc_auc": 0.8136666666666666
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.42190504740070367,
+      "val_roc_auc": 0.813
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.420156188073327,
+      "val_roc_auc": 0.8146666666666667
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.4032484829647803,
+      "val_roc_auc": 0.815
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.409526298831961,
+      "val_roc_auc": 0.8146666666666667
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.41496274210998246,
+      "val_roc_auc": 0.8136666666666666
+    },
+    {
+      "epoch": 26,
+      "train_bce": 0.40828985297702103,
+      "val_roc_auc": 0.8143333333333334
+    },
+    {
+      "epoch": 27,
+      "train_bce": 0.40921201730351653,
+      "val_roc_auc": 0.8133333333333334
+    },
+    {
+      "epoch": 28,
+      "train_bce": 0.40695586062454425,
+      "val_roc_auc": 0.8123333333333332
+    },
+    {
+      "epoch": 29,
+      "train_bce": 0.40035606906844695,
+      "val_roc_auc": 0.813
+    },
+    {
+      "epoch": 30,
+      "train_bce": 0.40522478262805406,
+      "val_roc_auc": 0.8136666666666666
+    },
+    {
+      "epoch": 31,
+      "train_bce": 0.40268288683180925,
+      "val_roc_auc": 0.813
+    },
+    {
+      "epoch": 32,
+      "train_bce": 0.4069325917259941,
+      "val_roc_auc": 0.8109999999999999
+    },
+    {
+      "epoch": 33,
+      "train_bce": 0.39376251063755324,
+      "val_roc_auc": 0.808
+    }
+  ],
+  "best_epoch": 23,
+  "epochs_run": 33,
+  "parameter_count": 2689,
+  "validation": {
+    "n": 115,
+    "positive": 40,
+    "prevalence": 0.34782608695652173,
+    "threshold": 0.19482135772705078,
+    "roc_auc": 0.815,
+    "average_precision": 0.6749639815549032,
+    "f1": 0.7155963302752294,
+    "precision": 0.5652173913043478,
+    "sensitivity": 0.975,
+    "specificity": 0.6,
+    "accuracy": 0.7304347826086957,
+    "brier": 0.17244750261306763,
+    "confusion_matrix": [
+      [
+        45,
+        30
+      ],
+      [
+        1,
+        39
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 116,
+    "positive": 41,
+    "prevalence": 0.35344827586206895,
+    "threshold": 0.19482135772705078,
+    "roc_auc": 0.8702439024390245,
+    "average_precision": 0.7905264376462974,
+    "f1": 0.6938775510204082,
+    "precision": 0.5964912280701754,
+    "sensitivity": 0.8292682926829268,
+    "specificity": 0.6933333333333334,
+    "accuracy": 0.7413793103448276,
+    "brier": 0.1474255621433258,
+    "confusion_matrix": [
+      [
+        52,
+        23
+      ],
+      [
+        7,
+        34
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.5454227010000068,
+  "dataset": "pima",
+  "task": "Phân loại nhãn xét nghiệm đái tháo đường trong cohort phụ nữ Pima từ 21 tuổi",
+  "label_semantics": "1 = tested_positive theo nhãn gốc; 0 = tested_negative",
+  "database_source": {
+    "table": "prepared_pima",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 537
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 115
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_pima\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 116
+      }
+    ],
+    "raw_source_sha256": "123ce738f394095a201da0f65c5e174cdcb19cdf5ec1535aee65e2b0e1e2aae2"
+  },
+  "weights": "models/benchmark/full/pima/mlp2-seed43.pt",
+  "weights_sha256": "82eb8b115a44f1378b3402c64857870f4d57cf2b32f271d3128d7e39bfe1f55a",
+  "artifact_bytes": 13957,
+  "prediction_file": "results/benchmark/full/pima/mlp2-seed43-predictions.npz",
+  "prediction_sha256": "aadef622fad6186e5b7308ebc22b44d20a24c6d1acad42e4e486ab4d79762a46"
+}

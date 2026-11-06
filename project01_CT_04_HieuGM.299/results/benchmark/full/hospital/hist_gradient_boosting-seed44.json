@@ -1,0 +1,105 @@
+{
+  "model_id": "hist_gradient_boosting",
+  "model_name": "Histogram Gradient Boosting",
+  "seed": 44,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "max_iter": 100,
+    "max_depth": 6,
+    "early_stopping": false,
+    "random_state": 44
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 15055,
+    "positive": 1618,
+    "prevalence": 0.1074726004649618,
+    "threshold": 0.12837121942616483,
+    "roc_auc": 0.6314949782131198,
+    "average_precision": 0.1836994675273807,
+    "f1": 0.2508462497773027,
+    "precision": 0.17622027534418022,
+    "sensitivity": 0.43510506798516685,
+    "specificity": 0.7550792587631168,
+    "accuracy": 0.7206908003985387,
+    "brier": 0.09343562714660099,
+    "confusion_matrix": [
+      [
+        10146,
+        3291
+      ],
+      [
+        914,
+        704
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 15125,
+    "positive": 1675,
+    "prevalence": 0.11074380165289256,
+    "threshold": 0.12837121942616483,
+    "roc_auc": 0.6295735227209677,
+    "average_precision": 0.18204580454124397,
+    "f1": 0.24408901251738527,
+    "precision": 0.17218543046357615,
+    "sensitivity": 0.4191044776119403,
+    "specificity": 0.7490706319702602,
+    "accuracy": 0.7125289256198347,
+    "brier": 0.09611192438541236,
+    "confusion_matrix": [
+      [
+        10075,
+        3375
+      ],
+      [
+        973,
+        702
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.6163105709999854,
+  "dataset": "hospital",
+  "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+  "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+  "database_source": {
+    "table": "prepared_hospital",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 71583
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 15055
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 15125
+      }
+    ],
+    "raw_source_sha256": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422"
+  },
+  "weights": null,
+  "artifact_note": "Tree ensemble not shipped; exact config/seed/data and held-out scores retained for refit.",
+  "artifact_bytes": null,
+  "prediction_file": "results/benchmark/full/hospital/hist_gradient_boosting-seed44-predictions.npz",
+  "prediction_sha256": "1eb15557c6deb50edf9cdfebc69392c182d54dabfc23b93a4ea985c7e0ac25b8"
+}

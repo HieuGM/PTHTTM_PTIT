@@ -36,7 +36,7 @@ def test_health_catalog_and_knowledge(client):
     assert client.get("/").status_code == 200
     assert client.get("/health").json()["status"] == "ok"
     catalog = client.get("/api/catalog").json()
-    assert set(catalog["datasets"]) == {"cdc", "hospital"}
+    assert set(catalog["datasets"]) == {"cdc", "hospital", "pima", "early"}
     assert len(client.get("/api/knowledge").json()["cards"]) == 24
 
 

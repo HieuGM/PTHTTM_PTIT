@@ -1,0 +1,106 @@
+{
+  "model_id": "random_forest",
+  "model_name": "Random Forest",
+  "seed": 43,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "n_estimators": 100,
+    "max_depth": 12,
+    "min_samples_leaf": 5,
+    "n_jobs": 2,
+    "random_state": 43
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.47510814064177437,
+    "roc_auc": 0.9391025641025641,
+    "average_precision": 0.9772975044018872,
+    "f1": 0.9433962264150944,
+    "precision": 0.9259259259259259,
+    "sensitivity": 0.9615384615384616,
+    "specificity": 0.8333333333333334,
+    "accuracy": 0.9210526315789473,
+    "brier": 0.09764399919956639,
+    "confusion_matrix": [
+      [
+        10,
+        2
+      ],
+      [
+        1,
+        25
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.47510814064177437,
+    "roc_auc": 0.9615384615384615,
+    "average_precision": 0.9839303422825711,
+    "f1": 0.9019607843137255,
+    "precision": 0.92,
+    "sensitivity": 0.8846153846153846,
+    "specificity": 0.8333333333333334,
+    "accuracy": 0.868421052631579,
+    "brier": 0.093342317908262,
+    "confusion_matrix": [
+      [
+        10,
+        2
+      ],
+      [
+        3,
+        23
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.2367612940000754,
+  "dataset": "early",
+  "task": "Phân loại nhãn Positive/Negative trong khảo sát triệu chứng tại Sylhet, Bangladesh",
+  "label_semantics": "1 = Positive; 0 = Negative theo nhãn bộ Early Stage UCI529",
+  "database_source": {
+    "table": "prepared_early",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 175
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 38
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 38
+      }
+    ],
+    "raw_source_sha256": "7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137"
+  },
+  "weights": null,
+  "artifact_note": "Tree ensemble not shipped; exact config/seed/data and held-out scores retained for refit.",
+  "artifact_bytes": null,
+  "prediction_file": "results/benchmark/full/early/random_forest-seed43-predictions.npz",
+  "prediction_sha256": "640f7400b2f14e3fe38b15c2250aea16f9f45a84b426baa8dba7621f72d9c257"
+}

@@ -1,0 +1,377 @@
+{
+  "dataset": "early",
+  "model_id": "resmlp",
+  "model_name": "Residual MLP width32, two residual blocks",
+  "model_version": "2.0-db-benchmark",
+  "feature_specs": [
+    {
+      "name": "Age",
+      "label": "Tuổi (năm)",
+      "min": 16,
+      "max": 90,
+      "default": 40,
+      "integer": true
+    },
+    {
+      "name": "Gender",
+      "label": "Giới tính theo mã bộ dữ liệu",
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "integer": true,
+      "coding": "0 = Female; 1 = Male"
+    },
+    {
+      "name": "Polyuria",
+      "label": "Tiểu nhiều",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "Polydipsia",
+      "label": "Khát nhiều",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "sudden weight loss",
+      "label": "Sụt cân đột ngột",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "weakness",
+      "label": "Yếu sức",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "Polyphagia",
+      "label": "Ăn nhiều",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "Genital thrush",
+      "label": "Nấm sinh dục",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "visual blurring",
+      "label": "Nhìn mờ",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "Itching",
+      "label": "Ngứa",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "Irritability",
+      "label": "Dễ kích thích",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "delayed healing",
+      "label": "Chậm lành vết thương",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "partial paresis",
+      "label": "Yếu/liệt một phần",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "muscle stiffness",
+      "label": "Cứng cơ",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "Alopecia",
+      "label": "Rụng tóc",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    },
+    {
+      "name": "Obesity",
+      "label": "Béo phì",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "integer": true,
+      "coding": "0 = Không; 1 = Có"
+    }
+  ],
+  "task": "Phân loại nhãn Positive/Negative trong khảo sát triệu chứng tại Sylhet, Bangladesh",
+  "label_semantics": "1 = Positive; 0 = Negative theo nhãn bộ Early Stage UCI529",
+  "preprocessing": {
+    "mean": [
+      49.097142857142856,
+      0.6285714285714286,
+      0.5428571428571428,
+      0.5142857142857142,
+      0.4057142857142857,
+      0.64,
+      0.49142857142857144,
+      0.26857142857142857,
+      0.4685714285714286,
+      0.4685714285714286,
+      0.3028571428571429,
+      0.49142857142857144,
+      0.4514285714285714,
+      0.4057142857142857,
+      0.36,
+      0.19428571428571428
+    ],
+    "scale": [
+      12.636307908207222,
+      0.48318670072250663,
+      0.49815987926179073,
+      0.4997958767010257,
+      0.4910297384900764,
+      0.48000000000000026,
+      0.49992652521370085,
+      0.4432164441066358,
+      0.4990112673056179,
+      0.4990112673056182,
+      0.4594939541251338,
+      0.49992652521370096,
+      0.4976352241617657,
+      0.4910297384900764,
+      0.4800000000000001,
+      0.39564981424259993
+    ],
+    "median": [
+      49.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "zero_as_missing": [],
+    "fitted_on": "train rows only; validation/test excluded"
+  },
+  "threshold": 0.315549373626709,
+  "threshold_selection": "maximum validation F1 only",
+  "seed": 42,
+  "best_epoch": 12,
+  "best_val_roc_auc": 0.9743589743589743,
+  "selection": "best validation ROC-AUC among neural architectures/seeds; test excluded",
+  "data_provenance": {
+    "dataset": "early",
+    "source_url": "https://archive.ics.uci.edu/static/public/529/early+stage+diabetes+risk+prediction+dataset.zip",
+    "license": "CC BY 4.0",
+    "raw_rows": 520,
+    "raw_columns": [
+      "Age",
+      "Gender",
+      "Polyuria",
+      "Polydipsia",
+      "sudden weight loss",
+      "weakness",
+      "Polyphagia",
+      "Genital thrush",
+      "visual blurring",
+      "Itching",
+      "Irritability",
+      "delayed healing",
+      "partial paresis",
+      "muscle stiffness",
+      "Alopecia",
+      "Obesity",
+      "class"
+    ],
+    "source_csv_sha256": "7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137",
+    "raw_table": "raw_early",
+    "exact_duplicate_rows": 269,
+    "conflicting_feature_rows_removed": 0,
+    "clean_rows": 251,
+    "features": [
+      "Age",
+      "Gender",
+      "Polyuria",
+      "Polydipsia",
+      "sudden weight loss",
+      "weakness",
+      "Polyphagia",
+      "Genital thrush",
+      "visual blurring",
+      "Itching",
+      "Irritability",
+      "delayed healing",
+      "partial paresis",
+      "muscle stiffness",
+      "Alopecia",
+      "Obesity"
+    ],
+    "group_unit": "unique feature vector",
+    "split": {
+      "train": {
+        "n": 175,
+        "positive": 121,
+        "groups": 175
+      },
+      "val": {
+        "n": 38,
+        "positive": 26,
+        "groups": 38
+      },
+      "test": {
+        "n": 38,
+        "positive": 26,
+        "groups": 38
+      }
+    },
+    "source_query": "SELECT * FROM \"raw_early\" ORDER BY rowid",
+    "split_seed": 42,
+    "preprocessing": {
+      "mean": [
+        49.097142857142856,
+        0.6285714285714286,
+        0.5428571428571428,
+        0.5142857142857142,
+        0.4057142857142857,
+        0.64,
+        0.49142857142857144,
+        0.26857142857142857,
+        0.4685714285714286,
+        0.4685714285714286,
+        0.3028571428571429,
+        0.49142857142857144,
+        0.4514285714285714,
+        0.4057142857142857,
+        0.36,
+        0.19428571428571428
+      ],
+      "scale": [
+        12.636307908207222,
+        0.48318670072250663,
+        0.49815987926179073,
+        0.4997958767010257,
+        0.4910297384900764,
+        0.48000000000000026,
+        0.49992652521370085,
+        0.4432164441066358,
+        0.4990112673056179,
+        0.4990112673056182,
+        0.4594939541251338,
+        0.49992652521370096,
+        0.4976352241617657,
+        0.4910297384900764,
+        0.4800000000000001,
+        0.39564981424259993
+      ],
+      "median": [
+        49.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "zero_as_missing": [],
+      "fitted_on": "train rows only; validation/test excluded"
+    },
+    "group_overlap": 0,
+    "database_used": true,
+    "identifiers_in_features": false,
+    "prepared_table": "prepared_early",
+    "training_queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 175
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 38
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 38
+      }
+    ]
+  },
+  "clinical_use": false,
+  "score_semantics": "Điểm sigmoid nghiên cứu; chưa hiệu chuẩn thành xác suất bệnh cá nhân tại Việt Nam.",
+  "limitations": [
+    "Cohort nhỏ, quần thể nước ngoài; chưa xác thực lâm sàng tại Việt Nam.",
+    "Không dùng chẩn đoán, kê đơn hoặc thay quyết định bác sĩ.",
+    "Split cố định; SD ba seed không bao gồm bất định chọn mẫu hoặc dịch chuyển miền."
+  ]
+}

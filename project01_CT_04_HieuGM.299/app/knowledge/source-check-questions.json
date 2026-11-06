@@ -1,0 +1,61 @@
+{
+  "scope": "Eight new source-specific Vietnamese development checks, authored after source collection and before running retrieval; not a blinded clinical benchmark. Strict named-document gold may omit relevant other sources. No tuning on these results.",
+  "queries": [
+    {
+      "id": "N01",
+      "question": "Vì sao chất xơ trong bữa ăn giúp glucose vào máu chậm hơn?",
+      "expected_document_ids": [
+        "VIN01"
+      ]
+    },
+    {
+      "id": "N02",
+      "question": "Nguyên tắc chọn thực phẩm giàu chất xơ cho người đái tháo đường là gì?",
+      "expected_document_ids": [
+        "VIN01"
+      ]
+    },
+    {
+      "id": "N03",
+      "question": "Trước xét nghiệm đường máu lúc đói cần nhịn ăn bao lâu?",
+      "expected_document_ids": [
+        "VIN02"
+      ]
+    },
+    {
+      "id": "N04",
+      "question": "Định lượng HbA1c phản ánh glucose trung bình trong mấy tháng?",
+      "expected_document_ids": [
+        "VIN02"
+      ]
+    },
+    {
+      "id": "N05",
+      "question": "Vì sao sàng lọc đái tháo đường type 2 có ý nghĩa?",
+      "expected_document_ids": [
+        "VIN03"
+      ]
+    },
+    {
+      "id": "N06",
+      "question": "Đái tháo đường thai kỳ có những dấu hiệu thường gặp nào?",
+      "expected_document_ids": [
+        "VIN04"
+      ]
+    },
+    {
+      "id": "N07",
+      "question": "Bữa ăn của thai phụ mắc đái tháo đường nên ưu tiên thực phẩm giàu chất xơ nào?",
+      "expected_document_ids": [
+        "VIN04"
+      ]
+    },
+    {
+      "id": "N08",
+      "question": "Tiền sử gia đình có người tiểu đường có liên quan nguy cơ đái tháo đường thai kỳ không?",
+      "expected_document_ids": [
+        "VIN04"
+      ]
+    }
+  ]
+}

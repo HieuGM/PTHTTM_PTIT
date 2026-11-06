@@ -1,0 +1,103 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "4 datasets,6 model types,72runs",
+      "pass": true
+    },
+    {
+      "name": "report4sections cdc",
+      "pass": true
+    },
+    {
+      "name": "8 workflowmessages cdc",
+      "pass": true
+    },
+    {
+      "name": "report4sections hospital",
+      "pass": true
+    },
+    {
+      "name": "8 workflowmessages hospital",
+      "pass": true
+    },
+    {
+      "name": "report4sections pima",
+      "pass": true
+    },
+    {
+      "name": "8 workflowmessages pima",
+      "pass": true
+    },
+    {
+      "name": "report4sections early",
+      "pass": true
+    },
+    {
+      "name": "8 workflowmessages early",
+      "pass": true
+    },
+    {
+      "name": "6 benchmarkrows cdc",
+      "pass": true
+    },
+    {
+      "name": "6 benchmarkrows hospital",
+      "pass": true
+    },
+    {
+      "name": "6 benchmarkrows pima",
+      "pass": true
+    },
+    {
+      "name": "6 benchmarkrows early",
+      "pass": true
+    },
+    {
+      "name": "34 graphnodes",
+      "pass": true
+    },
+    {
+      "name": "19 graphrelations",
+      "pass": true
+    },
+    {
+      "name": "26 documents inclreferences",
+      "pass": true
+    },
+    {
+      "name": "24 curatedcards",
+      "pass": true
+    },
+    {
+      "name": "chatwithsources",
+      "pass": true
+    },
+    {
+      "name": "mobile no pageoverflow report",
+      "pass": true
+    },
+    {
+      "name": "mobile no pageoverflow chat",
+      "pass": true
+    },
+    {
+      "name": "mobile no pageoverflow benchmark",
+      "pass": true
+    },
+    {
+      "name": "mobile no pageoverflow graph",
+      "pass": true
+    },
+    {
+      "name": "mobile no pageoverflow knowledge",
+      "pass": true
+    },
+    {
+      "name": "no JavaScript errors",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "scope": "Real Chromium desktop/mobile UI, actual4models/KBcache/template; no paidLLMcalls"
+}

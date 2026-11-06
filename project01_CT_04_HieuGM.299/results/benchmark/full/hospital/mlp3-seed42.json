@@ -1,0 +1,234 @@
+{
+  "model_id": "mlp3",
+  "model_name": "MLP 64-32-16",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "deep_learning",
+  "config": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 2048,
+    "epochs_max": 25,
+    "patience": 10,
+    "checkpoint": "maximum validation ROC-AUC; delta > 1e-5"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_bce": 0.6669229803211326,
+      "val_roc_auc": 0.511966248573092
+    },
+    {
+      "epoch": 2,
+      "train_bce": 0.37523838925722675,
+      "val_roc_auc": 0.5912473886974999
+    },
+    {
+      "epoch": 3,
+      "train_bce": 0.3503851001698448,
+      "val_roc_auc": 0.6151881191106268
+    },
+    {
+      "epoch": 4,
+      "train_bce": 0.3472232617927134,
+      "val_roc_auc": 0.6210744220177612
+    },
+    {
+      "epoch": 5,
+      "train_bce": 0.3452826924882787,
+      "val_roc_auc": 0.6234639092673744
+    },
+    {
+      "epoch": 6,
+      "train_bce": 0.3439797330304493,
+      "val_roc_auc": 0.625913260186966
+    },
+    {
+      "epoch": 7,
+      "train_bce": 0.3427295839036465,
+      "val_roc_auc": 0.627139511006498
+    },
+    {
+      "epoch": 8,
+      "train_bce": 0.3426559323913675,
+      "val_roc_auc": 0.6289018670933615
+    },
+    {
+      "epoch": 9,
+      "train_bce": 0.3419514263658617,
+      "val_roc_auc": 0.630093299013029
+    },
+    {
+      "epoch": 10,
+      "train_bce": 0.34179782819719945,
+      "val_roc_auc": 0.6299399716646829
+    },
+    {
+      "epoch": 11,
+      "train_bce": 0.34045892295692787,
+      "val_roc_auc": 0.6312024442591729
+    },
+    {
+      "epoch": 12,
+      "train_bce": 0.3413275822254148,
+      "val_roc_auc": 0.6307536852148832
+    },
+    {
+      "epoch": 13,
+      "train_bce": 0.3403790737968504,
+      "val_roc_auc": 0.6322088806501025
+    },
+    {
+      "epoch": 14,
+      "train_bce": 0.3405484334880251,
+      "val_roc_auc": 0.6311236302764548
+    },
+    {
+      "epoch": 15,
+      "train_bce": 0.33988623089055137,
+      "val_roc_auc": 0.6330167297224524
+    },
+    {
+      "epoch": 16,
+      "train_bce": 0.3397500601368941,
+      "val_roc_auc": 0.6321489939821717
+    },
+    {
+      "epoch": 17,
+      "train_bce": 0.33995857404036844,
+      "val_roc_auc": 0.6317320411059881
+    },
+    {
+      "epoch": 18,
+      "train_bce": 0.33961733235270436,
+      "val_roc_auc": 0.6327825415736285
+    },
+    {
+      "epoch": 19,
+      "train_bce": 0.3395263105341524,
+      "val_roc_auc": 0.633329754851947
+    },
+    {
+      "epoch": 20,
+      "train_bce": 0.339400694005496,
+      "val_roc_auc": 0.6331555913587676
+    },
+    {
+      "epoch": 21,
+      "train_bce": 0.3392348840838747,
+      "val_roc_auc": 0.6326463247018338
+    },
+    {
+      "epoch": 22,
+      "train_bce": 0.33908517749033795,
+      "val_roc_auc": 0.6330418204884709
+    },
+    {
+      "epoch": 23,
+      "train_bce": 0.33938612498346843,
+      "val_roc_auc": 0.6336753450819753
+    },
+    {
+      "epoch": 24,
+      "train_bce": 0.3391448460467168,
+      "val_roc_auc": 0.6332989835916969
+    },
+    {
+      "epoch": 25,
+      "train_bce": 0.3386750405346303,
+      "val_roc_auc": 0.6344381181677108
+    }
+  ],
+  "best_epoch": 25,
+  "epochs_run": 25,
+  "parameter_count": 3329,
+  "validation": {
+    "n": 15055,
+    "positive": 1618,
+    "prevalence": 0.1074726004649618,
+    "threshold": 0.13509008288383484,
+    "roc_auc": 0.6344381181677108,
+    "average_precision": 0.1846840934582957,
+    "f1": 0.255031032537145,
+    "precision": 0.18329278183292783,
+    "sensitivity": 0.41903584672435107,
+    "specificity": 0.7751730296941282,
+    "accuracy": 0.7368980405181003,
+    "brier": 0.09334272146224976,
+    "confusion_matrix": [
+      [
+        10416,
+        3021
+      ],
+      [
+        940,
+        678
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 15125,
+    "positive": 1675,
+    "prevalence": 0.11074380165289256,
+    "threshold": 0.13509008288383484,
+    "roc_auc": 0.6334255340398379,
+    "average_precision": 0.18690444237114562,
+    "f1": 0.2508275101140125,
+    "precision": 0.18123837363805476,
+    "sensitivity": 0.4071641791044776,
+    "specificity": 0.7709293680297398,
+    "accuracy": 0.7306446280991735,
+    "brier": 0.09582259505987167,
+    "confusion_matrix": [
+      [
+        10369,
+        3081
+      ],
+      [
+        993,
+        682
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 3.075717253999983,
+  "dataset": "hospital",
+  "task": "Phân loại tái nhập viện dưới 30 ngày trong hồ sơ nội trú có đái tháo đường",
+  "label_semantics": "1 = readmitted <30 ngày; 0 = >30 ngày hoặc NO trong bộ dữ liệu",
+  "database_source": {
+    "table": "prepared_hospital",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 71583
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 15055
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_hospital\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 15125
+      }
+    ],
+    "raw_source_sha256": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422"
+  },
+  "weights": "models/benchmark/full/hospital/mlp3-seed42.pt",
+  "weights_sha256": "8448b1740dae3699778a94abe0f889b15c725db37455aceff9606c057485bc8b",
+  "artifact_bytes": 17093,
+  "prediction_file": "results/benchmark/full/hospital/mlp3-seed42-predictions.npz",
+  "prediction_sha256": "23910ec15edde66c6c504ef786307eca0a7da5e38f6fee0ac3ad584e30e7d194"
+}

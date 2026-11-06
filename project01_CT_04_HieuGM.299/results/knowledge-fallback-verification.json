@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "scope": "Actual cache retrieval with absent configuration and controlled unreachable localhost port; failure injection only, not a live Neo4j success test.",
+  "cases": [
+    {
+      "condition": "not_configured",
+      "graph_status": "not_configured",
+      "backend": "sqlite_cache",
+      "hit_ids": [
+        "KB08",
+        "KB07",
+        "PDF01-P019-C001"
+      ],
+      "passed": true
+    },
+    {
+      "condition": "controlled_unreachable_local_service",
+      "graph_status": "unavailable:ServiceUnavailable",
+      "backend": "sqlite_cache",
+      "hit_ids": [
+        "KB08",
+        "KB07",
+        "PDF01-P019-C001"
+      ],
+      "passed": true
+    }
+  ]
+}

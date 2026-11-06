@@ -1,0 +1,105 @@
+{
+  "model_id": "hist_gradient_boosting",
+  "model_name": "Histogram Gradient Boosting",
+  "seed": 42,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "max_iter": 100,
+    "max_depth": 6,
+    "early_stopping": false,
+    "random_state": 42
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 33951,
+    "positive": 5029,
+    "prevalence": 0.14812523931548408,
+    "threshold": 0.23593639256170065,
+    "roc_auc": 0.8261034550880738,
+    "average_precision": 0.4418277924901822,
+    "f1": 0.4822026163675084,
+    "precision": 0.3904421726813647,
+    "sensitivity": 0.6303440047723206,
+    "specificity": 0.8288845861282069,
+    "accuracy": 0.7994757150010309,
+    "brier": 0.1015741471637802,
+    "confusion_matrix": [
+      [
+        23973,
+        4949
+      ],
+      [
+        1859,
+        3170
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 33952,
+    "positive": 5030,
+    "prevalence": 0.1481503298774741,
+    "threshold": 0.23593639256170065,
+    "roc_auc": 0.8269819812883985,
+    "average_precision": 0.4385697887868843,
+    "f1": 0.47674506541632006,
+    "precision": 0.3847186622726718,
+    "sensitivity": 0.6266401590457257,
+    "specificity": 0.8257036166240233,
+    "accuracy": 0.7962122997172478,
+    "brier": 0.10175040454232356,
+    "confusion_matrix": [
+      [
+        23881,
+        5041
+      ],
+      [
+        1878,
+        3152
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 1.6915770030000203,
+  "dataset": "cdc",
+  "task": "Phân loại nhãn tự khai báo đái tháo đường/tiền đái tháo đường trong BRFSS 2015",
+  "label_semantics": "1 = diabetes hoặc prediabetes gộp theo bản CDC binary; 0 = không có nhãn đó",
+  "database_source": {
+    "table": "prepared_cdc",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 158439
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 33951
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_cdc\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 33952
+      }
+    ],
+    "raw_source_sha256": "19f367e3e3350768f0c144c5d73ee5b355f67a57eaaa86ca7bd8aec594d8b1d0"
+  },
+  "weights": null,
+  "artifact_note": "Tree ensemble not shipped; exact config/seed/data and held-out scores retained for refit.",
+  "artifact_bytes": null,
+  "prediction_file": "results/benchmark/full/cdc/hist_gradient_boosting-seed42-predictions.npz",
+  "prediction_sha256": "eb7b59692ac9efb2d1736fa50de45091f8e067961a985d2a6b1bc44ba642a4da"
+}

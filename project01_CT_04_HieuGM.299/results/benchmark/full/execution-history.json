@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "run_count": 72,
+  "first_phase_completed_runs": 54,
+  "resumed_phase_new_runs": 18,
+  "resume_legacy_records_hash_verified": 54,
+  "sum_measured_run_train_and_evaluate_seconds": 145.58824072100032,
+  "final_resume_pipeline_seconds": 23.449664216999963,
+  "initial_pipeline_issue": "Windows bind-mount shutil.copy2 denied utime during Pima deployment copy, after 54 model fits; replaced copy2 by content-only copyfile. All fit algorithms/config unchanged.",
+  "logs": [
+    "benchmark-full.log",
+    "benchmark-resume.log"
+  ],
+  "source_files_sha256": {
+    "benchmark.py": "0067676b050db9b1381d0e88a071afe7ab7c27c7fa984cd5989f5559101173eb",
+    "database.py": "5ec393da10c24e6c0f5968663aa6f12f2bbdf954dd2948a456c25d7a61b2dd30",
+    "datasets.py": "5638a44f56f3b501b86b3619c369153bdfd79290e6018bef82f5da642d271dc7",
+    "metrics.py": "dd73e0c45933599701a07f81f2bf4f2feb9302153ab262e226ca26ede3e3159e",
+    "network.py": "962aa6c3516c7c02e65da94c0ac58c6cdf90701d963412e18af7c603bcaa411a",
+    "plotting.py": "d7cceab159bf4094d5e3771824aba919dd978e5b533f3d4ff10df2c7c02d1ed2",
+    "predict.py": "c743d6d870ee850a87eeeadab0f353110df79892a84591584ca68c1d3cbfa6a1",
+    "schema.py": "33668532eadc5c49b445b4881ee1bb4c5c315aa61efbcb5b544895a03a246d3a",
+    "training.py": "3d2765eb460a1b2d55be921b08ee381dfd43a8e2d0388e8f2e27a2851df0e6e2",
+    "__init__.py": "2359f2c6e56292ff1a427a59d14c8dbd8313abdcfecc51669b33dca1101d3826"
+  }
+}

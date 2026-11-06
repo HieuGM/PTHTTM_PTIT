@@ -1,0 +1,104 @@
+{
+  "model_id": "logistic",
+  "model_name": "Logistic Regression",
+  "seed": 44,
+  "mode": "full",
+  "model_family": "classical_ml",
+  "config": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "random_state": 44
+  },
+  "history": [],
+  "best_epoch": null,
+  "epochs_run": null,
+  "parameter_count": null,
+  "validation": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.3112422227859497,
+    "roc_auc": 0.9230769230769231,
+    "average_precision": 0.9691409128505901,
+    "f1": 0.9019607843137255,
+    "precision": 0.92,
+    "sensitivity": 0.8846153846153846,
+    "specificity": 0.8333333333333334,
+    "accuracy": 0.868421052631579,
+    "brier": 0.11160387843847275,
+    "confusion_matrix": [
+      [
+        10,
+        2
+      ],
+      [
+        3,
+        23
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "test": {
+    "n": 38,
+    "positive": 26,
+    "prevalence": 0.6842105263157895,
+    "threshold": 0.3112422227859497,
+    "roc_auc": 0.9487179487179487,
+    "average_precision": 0.978145638480626,
+    "f1": 0.9019607843137255,
+    "precision": 0.92,
+    "sensitivity": 0.8846153846153846,
+    "specificity": 0.8333333333333334,
+    "accuracy": 0.868421052631579,
+    "brier": 0.1036490797996521,
+    "confusion_matrix": [
+      [
+        10,
+        2
+      ],
+      [
+        3,
+        23
+      ]
+    ],
+    "confusion_order": "rows=true0/1; columns=predicted0/1"
+  },
+  "threshold_selection": "maximum F1 on validation only, frozen before test",
+  "test_used_for_fit_checkpoint_threshold_or_serving_selection": false,
+  "train_and_evaluate_seconds": 0.022708825999984583,
+  "dataset": "early",
+  "task": "Phân loại nhãn Positive/Negative trong khảo sát triệu chứng tại Sylhet, Bangladesh",
+  "label_semantics": "1 = Positive; 0 = Negative theo nhãn bộ Early Stage UCI529",
+  "database_source": {
+    "table": "prepared_early",
+    "queries": [
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "train"
+        ],
+        "rows": 175
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "val"
+        ],
+        "rows": 38
+      },
+      {
+        "sql": "SELECT * FROM \"prepared_early\" WHERE split=? ORDER BY split_order",
+        "parameters": [
+          "test"
+        ],
+        "rows": 38
+      }
+    ],
+    "raw_source_sha256": "7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137"
+  },
+  "weights": "models/benchmark/full/early/logistic-seed44.npz",
+  "weights_sha256": "1bfe34e089d3ca0f905f7572e42958d715d258d02d61e21d466e0da60e6d1f2e",
+  "artifact_bytes": 662,
+  "prediction_file": "results/benchmark/full/early/logistic-seed44-predictions.npz",
+  "prediction_sha256": "9cae12312530d9d1f736f2d1961c9afbe3572b9ebf93581faaf2d0b08bc55803"
+}
