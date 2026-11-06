@@ -1,0 +1,39 @@
+{
+  "checked_at_utc": "2026-11-05T10:17:48.152961+00:00",
+  "authentication": "OAuth succeeded through official Codex MCP configuration",
+  "workspace_name": "Giáp Minh Hiếu's workspace",
+  "workspace_id": "tea-cvkqd8t6ubrc73fsrun0",
+  "workspace_confirmed_by_user": true,
+  "requested_name": "diacare-mas-hieugm299",
+  "repo": "https://github.com/HieuGM/PTHTTM_PTIT",
+  "branch": "main",
+  "commit": "6eb79dc0468bc76347b10c2ef0ab1a360974686a",
+  "runtime": "docker",
+  "plan": "free",
+  "region": "singapore",
+  "status": "live",
+  "service_created": true,
+  "existing_services_modified": false,
+  "retry_after_user_freed_slot": true,
+  "service_id": "srv-dbm5dfgu01pc738ercq0",
+  "deploy_id": "dep-dbm5dgou01pc738erfu0",
+  "dashboard_url": "https://dashboard.render.com/web/srv-dbm5dfgu01pc738ercq0",
+  "url": "https://diacare-mas-hieugm299.onrender.com",
+  "finished_at_utc": "2026-11-05T10:16:04.612671Z",
+  "verified_commit": "6eb79dc0468bc76347b10c2ef0ab1a360974686a",
+  "public_http_checks": {
+    "passed": 13,
+    "total": 13,
+    "evidence": "results/render-http-verification.json"
+  },
+  "render_readiness": "TCP default; /health separately tested over HTTPS",
+  "live_service_config": {
+    "dockerfilePath": "project01_CT_04_HieuGM.299/Dockerfile",
+    "dockerContext": "project01_CT_04_HieuGM.299",
+    "rootDir": "",
+    "port": "8000"
+  },
+  "report_updated": true,
+  "report_pages": 25,
+  "report_sha256": "98e03949e22c5d8883721888c40296414d652155c0e66d4e6cd128773bf9517d"
+}

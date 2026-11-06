@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "url": "https://diacare-mas-hieugm299.onrender.com/",
+  "checks": [
+    {
+      "tab": "report",
+      "desktop_visible": true
+    },
+    {
+      "tab": "chat",
+      "desktop_visible": true
+    },
+    {
+      "tab": "benchmark",
+      "desktop_visible": true
+    },
+    {
+      "tab": "graph",
+      "desktop_visible": true
+    },
+    {
+      "tab": "knowledge",
+      "desktop_visible": true
+    },
+    {
+      "tab": "report",
+      "mobile_no_overflow": true
+    },
+    {
+      "tab": "chat",
+      "mobile_no_overflow": true
+    },
+    {
+      "tab": "benchmark",
+      "mobile_no_overflow": true
+    },
+    {
+      "tab": "graph",
+      "mobile_no_overflow": true
+    },
+    {
+      "tab": "knowledge",
+      "mobile_no_overflow": true
+    }
+  ],
+  "errors": [],
+  "scope": "Actual public Chromium UI; no paid generation call"
+}

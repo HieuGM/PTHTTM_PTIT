@@ -177,9 +177,12 @@ Bài của **Giáp Minh Hiếu — B23DCCN299**. Notebook chứa toàn bộ mã,
 - [Hướng dẫn và kết quả](agent02/README.md)
 
 
-## Project01 — DiaCare MAS (05/11/2026)
+## Project01 — DiaCare Hybrid MAS (06/11/2026)
 
-[Hệ đa Agent hỗ trợ bệnh đái tháo đường](project01_CT_04_HieuGM.299/README.md): hai MLP đã huấn luyện, KB tiếng Việt có nguồn, Rule/Q-learning minh họa, FastAPI và Docker. [Báo cáo PDF](project01_CT_04_HieuGM.299/report/project01_CT_04_HieuGM.299.pdf). [Demo Render đang hoạt động](https://diacare-mas-hieugm299.onrender.com) — Docker, gói Free, Singapore; kiểm tra HTTP13/13đạt. Blueprint `render.yaml` ở gốc repository phục vụ tái tạo cấu hình.
+[Hệ đa Agent hỗ trợ bệnh đái tháo đường](project01_CT_04_HieuGM.299/README.md): 7 Agent, 4 tập dữ liệu qua SQLite, 6 loại mô hình × 3 seed = 72 lượt thực nghiệm; Knowledge Graph Neo4j, RAG từ Web/PDF và FPT Cloud. Kho tri thức có 12 tài liệu tải thật, gồm 4 bài Vinmec.
 
+- [Notebook chứa toàn bộ mã](project01_CT_04_HieuGM.299/notebook/project01-diacare.ipynb) · [Mở trên Google Colab](https://colab.research.google.com/github/HieuGM/PTHTTM_PTIT/blob/main/project01_CT_04_HieuGM.299/notebook/project01-diacare.ipynb) — Run All, không cần chạy riêng các tệp Python.
+- [Báo cáo PDF 26 trang](project01_CT_04_HieuGM.299/report/project01_CT_04_HieuGM.299.pdf) · [38 câu hỏi bảo vệ](project01_CT_04_HieuGM.299/bao-ve-project01.md).
+- [Demo Render](https://diacare-mas-hieugm299.onrender.com) — Docker Free Singapore, bản nâng cấp đã live ngày 06/11/2026, kiểm public 30/30 có FPT sinh thật. Neo4j đã kiểm local; bản public dùng cache có nhãn khi chưa cấu hình Neo4j production.
 
-Notebook Project01 chứa toàn bộ mã: [Mở notebook](project01_CT_04_HieuGM.299/notebook/project01-diacare.ipynb) · [Chạy bằng Google Colab](https://colab.research.google.com/github/HieuGM/PTHTTM_PTIT/blob/main/project01_CT_04_HieuGM.299/notebook/project01-diacare.ipynb). Chọn Run All; không cần chạy riêng các tệp Python.
+102 pytest đạt; notebook thực chạy 72 lượt, 80 kiểm tra ML và 68 kiểm tra API. Chi tiết bằng chứng và giới hạn trong README Project01. Blueprint `render.yaml` ở gốc repo dùng để tái triển khai.

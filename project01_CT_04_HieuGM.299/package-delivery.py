@@ -9,16 +9,19 @@ STEM = ROOT.name
 archive = ROOT.parent / (STEM + '.zip')
 manifest_path = ROOT / 'submission-manifest.json'
 excluded_dirs = {'__pycache__', '.pytest_cache', 'runtime', 'preview', '.git',
-                 '.ipynb_checkpoints', 'diacare-notebook-output'}
+                 '.ipynb_checkpoints', 'diacare-notebook-output', 'runtime-audit'}
 
 
 def include(path):
     relative = path.relative_to(ROOT)
     if any(part in excluded_dirs for part in relative.parts):
         return False
-    if relative.parts[:2] in {('data', 'raw'), ('data', 'splits')}:
+    if relative.parts[:2] in {('data', 'raw'), ('data', 'splits'), ('data', 'database')}:
         return False
-    return path != manifest_path and path.suffix not in {'.zip', '.pyc'} and path.name != '.env'
+    if relative.parts[:3] == ('data', 'documents', 'raw'):
+        return False
+    secret = (path.name.startswith('.env') or path.suffix == '.env') and path.name != '.env.example'
+    return path != manifest_path and path.suffix not in {'.zip', '.pyc'} and not secret
 
 
 files = sorted(path for path in ROOT.rglob('*') if path.is_file() and include(path))

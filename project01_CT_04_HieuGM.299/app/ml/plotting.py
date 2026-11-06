@@ -24,7 +24,8 @@ def plot_benchmark(root, mode='full'):
     for dataset in summary.dataset.unique():
         rows = summary.loc[summary.dataset == dataset].set_index('model_id').loc[MODEL_IDS]
         fig, axes = plt.subplots(2, 2, figsize=(9, 7))
-        fig.suptitle(dataset.upper() + ' | fixed split, three model seeds | ' + mode,
+        seed_count = len(record['environment']['model_seeds'])
+        fig.suptitle(dataset.upper() + f' | fixed split, {seed_count} model seed(s) | ' + mode,
                      fontweight='bold', fontsize=12)
         for axis, metric, title in [(axes[0, 0], 'roc_auc', 'ROC-AUC mean +/- sample SD'),
                                     (axes[0, 1], 'average_precision', 'Average precision mean +/- sample SD')]:

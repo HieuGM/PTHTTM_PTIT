@@ -1,7 +1,7 @@
 {
   "pdf": "project01_CT_04_HieuGM.299.pdf",
-  "pages": 25,
-  "sha256": "98e03949e22c5d8883721888c40296414d652155c0e66d4e6cd128773bf9517d",
+  "pages": 26,
+  "sha256": "e48e1efe2658328393d01cf3f931b56608fcc3f0e104b8a9a5ed29651195e034",
   "checks": {
     "nonempty_all_pages": true,
     "correct_student": true,
@@ -9,65 +9,80 @@
     "no_sample_identity": true,
     "seven_chapters": true,
     "toc_present": true,
-    "fifty_five_tests": true,
-    "two_real_datasets": true,
-    "real_model_metrics": true,
-    "rag_limit_explicit": true,
-    "rl_scope_explicit": true,
-    "remaining_error_kept": true,
-    "cloud_deployment_evidence": true,
+    "four_real_cohorts": true,
+    "six_models_three_seeds_72_runs": true,
+    "actual_benchmark_metrics": true,
+    "legacy_reuse": true,
+    "sql_training": true,
+    "knowledge_provenance": true,
+    "graph_real_and_fallback": true,
+    "llm_and_citation_limit": true,
+    "seven_agent_contract": true,
+    "rl_simulation_scope": true,
+    "retrieval_failures_retained": true,
+    "time_accounting_honest": true,
+    "upgraded_public_proof": true,
+    "public_status_scoped": true,
     "no_replacement_glyph": true,
+    "identifiers_preserved": true,
+    "no_placeholders": true,
     "no_text_outside_page": true
   },
-  "passed": 15,
-  "total": 15,
+  "passed": 24,
+  "total": 24,
   "overflow": [],
   "chapter_outline": [
     [
       1,
-      "CHƯƠNG 1. GIỚI THIỆU ĐỀ TÀI",
+      "CHƯƠNG 1. BÀI TOÁN VÀ PHẠM VI THỰC HIỆN",
       4
     ],
     [
       1,
-      "CHƯƠNG 2. HỆ ĐA AGENT VÀ KIẾN TRÚC",
+      "CHƯƠNG 2. KIẾN TRÚC HYBRID MULTIAGENT SYSTEM",
       6
     ],
     [
       1,
-      "CHƯƠNG 3. DỮ LIỆU VÀ GIAO THỨC THỰC NGHIỆM",
-      9
+      "CHƯƠNG 3. BỐN COHORT VÀ CƠ SỞ DỮ LIỆU HUẤN LUYỆN",
+      8
     ],
     [
       1,
-      "CHƯƠNG 4. MÔ HÌNH DEEP LEARNING",
-      12
+      "CHƯƠNG 4. DEEP LEARNING VÀ BENCHMARK SO SÁNH",
+      10
     ],
     [
       1,
-      "CHƯƠNG 5. KNOWLEDGE BASE VÀ TRUY XUẤT TĂNG CƯỜNG TRẢ LỜI",
+      "CHƯƠNG 5. KNOWLEDGE GRAPH, WEB/PDF VÀ RAG",
       16
     ],
     [
       1,
-      "CHƯƠNG 6. ĐIỀU PHỐI, RULE VÀ REINFORCEMENT LEARNING",
-      18
+      "CHƯƠNG 6. LUẬT, BÁO CÁO CÓ CẤU TRÚC VÀ RL MÔ PHỎNG",
+      19
     ],
     [
       1,
-      "CHƯƠNG 7. KIỂM THỬ, DEMO VÀ TRIỂN KHAI",
-      20
+      "CHƯƠNG 7. TÁI LẬP, NOTEBOOK, KIỂM THỬ VÀ TRIỂN KHAI",
+      21
     ],
     [
       1,
-      "PHỤ LỤC. TÁI LẬP VÀ HỢP ĐỒNG DỮ LIỆU",
-      23
+      "PHỤ LỤC. HỒ SƠ KIỂM CHỨNG VÀ ĐỐI CHIẾU YÊU CẦU",
+      24
     ],
     [
       1,
       "TÀI LIỆU THAM KHẢO",
-      25
+      26
     ]
   ],
-  "visual_review": "Separate human-style PNG inspection required; not replaced by these checks."
+  "visual_review": {
+    "status": "passed",
+    "pages_reviewed": 26,
+    "method": "All-page contact sheets plus full-size cover/architecture/benchmark/knowledge/deployment/reference pages; changed final reference page re-inspected.",
+    "render_directory": "D:/CodexTaskCache/diacare-hieugm299-261105/upgrade-261106/report-preview-final-release",
+    "defects_remaining": []
+  }
 }

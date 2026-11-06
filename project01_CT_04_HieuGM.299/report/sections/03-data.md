@@ -1,49 +1,62 @@
-# CHƯƠNG 3. DỮ LIỆU VÀ GIAO THỨC THỰC NGHIỆM
+# CHƯƠNG 3. BỐN COHORT VÀ CƠ SỞ DỮ LIỆU HUẤN LUYỆN
 
-## 3.1. Lựa chọn dữ liệu
+## 3.1. Nguồn và nhiệm vụ
 
-Ưu tiên của đề là dataset đủ lớn và có thể là dữ liệu Việt Nam. Khảo sát nguồn WHO cho thấy STEPS Việt Nam 2021 có 4.435 bản ghi và có điều kiện truy cập/sử dụng riêng. Project chưa tải hoặc huấn luyện bộ này. Một cổng dữ liệu đặt ở Việt Nam không tự khiến dữ liệu BRFSS thành dữ liệu người Việt. Hai tập chính vì thế được chọn theo khả năng tiếp cận công khai, quy mô và quyền tái sử dụng rõ ràng.
+| Cohort | Dòng nguồn / sạch | Feature | Nhãn |
+|---|---:|---:|---|
+| CDC BRFSS 2015 | 253.680 / 226.342 | 21 | Binary gộp tiền đái tháo đường/đái tháo đường |
+| Hospital 130-US | 101.766 / 101.763 | 10 | Tái nhập viện dưới 30 ngày |
+| Pima | 768 / 768 | 8 | Tested positive/negative, phụ nữ Pima từ 21 tuổi |
+| Early Stage | 520 / 251 | 16 | Positive/Negative, Sylhet Hospital Bangladesh |
 
-| Thuộc tính | CDC BRFSS | Diabetes 130-US Hospitals |
-|---|---|---|
-| Nguồn | UCI 891; bản gốc Alex Teboul/BRFSS 2015 | UCI 296; dữ liệu bệnh viện 1999–2008 |
-| Quy mô gốc | 253.680 bản ghi, 21 biến đầu vào | 101.766 lượt nội trú, metadata nguồn 47 biến |
-| Biến chọn | Toàn bộ 21 biến khảo sát | 10 biến dễ nhập, có ở thời điểm ra viện |
-| Nhãn dương | Tiền đái tháo đường hoặc đái tháo đường gộp | readmitted bằng <30 |
-| Giấy phép | CC0 theo metadata tác giả Kaggle | CC BY 4.0 theo UCI |
-| Đơn vị chia tập | Vector đặc trưng duy nhất sau xử lý | Nhóm patient_nbr |
+CDC lấy từ UCI891, bản binary của Alex Teboul khai báo CC0. Hospital UCI296 và Early Stage UCI529 có CC BY 4.0. Pima lấy từ ARFF OpenML37, metadata ghi licence Public, original owner NIDDK. Không tự đổi giấy phép Pima thành CC0.
 
-Tệp CDC có sẵn trong bài trước được đối chiếu với CSV UCI sau khi bỏ ID và quy đổi kiểu số; kết quả nội dung tương ứng. Hash tệp đầu vào, cấu hình và kích thước thực sau xử lý được ghi trong results/data-manifest.json. Script fetch-data.py có thể tải lại từ hai URL chính thức mà không cần khóa API. Dữ liệu gốc Hospital có định danh giả của encounter và patient, chỉ dùng patient_nbr để chia nhóm; chúng không là đầu vào mô hình hoặc nội dung image triển khai.
+Endpoint Pima UCI cũ không tải được. UCI34 là AIM94 time-series khác, không dùng thay thế. ARFF OpenML được đối chiếu toàn bộ 768 hàng, tám feature, nhãn và thứ tự với CSV đã có; MD5 khớp metadata. URL/hash ở data/README.md và manifest.
 
-## 3.2. Đặc trưng CDC
+## 3.2. CDC và Hospital
 
-Các biến gồm tăng huyết áp, cholesterol, kiểm tra cholesterol, BMI, hút thuốc, đột quỵ, bệnh tim, vận động, ăn trái cây/rau, uống nhiều rượu, tiếp cận chăm sóc, rào cản chi phí, sức khỏe tổng quát/tinh thần/thể chất, khó đi lại, giới tính, nhóm tuổi, học vấn và thu nhập. Phần lớn biến là mã phân loại, không phải phép đo liên tục. Age là mã nhóm 1–13; không được nhập tuổi thật 65 vào trường này. GenHlth là thang 1–5, MentHlth/PhysHlth là số ngày 0–30.
+CDC loại nhóm vector có nhãn mâu thuẫn rồi giữ một bản/vector còn lại. Làm sạch trước split ngăn cùng vector qua train và test. Nhóm mâu thuẫn có thể chứa bản sao nên không cộng số duplicate và số mâu thuẫn để suy ra kích thước sạch.
 
-Diabetes_binary bằng 1 gộp cả tiền đái tháo đường và đái tháo đường của biến thể CDC nhị phân đang dùng. Vì nhãn phản ánh khảo sát cắt ngang, không được diễn giải đầu ra là xác suất một người hiện chưa mắc sẽ phát bệnh trong tương lai. Mô hình cũng không dùng glucose hay HbA1c xét nghiệm để xác nhận chẩn đoán.
+Hospital loại ba dòng gender Unknown/Invalid. Split theo patient_nbr ngăn các lượt của cùng người giao train/validation/test. ID chỉ tạo nhóm, không trong X, trọng số hoặc API. Mười feature được chọn mang thông tin khi ra viện; không diễn giải là dự báo ngay lúc nhập viện. Chia nhóm chưa kiểm chứng bệnh viện mới hoặc dữ liệu tương lai.
 
-## 3.3. Đặc trưng Hospital
+## 3.3. Pima: zero-coded missing
 
-Mười đặc trưng được chọn gồm time_in_hospital, num_lab_procedures, num_procedures, num_medications, number_outpatient, number_emergency, number_inpatient, number_diagnoses, AgeGroup và Gender. AgeGroup là nhóm tuổi 1–10 từ [0–10) đến [90–100); Gender được mã hóa 0 nữ, 1 nam theo hai giá trị có đủ mẫu trong nguồn. Ba dòng có gender không hợp lệ cho schema này bị loại, làm tập còn 101.763 lượt.
+Glucose, BloodPressure, SkinThickness, Insulin, BMI bằng 0 được coi là missing theo giao thức bài. Median tính chỉ trên train rồi dùng nguyên vẹn cho validation/test/inference. Pregnancies bằng 0 vẫn hợp lệ. Không xóa mọi hàng có số 0 và không lấy median toàn tập vì sẽ thay quần thể hoặc rò rỉ test.
 
-Các biến như số ngày nằm viện và số thuốc trong lượt điều trị chỉ có đầy đủ khi ra viện. Vì vậy thời điểm dự đoán được xác định là lúc ra viện; mô hình không đại diện sàng lọc khi mới nhập viện. Thu gọn đặc trưng làm biểu mẫu dễ sử dụng nhưng bỏ qua nhiều thông tin bệnh học; đây là một nguyên nhân cần khảo sát khi hiệu năng còn hạn chế, không phải kết luận nhân quả từ một thí nghiệm.
+Pima có 768 dòng, không phát hiện duplicate/conflict trong kiểm kê. Cohort chỉ gồm một nhóm phụ nữ lịch sử nên không suy rộng mặc nhiên cho nam giới, người trẻ hoặc dân số Việt.
 
-## 3.4. Làm sạch và chống rò rỉ
+## 3.4. Early Stage: vì sao 520 còn 251?
 
-CDC có 24.206 dòng trùng hoàn toàn. Ngoài ra có 5.218 dòng thuộc các nhóm cùng đặc trưng nhưng nhãn xung đột. Quy trình loại nhóm xung đột và giữ một vector đặc trưng duy nhất ở các nhóm còn lại, thu 226.342 mẫu. Hai số trên có phần giao nhau, không được cộng rồi trừ trực tiếp từ quy mô gốc. Cách làm thay đổi phân phối so với dữ liệu nguồn; hiệu năng chỉ áp dụng cho tập đã xử lý như mô tả.
+Nguồn 520 dòng có 269 dòng trùng hoàn toàn; sau dedup còn 251 vector, gồm 173 dương và 78 âm. Không có feature-group mâu thuẫn nhãn. Giữ 520 rồi split ngẫu nhiên dễ làm cùng vector lọt test và tăng điểm thiếu tin cậy.
 
-CDC được chia phân tầng 70/15/15 với seed 42 sau xử lý trùng. Hospital dùng chia nhóm theo patient_nbr, bảo đảm một người không xuất hiện đồng thời ở train, validation và test. Các ID không nằm trong vector X. Scaler chỉ fit trên train; cả validation và test dùng lại mean/std đó. Các biến đã chọn không có dữ liệu thiếu sau kiểm tra, nên không cần imputation.
+Tuổi thật trong CSV 16-90, khác mô tả ngắn 20-65 trên trang nguồn. Schema dựa kiểm kê thật và ghi khác biệt. Test chỉ 38 dòng; một vài dự đoán đổi làm metric thay đáng kể, không xem AUC cao là bằng chứng mạnh về tổng quát hóa.
 
-![Quy mô train, validation và test của hai bài toán sau làm sạch](../results/figures/dataset-splits.png)
+## 3.5. SQLite dùng thật trong huấn luyện
 
-| Dataset | Train | Validation | Test | Giao nhóm giữa tập |
-|---|---|---|---|---|
-| CDC | 158.439 | 33.951 | 33.952 | 0 vector đặc trưng trùng |
-| Hospital | 71.583 | 15.055 | 15.125 | 0 patient trùng |
+database.py đọc/tải CSV và lưu raw_cdc, raw_hospital, raw_pima, raw_early cùng provenance. datasets.py SELECT bảng raw để làm sạch/chia, fit median/mean/std train, rồi ghi prepared_<dataset> với split_order. load_prepared() SELECT từng split; mảng nhận từ query trực tiếp cấp mọi vòng fit.
 
-Hospital có 50.060 người trong train, 10.727 trong validation và 10.728 trong test sau lọc. Đánh giá test trên lượt nội trú không tương đương đánh giá mỗi người một phiếu; người có nhiều lượt trong cùng tập vẫn có thể tạo phụ thuộc. Chưa tính khoảng tin cậy có bootstrap theo người, nên không tuyên bố khác biệt nhỏ giữa mô hình là có ý nghĩa thống kê.
+```sql
+SELECT split, COUNT(*) AS rows, SUM(target) AS positives
+FROM prepared_early GROUP BY split;
+SELECT Glucose, BMI, Age, target FROM prepared_pima
+WHERE split='train' ORDER BY split_order LIMIT 5;
+```
 
-## 3.5. Thiết kế so sánh
+Benchmark không đọc NPZ cũ để giả lập database. NPZ đầu ra giữ nhãn/score hoặc hệ số nhỏ để kiểm metric. CSV dễ mở Excel; NPZ giữ nhiều mảng đúng dtype và nén. Định dạng không quyết định thuật toán.
 
-Trong mỗi dataset, MLP và Logistic Regression được huấn luyện trên cùng train, dùng cùng validation/test. Baseline luôn dự đoán âm được bổ sung để chỉ ra ảnh hưởng mất cân bằng. Checkpoint MLP được chọn theo ROC-AUC validation, ngưỡng nhị phân theo F1 validation và được cố định trước khi đo test. Không chọn mô hình, ngưỡng hoặc epoch bằng kết quả test.
+## 3.6. Chia tập và tiền xử lý
 
-Các chỉ số chính là ROC-AUC, Average Precision (AP), F1, sensitivity, specificity, precision, Brier và ma trận nhầm lẫn. AP trong báo cáo là average_precision_score, không tự đổi tên thành diện tích PR nội suy hình thang. Accuracy được giữ để tham khảo nhưng không làm tiêu chí chính: dự đoán toàn âm vẫn có accuracy cao khi nhãn dương hiếm.
+| Cohort | Train | Validation | Test | Giao thức |
+|---|---:|---:|---:|---|
+| CDC | 158.439 | 33.951 | 33.952 | Vector sạch, split cố định |
+| Hospital | 71.583 | 15.055 | 15.125 | Không giao nhóm bệnh nhân |
+| Pima | 537 | 115 | 116 | Stratified, median train |
+| Early Stage | 175 | 38 | 38 | Dedup trước stratified split |
+
+Split seed 42; model seed 42/43/44. Đổi model seed không tạo ba test mới. Mean/std fit train và áp cùng thứ tự feature. Checkpoint chọn validation ROC-AUC; ngưỡng chọn validation F 1; đóng băng trước đo test. Không lựa mô hình phục vụ bằng test.
+
+## 3.7. Provenance và giới hạn
+
+Manifest lưu URL, hash, số dòng, SQL, split và thống kê. Raw/database chỉ ở máy cục bộ, bị loại khỏi phát hành. Bốn cohort khác nguồn/nhãn/quần thể, không gộp thành một nhiệm vụ và không là bốn tập external validation của một model.
+
+Bài viết Vinmec và PDF Việt giúp truy xuất tài liệu Việt, không thay tập bệnh nhân Việt có nhãn. Trước dùng thực cần quyền dữ liệu, kiểm định ngoài miền, hiệu chuẩn, đánh giá theo nhóm và chuyên gia y tế.

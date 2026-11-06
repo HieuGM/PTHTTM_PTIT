@@ -1,85 +1,73 @@
-# Project01 — DiaCare MAS
+# Project01 - DiaCare Hybrid MAS
 
-**Giáp Minh Hiếu · B23DCCN299 · Nhóm 04**
+**Giáp Minh Hiếu · B23DCCN299 · CT01 · Nhóm 04**  
+Giảng viên: **PGS. TS. Trần Đình Quế**.
 
-Hệ đa vai trò hỗ trợ tìm hiểu bệnh đái tháo đường: hai MLP đã huấn luyện trên dữ liệu thật, KB 24 thẻ có 19 URL nguồn, truy xuất và trả lời trích xuất có nguồn, luật cảnh báo, Q-learning minh họa cách trình bày, FastAPI và web demo.
+Project kết hợp **Deep Learning từ SQLite**, **Knowledge Graph Neo4j + RAG từ Web/PDF** và **7 agent** theo kiến trúc giảng viên cung cấp. Đây là nguyên mẫu học thuật, chưa xác thực lâm sàng, không chẩn đoán hoặc kê đơn.
 
-**Demo công khai:** [DiaCare trên Render](https://diacare-mas-hieugm299.onrender.com) · [API](https://diacare-mas-hieugm299.onrender.com/docs) · [Kiểm tra sẵn sàng](https://diacare-mas-hieugm299.onrender.com/health).
+- [Notebook chứa mã trực tiếp trong các ô](notebook/project01-diacare.ipynb) - cách chạy chính, Run All.
+- [Báo cáo PDF](report/project01_CT_04_HieuGM.299.pdf) và [Markdown](report/project01_CT_04_HieuGM.299.md).
+- [Hướng dẫn bảo vệ, số lượng dữ liệu/model và demo](bao-ve-project01.md).
+- [Mô hình và số liệu](README-models.md), [nguồn/giấy phép](data/README.md), [Docker + Render + FPT/Neo4j](DEPLOY.md).
+- [Demo Render](https://diacare-mas-hieugm299.onrender.com) · [API docs](https://diacare-mas-hieugm299.onrender.com/docs) · [Health](https://diacare-mas-hieugm299.onrender.com/health).
 
-Dịch vụ Docker gói Free tại Singapore đã chuyển sang `live` lúc **17:16 ngày 05/11/2026**. Kiểm tra HTTP trên URL công khai đạt **13/13**; bằng chứng nằm trong `results/render-http-verification.json` và `results/render-deployment.json`. Gói Free có thể ngủ khi không có truy cập nên lần mở lại có thể chậm.
+## Bốn bộ dữ liệu, sáu loại mô hình, 72 lượt
 
-## Mở bài làm
+| Cohort | Dòng nguồn → sạch | Feature | Nhiệm vụ |
+|---|---:|---:|---|
+| CDC BRFSS | 253.680 → 226.342 | 21 | Nhãn khảo sát gộp tiền đái tháo đường/đái tháo đường |
+| Hospital | 101.766 → 101.763 | 10 | Tái nhập viện dưới 30 ngày |
+| Pima | 768 → 768 | 8 | Tested positive/negative, cohort phụ nữ Pima |
+| Early Stage | 520 → 251 | 16 | Positive/Negative, Sylhet Bangladesh; dedup trước split |
 
-- **[Notebook chứa toàn bộ mã](notebook/project01-diacare.ipynb)** — mở Jupyter/VS Code/Colab và chọn **Run All**; không cần chạy từng file `.py`.
-- [Báo cáo PDF](report/project01_CT_04_HieuGM.299.pdf)
-- [Nguồn báo cáo Markdown](report/project01_CT_04_HieuGM.299.md)
-- [Chi tiết mô hình, kết quả và tái huấn luyện](README-models.md)
-- [Dữ liệu, giấy phép và tải lại](data/README.md)
-- [Hướng dẫn deploy](DEPLOY.md)
+**6 loại**: Logistic Regression, Random Forest, Histogram Gradient Boosting, MLP 64-32, MLP 64-32-16, Residual MLP. Có **24 tổ hợp dataset-model × 3 seed 42/43/44 = 72 run thật**. Seed không là loại model mới. Split cố định; train-only median/scaler; validation chọn checkpoint/ngưỡng. So sánh trong từng cohort, không xếp hạng AUC khác nhiệm vụ.
 
-## Chạy bằng notebook — cách dùng chính
+72 run và hình: `results/benchmark/full/`; nguồn/SQL/split: `results/benchmark/database-manifest.json`. Tổng thời gian fit+evaluate của các run 145,588 giây;23,449 giây là invocation resume riêng, không là toàn bộ 72 run. 11 artifact cũ CDC/Hospital được bảo toàn; serving hai cohort này tái sử dụng trọng số cũ. Pima/Early chọn DL phục vụ bằng validation AUC.
 
-Chỉ cần tệp `notebook/project01-diacare.ipynb`, Python 3.12 và Internet lần đầu. Notebook tự cài thư viện còn thiếu, tải hai CSV thật từ UCI, làm sạch/chia dữ liệu, huấn luyện MLP và baseline, vẽ biểu đồ, dựng KB/luật/Q-learning/MAS và chạy demo. Schema, KB, bộ câu hỏi, API cùng HTML/CSS/JavaScript đều có mã trực tiếp trong các ô; không import module `.py` của bài.
+## Tri thức và bảy agent
 
-Ô cấu hình mặc định `RUN_MODE="full"`: tối đa 25 epoch/mô hình, patience 5. Chọn `"smoke"` để kiểm tra luồng với 2 epoch trên cùng toàn bộ dữ liệu và split. Kết quả mới ghi vào `diacare-notebook-output/` cạnh thư mục làm việc của kernel, tách khỏi kết quả đã nộp và dịch vụ Render. Số đo có thể khác nhẹ theo phiên bản thư viện; smoke không thay số liệu báo cáo.
+Corpus **12 tài liệu tải thật**:7 WebWHO/NIDDK,4 Web Vinmec,1 PDF Việt 77 trang. Có 14 reference-onlyURLrecords và 24 thẻ; **340 chunk đã gồm thẻ**,34 concept,2160 MENTIONS,19 quan hệ chuyên môn có evidence. Vinmec là **nguồn văn bản RAG**, không phải dữ liệu bệnh nhân có nhãn dùng train.
 
-Sau huấn luyện có ô hỏi đáp, biểu mẫu nhập đặc trưng và bảng trace ngay trong notebook. Ô cuối kiểm tra API với model thật; tùy chọn `START_WEB=True` để mở giao diện tại `http://127.0.0.1:8000` trên máy cá nhân. Đầu ra raw CSV chỉ giữ cục bộ, không chia sẻ ID bệnh viện.
+Neo4j local được import/query thật:400 node,2545 edge, có kiểm idempotence/cache parity. `DB_diabet.cypher` được xây mới vì người học chưa có KG. PDF 2020 là nguồn lịch sử, không tuyên bố hướng dẫn mới nhất. Xem `results/knowledge-ingestion.json`, `neo4j-verification.json`, `knowledge-verification.json`.
 
-## Chạy nhanh bằng Docker
+Luồng `/api/report`: **Coordinator → Data → DL → Rule → KG/RAG → tổng hợp → Explanation → Monitoring**. Có request_id, status, payload, evidence, model_version và latency. Sai dữ liệu dừng trước DL. Report tách prediction/rules/evidence/explanation/uncertainty/conflicts/limitations. Audit mặc định không ghi file, không lưu feature/câu hỏi/key.
 
-Chạy các lệnh trong chính thư mục `project01_CT_04_HieuGM.299`:
+FPT Cloud sinh câu trả lời có citation khi cấu hình hợp lệ; thiếu/lỗi API dùng template có nhãn. Neo4j không khả dụng dùng `sqlite_cache/degraded`. Không xem fallback là kết nối ngoài thành công. RL là contextual bandit mô phỏng cách trình bày, tách bảy agent core.
+
+Retrieval: word/characterTF-IDF, LSA32 và graph boost; **LSA không phải neural embedding**. Mọi variant có prior cố định cho thẻ. Trên 22 câu phát triển có gold, lexicalR@1=0,9545, hybrid=0,9091; R@3 cả hai=1. Graph không thắng baseline trong phép đo này. Tám câu kiểm nguồn Vinmec mới có hạn chế gold tài liệu cụ thể; không là clinical benchmark.
+
+## Chạy notebook
+
+Mở notebook bằng Jupyter/VSCode/Colab, dùng Python 3.12 và Internet lần đầu, rồi Run All. Mã pipeline, agent và giao diện có trực tiếp trong ô, không cần source module `.py` của bài. Model/corpus nhúng là dữ liệu để tái sử dụng; benchmark vẫn fit trên dữ liệu thật qua SQL.
+
+Bản bàn giao có **61 ô/51 ô mã**, 25 ô mô-đun inline; full đã chạy **72 lượt fit + 80 kiểm tra ML + 68 kiểm tra API** trong kernel mới dùng cache nguồn thật có hash, 211,575 giây. Lượt full tải nguồn trước đó hoàn thành trong 339,18 giây; xem `results/notebook-verification.json`.
+
+`RUN_MODE="full"` chạy ngân sách đầy đủ; `"smoke"` kiểm luồng với ngân sách nhỏ. Kết quả ở `diacare-notebook-output/`, không ghi đè artifact triển khai. Chỉ bật gọi FPT thật khi đã cấu hình môi trường; không nhập key vào ô được chia sẻ hoặc commit output có key. Kết quả smoke không thay số liệu full trong báo cáo.
+
+## Chạy ứng dụng bằng Docker
+
+Tại thư mục Project01:
 
 ```powershell
-docker build -t diacare-hieugm299:1.0 .
-docker run -d --name diacare-demo -p 127.0.0.1:8000:8000 diacare-hieugm299:1.0
+docker build -t diacare-hieugm299:2.0 .
+docker run -d --name diacare-demo -p 127.0.0.1:8000:8000 --env-file .env diacare-hieugm299:2.0
 ```
 
-Mở http://localhost:8000; API tài liệu tại `/docs`, kiểm tra sẵn sàng tại `/health`.
-Image kèm trọng số và KB; không cần tải dữ liệu gốc, huấn luyện lại hoặc nhập khóa API khi chạy demo. `requirements-lock.txt` ghi phiên bản của image Linux đã kiểm thử; môi trường huấn luyện Windows được ghi riêng trong `results/environment.json`.
+Bỏ `--env-file .env` nếu chỉ xem template/cache offline. Mở http://localhost:8000. Image có serving weights/corpus, không tải dữ liệu train lúc startup. Một worker, không cần GPU. `.env` thật không trong Git/image/ZIP.
 
-## Chạy trực tiếp bằng Python
-
-```powershell
-python -m pip install -r requirements.txt -c requirements-lock.txt
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
-Khuyến nghị Python 3.12 cho bản triển khai Linux; huấn luyện đã chạy bằng Python 3.14 trên máy này. Trọng số `.pt` là state_dict nạp với `weights_only=True`, thống kê chuẩn hóa nằm trong JSON.
-
-## Kiểm thử và tái lập
+## Tái lập và kiểm thử khi bảo trì
 
 ```powershell
+python scripts/prepare-database.py
+python scripts/run-benchmark.py --mode full --seeds 42 43 44 --reuse-prepared-db
 python -m compileall -q app scripts tests report
 python -m pytest tests -q
-python tests/evaluate-system.py
-python scripts/train-policy.py
 ```
 
-`55/55` pytest đạt trên máy phát triển, sau giải nén gói độc lập và trong container Linux. Docker cũng đạt 13/13 kiểm tra HTTP, healthcheck healthy. `results/system-evaluation.json` giữ từng trường hợp của 30 câu phát triển, gồm lỗi Q22 chọn thẻ tổng quát đầu tiên; đây không phải benchmark độc lập hoặc kiểm định y khoa. `results/docker-verification.json` ghi kiểm tra thực trong container và ngày chạy.
+Bản nâng cấp đã đạt **102 pytest** ở lượt tích hợp 06/11/2026; kiểm cuối sau đóng gói/deploy được ghi riêng. 55 pytest và 13 HTTP ngày 05/11 là bằng chứng phiên bản đầu. FPT thực đã gọi thành công có citation/usage trong `results/fpt-api-verification.json`; không chứa khóa. Notebook, Docker và Render phải được kiểm theo artifact cuối, không suy từ pytest.
 
-Kiểm chứng lại scaler và dự đoán từng dòng bằng `python scripts/test-models.py` cần cache `data/splits/`. Cache này không nằm trong ZIP. Trước tiên chạy tải và chuẩn bị dữ liệu theo README-models.md; các test API ở trên chỉ cần trọng số có sẵn.
+## Triển khai và giới hạn
 
-## Dữ liệu và cách đọc kết quả
+Bản nâng cấp **đã live lúc 14:40:42 ngày 06/11/2026**, commit `1d08d9ba7bc1d757ee856268f671ca035399a7b8`, deploy `dep-dbmo7ne7bikc73bj5rv0` trên dịch vụ hiện có Docker Free Singapore. FPT đã cấu hình bằng Render Environment. Kiểm public cuối **30/30** đạt, có FPT sinh thật. Lượt trước 29/30 vì một template fallback được giữ tại `results/render-http-attempts.json`; cùng bộ kiểm/câu hỏi chạy lại đạt 30/30. Không bảo đảm LLM luôn thành công. Metadata và kiểm public nằm tại `results/render-deployment.json`, `render-http-verification.json`. Dịch vụ dùng public Git URL nên cập nhật bằng manual deploy theo commit. Neo4j local không truy cập từ Render bằng localhost; bản public dùng cache có nhãn cho đến khi có instance production accessible.
 
-- CDC: 253.680 dòng gốc, sau xử lý còn 226.342 vector độc nhất; MLP test AUC 0,8274, AP 0,4393. Nhãn dương gộp tiền đái tháo đường và đái tháo đường theo bộ binary.
-- Hospital: 101.766 lượt gốc, 101.763 sau loại 3 dòng gender không phù hợp; chia theo người bệnh không giao nhóm. MLP test AUC 0,6334, AP 0,1869 cho nhãn tái nhập viện dưới 30 ngày. Kết quả còn hạn chế.
-- Hai bài toán khác nhau; không so trực tiếp score/AUC để kết luận bên nào tốt hơn hoặc coi hai tập là kiểm định ngoài miền cho nhau.
-- Các nguồn đều là dữ liệu Mỹ; chưa xác thực trên bệnh nhân Việt Nam. Điểm sigmoid chưa hiệu chuẩn cho quyết định lâm sàng.
-
-## Cấu trúc
-
-```text
-app/agents/       Context, luật, policy, điều phối
-app/knowledge/    KB, câu hỏi đánh giá, TF-IDF và SQLite
-app/ml/           Schema, mạng, pipeline dữ liệu và suy luận
-app/static/       Giao diện HTML/CSS/JavaScript
-models/           Hai MLP, metadata, baseline, Q-table
-scripts/          Tải dữ liệu, train, vẽ hình và kiểm thử mô hình
-tests/            API, MAS, dữ liệu nhập và đánh giá KB
-results/          Metric, dự đoán, cấu hình, nguồn/hash và biểu đồ
-report/           Báo cáo và mã dựng PDF
-```
-
-Không lưu câu hỏi/chỉ số sức khỏe của request. SQLite chỉ chứa thẻ tri thức. Không có LLM sinh tự do trong bản mặc định; câu trả lời được ghép trích xuất có nguồn. Q-learning là bandit mô phỏng một bước cho cách trình bày, không tối ưu điều trị. Dữ liệu `data/raw/` và `data/splits/` không nằm trong ZIP hoặc image.
-
-Mã nguồn đã push lên [HieuGM/PTHTTM_PTIT](https://github.com/HieuGM/PTHTTM_PTIT). Dịch vụ Render hiện chạy từ commit `6eb79dc0468bc76347b10c2ef0ab1a360974686a`, nhánh `main`, Dockerfile và build context trong thư mục `project01_CT_04_HieuGM.299`. Dịch vụ được tạo trực tiếp qua MCP; Blueprint `render.yaml` ở gốc repo là cấu hình tái triển khai. Xem [DEPLOY.md](DEPLOY.md) để biết cấu hình thực tế và cách kiểm tra lại.
+Các cohort Mỹ/Bangladesh không chứng minh phù hợp bệnh nhân Việt. Hai cohort nhỏ test 116/38 dòng; SD 3 seed không bao gồm sampling/domain uncertainty. Sigmoid chưa calibration lâm sàng; IDcitation hợp lệ không chứng minh mọi claim. Chưa có SLA, load benchmark hay kiểm định y tế. Đọc task/label/version/limitations trước giải thích score.

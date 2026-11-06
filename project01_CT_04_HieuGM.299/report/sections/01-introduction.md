@@ -1,34 +1,42 @@
-# CHƯƠNG 1. GIỚI THIỆU ĐỀ TÀI
+# CHƯƠNG 1. BÀI TOÁN VÀ PHẠM VI THỰC HIỆN
 
-## 1.1. Bối cảnh và bài toán
+## 1.1. Mục tiêu của Project01
 
-Thông tin về đái tháo đường nằm ở nhiều nguồn: hồ sơ khám chữa bệnh, khảo sát sức khỏe, hướng dẫn chuyên môn và tài liệu giáo dục người bệnh. Một hệ thống chỉ đưa ra điểm dự đoán sẽ khó giải thích điểm đó có ý nghĩa gì. Một chatbot chỉ trả lời bằng văn bản cũng không tự bảo đảm đã dùng đúng nguồn hoặc nhận biết trường hợp ngoài phạm vi. Đề tài kết hợp mô hình học sâu, cơ sở tri thức và các vai trò Agent để mỗi thành phần thực hiện một nhiệm vụ có thể kiểm tra.
+DiaCare là nguyên mẫu học thuật về hệ đa agent hỗ trợ tìm hiểu bệnh đái tháo đường. Đề tài kết hợp hai nhánh: Knowledge Base từ Web/PDF, Knowledge Graph và RAG; dữ liệu Diabetes trong cơ sở dữ liệu để huấn luyện, so sánh Deep Learning. Báo cáo trình bày kết quả thực nghiệm và cách các thành phần phối hợp thành ứng dụng.
 
-Project xây dựng DiaCare MAS, ứng dụng học tập tiếng Việt với hai chức năng chính. Chức năng hỏi đáp truy xuất thông tin từ kho tri thức có nguồn. Chức năng phân tích tiếp nhận bộ biến đầu vào theo đúng schema của một trong hai dataset, chạy MLP đã huấn luyện và hiển thị ý nghĩa nhãn, điểm mô hình, ngưỡng cùng dấu vết xử lý. Các cảnh báo từ quy tắc được xử lý trước nhánh hỏi đáp thông thường.
+Tài liệu project_architecture_multiagent_diabet_v1.pdf do giảng viên cung cấp định nghĩa bảy agent cốt lõi, giao tiếp có cấu trúc và quy trình tạo báo cáo. Đây là đặc tả kiến trúc; không quy định số bộ dữ liệu hoặc mô hình. Ma trận bốn cohort, sáu loại mô hình, ba seed là phần mở rộng thực nghiệm để có so sánh rõ ràng.
 
-Hai nguồn dữ liệu lớn được sử dụng là CDC Diabetes Health Indicators với 253.680 bản ghi khảo sát và Diabetes 130-US Hospitals với 101.766 lượt điều trị nội trú. Chúng không phải dữ liệu Việt Nam và không cùng nhãn. Bộ thứ nhất phân loại trạng thái tiền đái tháo đường/đái tháo đường được ghi nhận trong khảo sát; bộ thứ hai phân loại tái nhập viện trong 30 ngày ở các lượt điều trị của người bệnh tiểu đường. Do vậy, thực nghiệm so sánh MLP với baseline trong từng dataset, không coi hai tập là kiểm định ngoại viện của nhau.
+Đầu vào gồm cohort, đầy đủ đặc trưng đúng schema và câu hỏi tùy chọn. Đầu ra gồm dự đoán, kết quả luật, bằng chứng truy xuất, giải thích, nguồn và giới hạn. Các thành phần được giữ riêng để người xem biết thông tin đến từ mô hình, luật hay tài liệu.
 
-## 1.2. Mục tiêu
+## 1.2. Kết quả chính và cách đếm
 
-Mục tiêu kỹ thuật thứ nhất là hình thành quy trình dữ liệu có nguồn, chống rò rỉ, huấn luyện thật và lưu trọng số để suy luận. Mục tiêu thứ hai là tổ chức KB tiếng Việt với mã thẻ và liên kết gốc, kết hợp truy xuất với tạo câu trả lời trích xuất. Mục tiêu thứ ba là hiện thực điều phối đa vai trò có thông điệp, quy tắc ưu tiên và giới hạn bước. Mục tiêu thứ tư là đóng gói API và giao diện thành một ứng dụng có thể chạy độc lập bằng Docker.
-
-Mục tiêu đánh giá gồm đo phân loại trên tập kiểm tra giữ riêng; kiểm tra truy xuất và khả năng từ chối bằng bộ câu hỏi có nhãn; kiểm thử dữ liệu nhập, dẫn nguồn, cảnh báo và suy luận từ trọng số thật. Thành công về kỹ thuật không đồng nghĩa hiệu quả lâm sàng. Dữ liệu lịch sử của Hoa Kỳ và bộ câu hỏi tự biên soạn chỉ hỗ trợ đánh giá trong phạm vi nghiên cứu của project.
-
-## 1.3. Sản phẩm và phạm vi
-
-| Sản phẩm | Nội dung thực hiện |
+| Thành phần | Kết quả và ý nghĩa |
 |---|---|
-| Dữ liệu | Hai dataset công khai, nguồn và hash, báo cáo làm sạch/chia tập |
-| Deep Learning | Hai MLP ba lớp ẩn, trọng số đã huấn luyện, Logistic và majority baseline |
-| Cơ sở tri thức | 24 thẻ tiếng Việt, 19 URL nguồn, SQLite |
-| Truy xuất và trả lời | TF-IDF, top-k, trả lời trích xuất có ID nguồn |
-| Multi-Agent | Bảy vai trò chuyên trách cùng Coordinator, trace có giới hạn |
-| Rule và RL | Cảnh báo/giới hạn theo luật; Q-learning một bước cho cách trình bày |
-| Demo | FastAPI, giao diện web responsive, Dockerfile, cấu hình Render |
-| Bằng chứng | JSON/NPZ kết quả, biểu đồ, kiểm thử và hướng dẫn tái lập |
+| Dữ liệu học có giám sát | 4 cohort độc lập: CDC, Hospital, Pima, Early Stage |
+| Loại mô hình | 6: Logistic Regression, Random Forest, Histogram Gradient Boosting, MLP hai tầng, MLP ba tầng, Residual MLP |
+| Deep Learning | 3 kiến trúc nhiều tầng ẩn; seed là lần khởi tạo, không là loại kiến trúc mới |
+| Ma trận | 4 × 6 = 24 tổ hợp dataset-model; mỗi tổ hợp 3 seed, tổng 72 lượt thật |
+| Tái sử dụng | Giữ nguyên artifact CDC/Hospital đã triển khai; benchmark mới lưu riêng |
+| Tri thức | Web, PDF tiếng Việt và thẻ có nguồn; KG được xây dựng mới và xuất Cypher |
+| Điều phối | 7 agent cốt lõi, request_id xuyên suốt, trạng thái và phiên bản |
+| Sản phẩm | Notebook độc lập, FastAPI, Docker, báo cáo, hướng dẫn bảo vệ |
 
-Hệ thống không thu thập họ tên người bệnh, mã hồ sơ, địa chỉ hoặc số điện thoại. Các câu hỏi và giá trị nhập chỉ đi qua bộ nhớ của request. SQLite dùng để tổ chức thẻ tri thức, không lưu nội dung hỏi đáp hay hồ sơ sức khỏe. Mã nguồn không chứa khóa API và không cần dịch vụ LLM trả phí để hoạt động mặc định.
+Hai cohort nhỏ bổ sung giúp quan sát độ nhạy khởi tạo và tác động của dữ liệu ít. Chúng không làm tăng bằng chứng kiểm định của cùng một mô hình vì nhiệm vụ, feature và quần thể khác nhau. Không cộng mọi hàng thành một tập huấn luyện chung.
 
-## 1.4. Cấu trúc báo cáo
+## 1.3. Điều chỉnh so với giả định của kiến trúc mẫu
 
-Báo cáo đi từ cơ sở Agent và kiến trúc, tới thiết kế dữ liệu, Deep Learning, KB/truy xuất, điều phối và Rule/RL. Phần thực nghiệm trình bày số đo và lỗi còn tồn tại. Phần triển khai ghi lệnh chạy cùng ranh giới giữa bản Docker đã kiểm tra và cấu hình cloud cần tài khoản thực. Phụ lục cung cấp schema, API và kịch bản demo.
+Kiến trúc mẫu giả định đã có DL và Neo4j KG. Hai mô hình CDC/Hospital đã tồn tại; người học xác nhận chưa có Neo4j hoặc DB_diabet.cypher. Bài thực hiện tái sử dụng DL hiện có và xây KG từ đầu. Cypher bàn giao là kết quả mới của project, không là kho tri thức có sẵn của giảng viên.
+
+Vinmec là nguồn bài viết sức khỏe cho KB/RAG. Bài viết công khai cung cấp văn bản, không cung cấp ma trận bệnh nhân có nhãn để thay cho bốn cohort. Không gọi bài viết là dữ liệu bệnh nhân Vinmec để train DL. PDF kiến trúc 11 trang không nêu bắt buộc dùng Vinmec; nguồn này được bổ sung theo trao đổi với người học.
+
+## 1.4. Giới hạn sử dụng
+
+Đây là nguyên mẫu giáo dục và nghiên cứu. Điểm sigmoid chưa được hiệu chuẩn thành xác suất bệnh cá nhân tại Việt Nam. Hospital dự đoán tái nhập viện dưới 30 ngày ở người có đái tháo đường; đây không phải phát hiện bệnh mới. CDC dùng nhãn gộp tiền đái tháo đường/đái tháo đường theo nguồn binary.
+
+Hệ thống không chẩn đoán xác nhận, kê thuốc hoặc tự điều chỉnh liều. Luật minh họa cần chuyên gia thẩm định trước khi dùng thật. RL chỉ mô phỏng cách trình bày. Citation đúng ID hoặc URL chứng minh truy vết, chưa chứng minh mọi phát biểu được nguồn hỗ trợ đầy đủ.
+
+## 1.5. Cách kiểm chứng
+
+Các số liệu Chương 3-4 lấy từ artifact thực. 72 lượt nằm tại results/benchmark/full; manifest nguồn, SQL và split tại results/benchmark/database-manifest.json; hash bảo toàn mô hình cũ tại results/benchmark/legacy-preservation.json. Chương 5 mô tả corpus/graph/RAG; Chương 6 mô tả luật và báo cáo; Chương 7 hướng dẫn notebook, kiểm thử và triển khai.
+
+Bằng chứng ngày 05/11/2026 là lịch sử phiên bản cũ. Kết quả kiểm tra của phiên bản nào chỉ áp dụng cho phiên bản đó. Trạng thái bản nâng cấp phải đối chiếu verification mới nhất, không suy ra từ việc URL cũ vẫn truy cập được.

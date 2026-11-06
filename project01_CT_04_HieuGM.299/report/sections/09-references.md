@@ -1,59 +1,63 @@
 # TÀI LIỆU THAM KHẢO
 
-Các nguồn web được kiểm tra trong quá trình thực hiện ngày 05/11/2026; từng thẻ KB giữ retrieved_at riêng. Trọng số và kết quả đo do mã project tạo, không lấy số liệu của bài mẫu.
+Tài liệu kiến trúc do giảng viên cung cấp: project_architecture_multiagent_diabet_v1.pdf (11 trang,11/2026). Đây là đặc tả được đối chiếu, không là kết quả đo của project.
 
-1. [WHO — Diabetes](https://www.who.int/news-room/fact-sheets/detail/diabetes)
+Nguồn Web/PDF được kiểm tra trong quá trình thực hiện; ngày tải/hash/note cụ thể lưu trong corpus và knowledge-ingestion.json. PDF Việt 2020 là nguồn lịch sử. Số liệu mô hình được tính bằng mã và dữ liệu của bài, không chép số liệu báo cáo mẫu.
 
-2. [NIDDK — Type 1 Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-1-diabetes)
+1. [WHO — Diabetes fact sheet](https://www.who.int/news-room/fact-sheets/detail/diabetes)
 
-3. [NIDDK — Type 2 Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-2-diabetes)
+2. [NIDDK — What Is Diabetes?](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes)
 
-4. [NIDDK — Gestational Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/gestational)
+3. [NIDDK — Type 1 Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-1-diabetes)
 
-5. [NIDDK — Symptoms & Causes of Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/symptoms-causes)
+4. [NIDDK — Type 2 Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-2-diabetes)
 
-6. [NIDDK — Diabetes Tests & Diagnosis](https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis)
+5. [NIDDK — Diabetes Tests & Diagnosis](https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis)
 
-7. [NIDDK — Healthy Living with Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes)
+6. [NIDDK — Healthy Living with Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes)
 
-8. [NIDDK — Insulin, Medicines, & Other Diabetes Treatments](https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments)
+7. [NIDDK — Low Blood Glucose (Hypoglycemia)](https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia)
 
-9. [CDC — Treatment of Low Blood Sugar](https://www.cdc.gov/diabetes/treatment/treatment-low-blood-sugar-hypoglycemia.html)
+8. [Bộ Y tế — Hướng dẫn chẩn đoán và điều trị đái tháo đường típ 2 (2020), bản do Sở Y tế Đồng Nai đăng tải](https://syt.dongnai.gov.vn/vi/van-ban/detail/V-v-trien-khai-thuc-hien-Quyet-dinh-so-5481-QD-BYT-ngay-30-12-2020-cua-Bo-truong-Bo-Y-te-4905/?download=1&id=0)
 
-10. [NHS — Low blood sugar (hypoglycaemia)](https://www.nhs.uk/conditions/low-blood-sugar-hypoglycaemia/)
+9. [Vinmec — Bệnh đái tháo đường: chế độ ăn như thế nào?](https://www.vinmec.com/vie/bai-viet/benh-dai-thao-duong-che-do-nhu-nao-vi)
 
-11. [CDC — Diabetic Ketoacidosis](https://www.cdc.gov/diabetes/about/diabetic-ketoacidosis.html)
+10. [Vinmec — Các xét nghiệm dùng để chẩn đoán đái tháo đường type 2](https://www.vinmec.com/vie/bai-viet/cac-xet-nghiem-dung-de-chan-doan-dai-thao-duong-type-2-vi)
 
-12. [NIDDK — Managing Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes)
+11. [Vinmec — Hiểu biết về đái tháo đường type 2 - Phần 1](https://www.vinmec.com/vie/bai-viet/hieu-biet-ve-dai-thao-duong-type-2-phan-1-vi)
 
-13. [NIDDK — Diabetes & Foot Problems](https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/foot-problems)
+12. [Vinmec — Dấu hiệu đái tháo đường thai kỳ và các câu hỏi thường gặp](https://www.vinmec.com/vie/bai-viet/nhung-dieu-can-biet-ve-dai-thao-duong-thai-ky-vi)
 
-14. [NIDDK — Diabetic Kidney Disease](https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/diabetic-kidney-disease)
+13. [UCI891. CDC Diabetes Health Indicators.](https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators)
 
-15. [NIDDK — Diabetic Eye Disease](https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/diabetic-eye-disease)
+14. [Alex Teboul. Binary BRFSS2015; nguồn khai báo CC0.](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset)
 
-16. [Cục Quản lý Khám chữa bệnh — Hướng dẫn chẩn đoán và điều trị đái tháo đường típ 2](https://daithaoduong.kcb.vn/huong-dan-chan-doan-va-dieu-tri-dai-thao-duong-tip-2)
+15. [UCI296. Diabetes130-US Hospitals; DOI10.24432/C5230J; CC BY4.0.](https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008)
 
-17. [UCI. CDC Diabetes Health Indicators. DOI 10.24432/C53919.](https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators)
+16. [Strack và cộng sự (2014). Impact of HbA1c Measurement on Hospital Readmission Rates.](https://doi.org/10.1155/2014/781670)
 
-18. [UCI. Diabetes 130-US Hospitals 1999–2008. DOI 10.24432/C5230J; CC BY 4.0.](https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008)
+17. [OpenML37. Pima; metadata licence Public, không tự gán CC0.](https://www.openml.org/d/37)
 
-19. [NIDDK — Insulin Resistance & Prediabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/prediabetes-insulin-resistance)
+18. [OpenML. Metadata và MD5 ARFF của dataset37.](https://api.openml.org/api/v1/json/data/37)
 
-20. [Alex Teboul. Diabetes Health Indicators Dataset, BRFSS 2015; CC0.](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset)
+19. [UCI529. Early Stage Diabetes Risk Prediction; DOI10.24432/C5VG8H; CC BY4.0.](https://archive.ics.uci.edu/dataset/529/early+stage+diabetes+risk+prediction+dataset)
 
-21. [WHO. Viet Nam STEPS 2021, VNM_2021_STEPS_v01; nguồn khảo sát, chưa tải/huấn luyện trong project.](https://extranet.who.int/ncdsmicrodata/index.php/catalog/948/study-description)
+20. [Lewis và cộng sự (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.](https://arxiv.org/abs/2005.11401)
 
-22. [Lewis và cộng sự (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.](https://arxiv.org/abs/2005.11401)
+21. [Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.](https://www.cs.rhul.ac.uk/~mike/pubs/ker95.pdf)
 
-23. [Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.](https://www.cs.rhul.ac.uk/~mike/pubs/ker95.pdf)
+22. [Sutton và Barto (2018). Reinforcement Learning: An Introduction.](http://incompleteideas.net/book/the-book-2nd.html)
 
-24. [Sutton và Barto (2018). Reinforcement Learning: An Introduction, 2nd edition.](http://incompleteideas.net/book/the-book-2nd.html)
+23. [PyTorch. Tài liệu chính thức tensor, neural network, state_dict.](https://docs.pytorch.org/docs/stable/index.html)
 
-25. [PyTorch. Tài liệu chính thức về tensor, neural network và state_dict.](https://docs.pytorch.org/docs/stable/index.html)
+24. [scikit-learn. Model evaluation, Average Precision và ROC-AUC.](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
-26. [scikit-learn. Model evaluation và định nghĩa Average Precision/ROC-AUC.](https://scikit-learn.org/stable/modules/model_evaluation.html)
+25. [Neo4j. Python Driver Manual.](https://neo4j.com/docs/python-manual/current/)
+
+26. [FPT Cloud AI Marketplace. API integration, gateway mkp-api.fptcloud.com và /chat/completions.](https://ai-docs.fptcloud.com/api-reference/ai-marketplace/api-reference/api-integration-multimodal-model-text-md)
 
 27. [FastAPI. FastAPI in Containers - Docker.](https://fastapi.tiangolo.com/deployment/docker/)
 
 28. [Render. Blueprint YAML Reference.](https://render.com/docs/blueprint-spec)
+
+29. [Render. Deploy lifecycle and manual deploys for public Git repository URLs.](https://render.com/docs/deploys)

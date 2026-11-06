@@ -117,6 +117,7 @@ def parse(text):
         line=lines[i].strip();i+=1
         if not line or line=='---':continue
         if line=='<!-- pagebreak -->':out.append(PageBreak());continue
+        if line.startswith('<!--'):continue
         if line.startswith('```'):
             code=[]
             while i<len(lines) and not lines[i].startswith('```'):

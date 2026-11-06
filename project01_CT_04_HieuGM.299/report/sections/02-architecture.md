@@ -1,48 +1,53 @@
-# CHƯƠNG 2. HỆ ĐA AGENT VÀ KIẾN TRÚC
+# CHƯƠNG 2. KIẾN TRÚC HYBRID MULTIAGENT SYSTEM
 
-## 2.1. Agent và hệ đa Agent
+## 2.1. Sáu lớp hệ thống
 
-Agent là một thành phần nhận quan sát, duy trì trạng thái liên quan và chọn hành động để thực hiện một mục tiêu trong môi trường. Trong project, môi trường là request hỏi đáp hoặc phân tích dữ liệu; hành động là kiểm tra luật, truy xuất thẻ, chọn cách trình bày, chạy mô hình hoặc xác minh cấu trúc dẫn nguồn. Tính tự chủ của các vai trò được giới hạn bằng nhiệm vụ và điều kiện chuyển tiếp rõ ràng.
+Sáu lớp gồm giao diện; API và xử lý dữ liệu; điều phối; agent chuyên biệt; model và knowledge; đánh giá/audit. Các agent chạy trong một tiến trình Python, giao tiếp qua object có cấu trúc. Cách triển khai này hỗ trợ kiểm thử và theo dõi; chưa là agent phân tán độc lập qua message broker.
 
-Hệ đa Agent tổ chức nhiều vai trò chuyên trách cùng giải quyết một nhiệm vụ chung. Cách tổ chức này giúp phân tách mục tiêu: SafetyAgent ưu tiên cảnh báo, RetrievalAgent ưu tiên bằng chứng liên quan, PredictionAgent ưu tiên suy luận đúng mô hình, còn CriticAgent kiểm tra cấu trúc và phạm vi đầu ra. Coordinator quyết định luồng chuyển thông điệp và dừng khi đã có kết quả.
+![Kiến trúc bảy agent và hai kho dữ liệu](figures/architecture.png)
 
-Hiện thực của project là điều phối xác định trong một tiến trình Python, không phải mạng Agent độc lập phân tán hoặc LLM tự lập kế hoạch. Các vai trò được biểu diễn qua các hàm công cụ và thông điệp trong context. Việc tách vai trò có lợi cho truy vết và kiểm thử, nhưng bản thân số lượng tên Agent không chứng minh cải thiện chất lượng so với một pipeline tương đương. Đánh giá lợi ích nhân quả của MAS cần ablation với cùng công cụ, dữ liệu và ngân sách.
+SQLite huấn luyện chứa raw/prepared và split, chỉ dùng cục bộ. SQLite cache tri thức chứa tài liệu/chunk/quan hệ công khai. Neo4j lưu graph; trọng số DL nạp từ artifact. Không huấn luyện lại tại request.
 
-## 2.2. Vai trò và giao thức phối hợp
+## 2.2. Bảy agent và ánh xạ mã nguồn
 
-| Vai trò | Đầu vào | Hành động và đầu ra |
+| Agent | Thành phần | Trách nhiệm |
 |---|---|---|
-| SafetyAgent | Câu hỏi, glucose tùy chọn, đơn vị | Phát hiện cảnh báo/ngoài phạm vi; có thể dừng luồng |
-| DataAgent | Tên dataset, dictionary đặc trưng | Kiểm tra đủ trường, kiểu số, miền và mã hóa |
-| PredictionAgent | Vector đã xác thực | Chuẩn hóa theo train và suy luận MLP |
-| RetrievalAgent | Câu hỏi tiếng Việt | Trả top-k thẻ, điểm và nguồn |
-| PolicyAgent | Có/không bằng chứng, yêu cầu độ chi tiết | Chọn abstain/brief/detail từ Q-table |
-| EducationAgent | Thẻ đã chọn, kiểu trình bày | Ghép văn bản của một hoặc hai thẻ, giữ ID |
-| CriticAgent | Dự thảo hoặc điểm mô hình | Kiểm tra ID/URL hoặc nhắc đúng ý nghĩa điểm |
-| Coordinator | Request và kết quả các vai trò | Điều phối, giới hạn bước và trả trace |
+| Patient Data | PatientDataAgent, roles.py | Kiểm schema, kiểu, thứ tự, miền, thiếu giá trị |
+| DL Prediction | DLPredictionAgent, predict.py | Nạp model/scaler/ngưỡng; score, nhãn, metadata |
+| Rule-Based | RuleBasedAgent, rules.py | Luật có lý do, cảnh báo và review flags |
+| KG/RAG | KnowledgeAgent, retrieval.py | Thực thể, graph, chunk, ranking và nguồn |
+| Coordinator | ReportWorkflow, workflow.py | Điều phối, dừng sớm, tổng hợp và xử lý lỗi |
+| Explanation | ExplanationAgent, generation.py | Giải thích bằng FPT hoặc template có nhãn |
+| Monitoring | MonitoringAgent, roles.py | Metadata, trạng thái, version và độ trễ |
 
-Thông điệp có các trường sender, receiver, kind, detail và elapsed_ms. Context được tạo mới cho từng request, chứa câu hỏi trong bộ nhớ và danh sách trace; mỗi trace có tối đa tám thông điệp. Không có vòng lặp Agent không giới hạn. Nếu vượt ngân sách, hệ thống phát sinh lỗi thay vì tiếp tục gọi công cụ.
+Coordinator không thay thuật toán của agent khác. Prediction suy luận; KG tìm tài liệu; Explanation dùng kết quả đã có. Có thể thay retriever hoặc LLM mà không đổi schema dự đoán. Số lần message không phải số loại agent, vì Coordinator có thể phát nhiều sự kiện trong một request.
 
-<!-- pagebreak -->
+## 2.3. Hợp đồng giao tiếp
 
-## 2.3. Kiến trúc tổng quan
+Message có request_id, agent, status, payload, evidence, model_version và elapsed_ms. Phiên bản nhận diện model hoặc agent; request_id liên kết toàn bộ cùng yêu cầu. Payload tùy chức năng, không phải chuỗi log không cấu trúc.
 
-![Kiến trúc DiaCare: nhánh mô hình và nhánh tri thức cùng đi qua điều phối và kiểm tra](figures/architecture.png)
+```json
+{"request_id":"ma-tu-sinh", "agent":"DLPredictionAgent",
+ "status":"ok", "payload":{"dataset":"cdc"},
+ "evidence":[], "model_version":"legacy-1.0", "elapsed_ms":12.5}
+```
 
-Lớp giao diện dùng HTML, CSS và JavaScript, trao đổi JSON với FastAPI. API khởi tạo KB, policy và metadata mô hình khi ứng dụng bắt đầu. Dữ liệu huấn luyện không nằm trong image triển khai; suy luận chỉ cần hai state_dict, thống kê scaler và metadata. Cơ sở tri thức được đóng gói từ JSON có kiểm soát phiên bản rồi ghi vào SQLite ở thư mục runtime.
+Ví dụ minh họa cấu trúc, không phải đo độ trễ. Monitoring mặc định chỉ ghi metadata, không vector sức khỏe, câu hỏi hoặc khóa API.
 
-Nhánh hỏi đáp đi qua SafetyAgent trước. Nếu có cảnh báo khẩn hoặc yêu cầu kê đơn, Coordinator trả lời theo quy tắc và dẫn nguồn. Nếu được phép, RetrievalAgent tạo vector câu hỏi, tìm bằng chứng và chuyển cho PolicyAgent. EducationAgent ghép nội dung trích xuất; CriticAgent chỉ chấp nhận các mã thẻ đã có và liên kết HTTPS. Nhánh này không gọi LLM và không phát sinh kiến thức mới ngoài thẻ đã chọn.
+## 2.4. Luồng chính và dừng sớm
 
-Nhánh phân tích dùng DataAgent xác thực schema rồi gọi PredictionAgent. Vector được chuẩn hóa bằng mean/std fit trên train, qua mạng và sigmoid để thu điểm. Ngưỡng phân loại đã được chọn bằng validation trong quá trình huấn luyện. CriticAgent gắn lại ý nghĩa nhiệm vụ và giới hạn sử dụng. Điểm của nhánh CDC và Hospital không được gộp thành một điểm nguy cơ chung.
+API nhận cohort và feature. Coordinator tạo request_id, gọi Data. Nếu schema/giá trị sai, trả validation_error trước DL, Rule và KG. Nếu hợp lệ: DL suy luận; Rule đánh giá; KG lấy evidence; Coordinator tổng hợp; Explanation tạo báo cáo; Monitoring ghi metadata.
 
-## 2.4. Thiết kế cơ sở dữ liệu và tài nguyên
+Luồng hữu hạn có trace. Cảnh báo nguy cấp và yêu cầu vượt phạm vi được luật ưu tiên để LLM không trì hoãn hoặc ghi đè thông báo an toàn. Điểm dự đoán nghiên cứu không phủ quyết cảnh báo luật; tài liệu giáo dục không là quan sát của cá nhân.
 
-Bảng SQLite cards gồm id làm khóa chính, title, content và url. Mỗi lần khởi động, nội dung được đồng bộ lại từ cards.json; kết nối được đóng sau khi ghi hoặc đọc để tránh giữ khóa file trên Windows. Vector TF-IDF được xây dựng trong RAM từ cùng danh sách thẻ, nên ID truy xuất và bản ghi DB có thể đối chiếu được.
+## 2.5. Lỗi và dự phòng
 
-Tài nguyên mô hình được cache trong tiến trình. Đối tượng Predictor tải state_dict với weights_only=True, đặt model.eval và chạy trong inference_mode. Thống kê scaler nằm trong metadata JSON, tránh pickle đối tượng tiền xử lý. Predictor kiểm tra toàn bộ đặc trưng; không âm thầm bổ sung các trường người dùng chưa nhập. Các giá trị mặc định trên giao diện là dữ liệu minh họa thao tác và có thông báo rõ.
+DL lỗi thì trả dependency_error, không tạo score giả. Thiếu Neo4j/kết nối lỗi thì dùng cache và nêu backend. Thiếu FPT, lỗi API hoặc citation không hợp lệ thì dùng template có nhãn. Không gọi template là output đã sinh bằng LLM.
 
-## 2.5. Thiết kế lỗi và quyền riêng tư
+Fallback giúp demo cục bộ, không là bằng chứng Neo4j production. Health/catalog công bố model, inventory, graph và LLM configuration; bằng chứng gọi API thật được ghi riêng với metadata an toàn.
 
-API từ chối dataset không hợp lệ, trường thừa/thiếu, số ngoài khoảng, mã phân loại không nguyên, kiểu boolean/string và giá trị NaN/Infinity. Phản hồi lỗi validation chỉ nêu vị trí và loại lỗi, không phản chiếu nguyên văn dữ liệu sức khỏe. JavaScript hiển thị đầu ra bằng textContent, tránh diễn dịch câu hỏi thành HTML.
+## 2.6. Ranh giới dữ liệu và bảo mật
 
-Ứng dụng không có chức năng quản lý hồ sơ bệnh nhân, đăng nhập, điều trị hoặc ghi đơn. Khi triển khai công khai, cần đặt sau HTTPS của nhà cung cấp, bổ sung giới hạn lưu lượng và theo dõi tải nếu mở rộng sử dụng. Đó là yêu cầu vận hành tiếp theo, không phải tính năng đã kiểm chứng trong demo cục bộ.
+API không nhận SQL/Cypher tùy ý. Query graph dùng tham số. Corpus ingest trước, không tải URL tùy ý từ request. Nội dung nguồn là dữ liệu hỗ trợ, không được thực thi như chỉ thị.
+
+FPT key và Neo4j password chỉ ở môi trường/.env bị ignore. Raw/database chứa patient_nbr phục vụ split không vào Git/image/ZIP. Artifact state_dict nạp weights_only=True; không pickle toàn bộ object mô hình. Audit ra file chỉ bật khi cấu hình rõ đường dẫn.

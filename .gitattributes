@@ -1,2 +1,9 @@
 # Preserve Agent02 delivery hashes and recognize Windows line endings.
 agent02/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve scientific binary artifacts and standalone notebook formatting.
+project01_CT_04_HieuGM.299/notebook/*.ipynb text eol=lf
+project01_CT_04_HieuGM.299/**/*.pdf -text
+project01_CT_04_HieuGM.299/**/*.png -text
+project01_CT_04_HieuGM.299/**/*.npz -text
+project01_CT_04_HieuGM.299/**/*.pt -text

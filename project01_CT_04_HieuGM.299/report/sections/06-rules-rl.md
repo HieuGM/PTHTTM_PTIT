@@ -1,45 +1,41 @@
-# CHƯƠNG 6. ĐIỀU PHỐI, RULE VÀ REINFORCEMENT LEARNING
+# CHƯƠNG 6. LUẬT, BÁO CÁO CÓ CẤU TRÚC VÀ RL MÔ PHỎNG
 
-## 6.1. Điều phối có giới hạn
+## 6.1. Vai trò của Rule-Based Agent
 
-Coordinator có hai luồng rõ ràng. Luồng hỏi đáp gọi các vai trò Safety, Retrieval, Policy, Education và Critic theo thứ tự. Luồng phân tích gọi Data, Prediction và Critic. Mỗi lần chuyển đều ghi sender, receiver, kind, mô tả ngắn và thời gian đã trôi qua. Tám thông điệp là giới hạn cứng; không có Agent tự gọi lại không kiểm soát.
+Rule Agent áp dụng điều kiện minh bạch và trả rule_id, severity, reason, source. Nó tách cảnh báo an toàn khỏi score DL và khỏi nội dung RAG. Điều kiện nhập glucose kiểm kiểu, số hữu hạn, đơn vị và miền. Chuỗi số, boolean, NaN/Infinity hoặc giá trị ngoài miền không được im lặng ép thành input hợp lệ.
 
-Các vai trò không trao đổi hồ sơ giữa những request khác nhau. Context mới được tạo cho từng lượt; không có bộ nhớ hội thoại dài hạn hoặc suy diễn từ những câu trước. Người dùng cần nhập đầy đủ đặc trưng mỗi lần phân tích. Thiết kế này làm demo dễ tái lập và giảm dữ liệu lưu trữ nhưng chưa hỗ trợ quản lý điều trị liên tục.
+Luật cảnh báo xử lý tín hiệu nguy cấp và ranh giới thuốc/liều. Nội dung này phục vụ minh họa nghiên cứu, cần người có chuyên môn duyệt trước dùng thật. Người xem phải đọc lý do và nguồn của luật; không xem luật là chẩn đoán đã xác nhận.
 
-## 6.2. Hệ quy tắc
+## 6.2. Review flags vận hành
 
-Quy tắc xử lý cảnh báo dựa trên triệu chứng được mô tả và glucose nhập tùy chọn, tách biệt hoàn toàn với score MLP. Hệ thống quy đổi mmol/L sang mg/dL bằng hệ số 18,0182. Đường huyết dưới 70 mg/dL kích hoạt cảnh báo hạ đường huyết; giá trị từ 300 mg/dL kích hoạt cảnh báo cần chú ý khẩn, đặc biệt khi kéo dài hoặc kèm dấu hiệu nặng. Đây là hướng dẫn giáo dục dựa trên tài liệu, không phải các ngưỡng duy nhất để chẩn đoán hoặc loại trừ cấp cứu.
+Nếu score cách threshold mô hình không quá 0,05, hệ thống gắn near_model_threshold để lưu ý độ ổn định phân lớp. Đây là quy tắc vận hành, không là ngưỡng y khoa. Nó không tương đương uncertainty Bayesian hoặc khoảng tin cậy.
 
-Các cụm như bất tỉnh, co giật, khó thở, hôn mê hoặc không nuốt được có thể dừng hỏi đáp thông thường. Logic có kiểm tra một số từ phủ định ngay trước triệu chứng và phân biệt câu hỏi kiến thức với mô tả cá nhân hiện tại. Đây vẫn là xử lý ngôn ngữ bằng luật; không bao phủ hết cách nói tiếng Việt, không thể bảo đảm độ nhạy/specificity lâm sàng và không thay hệ thống phân loại cấp cứu chuyên môn.
+Nếu model trả nhãn nghiên cứu dương, hệ thống gắn positive_research_label và nhắc đọc nhiệm vụ/giới hạn. Nhãn dương Hospital chỉ liên quan tái nhập viện, không thể diễn giải là phát hiện bệnh mới. Nếu thiếu evidence hoặc knowledge dependency degraded, report bổ sung review flag tương ứng.
 
-| Nhóm quy tắc | Hành vi |
-|---|---|
-| Dấu hiệu nguy hiểm | Khuyên tìm trợ giúp cấp cứu, không cho đồ ăn/nước khi không nuốt an toàn |
-| Glucose thấp | Nhắc xử trí theo kế hoạch đã được nhân viên y tế hướng dẫn và tìm hỗ trợ nếu nặng |
-| Glucose cao | Nhắc liên hệ y tế, chú ý DKA và không bỏ qua triệu chứng |
-| Kê đơn/điều chỉnh thuốc | Từ chối tính liều hoặc thay đổi thuốc cá nhân |
-| Bịa nguồn hoặc bỏ qua bằng chứng | Không thực hiện yêu cầu tạo thông tin giả |
-| Vị trí/lịch mở cửa trực tiếp | Nêu chưa có công cụ và dữ liệu tương ứng |
-| Dinh dưỡng định lượng cá nhân | Không tự tính gram/kcal khi thiếu đánh giá lâm sàng |
+## 6.3. Báo cáo và bất định
 
-Các quy tắc cảnh báo được áp dụng trước policy học. Q-table không có quyền bỏ qua hoặc giảm mức cảnh báo; MLP cũng không tham gia quyết định có cần cảnh báo hay không. Thiết kế này tránh dùng một mô hình khảo sát cắt ngang làm công cụ đánh giá tình huống cấp tính mà dữ liệu huấn luyện không bao phủ.
+Báo cáo có prediction, rule_results, retrieved_evidence, explanation, sources, review_flags, limitations và clinical_use=False. Thiết kế giữ riêng các luồng thông tin để không trộn một đoạn giáo dục với nhận định về cá nhân.
 
-## 6.3. Thiết kế Q-learning
+Bất định gồm độ nhạy gần threshold, giới hạn quần thể, dữ liệu nhỏ, sigmoid chưa hiệu chuẩn và dependency dự phòng. Ba seed benchmark đo biến thiên khởi tạo trên cùng split, không cung cấp interval cho score của một người. Báo cáo không tạo con số confidence khi chưa có phép ước lượng tương ứng.
 
-RL trong project là một contextual bandit một bước, được huấn luyện bằng cập nhật Q-learning với gamma bằng 0. Môi trường có bốn trạng thái, tạo từ hai biến nhị phân: đã có bằng chứng phù hợp hay chưa, và người dùng có yêu cầu giải thích chi tiết hay không. Ba hành động là abstain, brief và detail.
+Kết quả model và rule có thể khác mục đích: một score thấp không bác bỏ cảnh báo triệu chứng, tài liệu tổng quát không xác nhận feature bệnh nhân. Xung đột hoặc thiếu bằng chứng cần người có chuyên môn xem lại; không lấy biểu quyết giữa ba nguồn để kết luận bệnh. Cảnh báo có ưu tiên trình bày trước giải thích thông thường.
 
-Reward là rubric kỹ thuật tự thiết kế: hành động đúng kiểu trình bày nhận +1; sai nhận -1; trả lời khi không có bằng chứng bị phạt -3. Với trạng thái không có bằng chứng, mục tiêu là abstain. Với bằng chứng có sẵn, câu hỏi ngắn chọn brief và câu yêu cầu giải thích chọn detail. Reward không dùng kết cục sức khỏe, tuân thủ điều trị hoặc sự hài lòng người bệnh thật.
+## 6.4. Explanation Agent và việc xem nguồn
 
-Huấn luyện dùng seed 299, 4.000 episode, learning rate 0,15 và epsilon giảm từ 1 xuống tối thiểu 0,08. Công thức cập nhật là Q(s,a) ← Q(s,a) + α[r − Q(s,a)] vì bài toán kết thúc sau một hành động. Script train-policy.py ghi Q-table, số lần thăm từng state–action và reward trung bình 500 episode cuối.
+Explanation nhận output đã tổng hợp, không tự sửa model hoặc threshold. FPT được dùng khi cấu hình hợp lệ và phản hồi qua kiểm citation; template được dùng khi thiếu cấu hình hoặc lỗi. Trạng thái generation cho biết đường đi thực tế.
 
-## 6.4. Kết quả và cách diễn giải RL
+Người dùng có thể xem source title, URL và page của PDF để kiểm chứng. Thẻ biên soạn mang source_type khác tài liệu tải thật. Đường graph cho biết concept và evidence, không tự tạo một chuỗi suy luận lâm sàng đáng tin cậy cho mọi người.
 
-Sau huấn luyện, greedy policy chọn đúng hành động theo rubric ở 4/4 trạng thái. Kết quả này chỉ chứng minh thuật toán học được bảng thưởng đơn giản trong môi trường mô phỏng. Nó không cho biết việc thêm RL tốt hơn điều kiện if/else tương đương, không chứng minh cải thiện hiểu biết và không phải học tăng cường điều trị.
+## 6.5. Monitoring và audit
 
-Với môi trường nhỏ, triển khai điều kiện trực tiếp có thể đơn giản hơn. RL được đưa vào để minh họa mối liên hệ state–action–reward và cách tích hợp policy đã học dưới các ràng buộc cố định. Mở rộng hợp lý trong tương lai là thu phản hồi đồng thuận về cách trình bày/chủ đề giáo dục, đánh giá offline và bảo vệ quyền riêng tư; không mở rộng sang tối ưu liều thuốc bằng dữ liệu mô phỏng của demo.
+Metadata audit gồm request_id, status, duration_ms, danh sách agent/status/model_version/elapsed_ms. Mặc định không ghi file; AUDIT_LOG_PATH bật ghi JSONL metadata. Audit không ghi patient feature, câu hỏi hoặc API key. Trace trong phản hồi vẫn giúp xem agent nào chạy, bị bỏ qua hoặc degraded.
 
-## 6.5. Kiểm thử phối hợp
+Không công bố log có ID bệnh nhân. Cấu hình logger của hạ tầng là phạm vi riêng cần rà trước khi mở cho sử dụng thật. Bài hiện chưa có hệ phân quyền bệnh viện, quản trị hồ sơ hoặc lưu trữ dữ liệu khám chữa bệnh.
 
-Kiểm thử riêng bao gồm 11 tình huống cảnh báo, chuyển đổi đơn vị, phủ định triệu chứng, câu hỏi giáo dục, yêu cầu điều chỉnh thuốc và thứ tự ưu tiên luật. Các trường hợp đều đạt sau sửa lỗi được phát hiện trong quá trình phát triển. Bộ test kiểm tra cả trace không vượt tám bước và chỉ dẫn nguồn tồn tại trong KB.
+## 6.6. RL là phần mở rộng tùy chọn
 
-Các test đạt là bằng chứng về hợp đồng phần mềm trong những trường hợp đã viết. Chưa có đánh giá độc lập đủ lớn để ước lượng xác suất bỏ sót nguy hiểm. Cần tiếp tục ghi nhận lỗi thật và mở rộng kiểm thử theo cách diễn đạt mới, thay vì coi một danh sách test ngắn là bảo đảm an toàn.
+Đặc tả cho phép bỏ RL trong bản đầu. Project giữ mô-đun Q-learning mô phỏng từ phiên bản trước để minh họa chọn kiểu trình bày. Đây là one-step contextual bandit với gamma=0, bốn trạng thái và ba hành động; không có bệnh nhân thật hay phần thưởng sức khỏe.
+
+Thực nghiệm lịch sử dùng seed 299, 4.000 episode. Greedy policy khớp rubric ở 4/4 state; reward trung bình 500 episode cuối 0,844. Những số này chỉ phản ánh rubric synthetic đã thiết kế. Không gọi là hiệu quả điều trị, cá nhân hóa thuốc hoặc giảm biến chứng.
+
+Core bảy agent không phụ thuộc RL để dự đoán hoặc truy xuất. Nếu mở rộng RL sau này, cần mô phỏng riêng và đánh giá chính sách có ràng buộc trước mọi ứng dụng thực; không cho policy tự kê đơn, đổi liều hoặc điều khiển chăm sóc người thật.

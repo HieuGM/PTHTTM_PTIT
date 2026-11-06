@@ -1,66 +1,62 @@
-# CHƯƠNG 7. KIỂM THỬ, DEMO VÀ TRIỂN KHAI
+# CHƯƠNG 7. TÁI LẬP, NOTEBOOK, KIỂM THỬ VÀ TRIỂN KHAI
 
-## 7.1. Kiểm thử phần mềm
+## 7.1. Notebook là lối chạy chính
 
-Bộ pytest gồm 55 trường hợp và chạy với hai mô hình đã huấn luyện thật. Các nhóm kiểm tra gồm truy xuất, thông điệp Agent, giới hạn bước, nguồn trích dẫn, schema mô hình, nạp trọng số mới, tính ổn định score, điều kiện cảnh báo và các phản hồi HTTP lỗi. Không dùng mock mô hình hoặc thay mạng bằng hàm điểm cố định để làm test đạt.
+Notebook chứa mã trực tiếp trong ô, chạy từ trên xuống trong kernel mới, không import module Python cục bộ của project. Script builder chỉ dùng bảo trì. Luồng gồm môi trường, schema/nguồn, CSV→SQLite→SELECT, benchmark/biểu đồ, serving model tái sử dụng, KB/graph/RAG, bảy agent, demo/API.
 
-Trong quá trình kiểm thử, ba lỗi kỹ thuật đã được phát hiện và sửa. Kết nối SQLite không tự đóng khi chỉ dùng context manager của sqlite3 gây khóa file trên Windows; bản sửa dùng closing và commit rõ ràng. Pydantic có thể ép boolean hoặc chuỗi số sang float trước khi Predictor nhận dữ liệu; bản sửa dùng strict numeric types. Phản hồi lỗi chứa NaN/Infinity có thể lỗi serialize JSON; handler mới chỉ trả vị trí, loại và thông điệp lỗi, không phản chiếu input.
+Full chạy ngân sách đầy đủ; smoke giảm seed/epoch/cây để kiểm luồng, không thay số đo full. Output ở thư mục riêng, không ghi đè serving model hoặc báo cáo. Dữ liệu tải thật/cache phải có provenance; model nhúng để reuse không thay việc fit benchmark trên nguồn thật.
 
-Lượt kiểm tra cuối đạt 55/55, còn một cảnh báo deprecation của thư viện TestClient không làm test thất bại. Kiểm thử mô hình riêng đối chiếu score từ state_dict với dự đoán test đã lưu, kiểm tra scaler dùng đúng train và xác nhận tập nhóm không giao nhau. Thành công các test là bằng chứng triển khai đúng hợp đồng phần mềm ở những trường hợp đã xét, không bảo đảm mọi cách diễn đạt hoặc tình huống y tế đều được xử lý đúng.
+## 7.2. Tái chạy bằng module khi bảo trì
 
-## 7.2. Kịch bản demo
-
-Kịch bản thứ nhất mở trang Trợ lý kiến thức và hỏi “HbA1c là gì?”. Người xem kiểm tra phần trả lời, ID nguồn, URL NIDDK và trace qua các vai trò. Tiếp theo thử câu hỏi ngoài chủ đề để quan sát insufficient_evidence, rồi yêu cầu kê đơn để thấy boundary và lý do dừng.
-
-Kịch bản thứ hai nhập glucose theo mg/dL hoặc mmol/L cùng câu hỏi giáo dục, quan sát quy tắc cảnh báo nếu dưới ngưỡng. Có thể dùng tình huống thử nghiệm có mô tả dấu hiệu nguy hiểm để thấy safety_override chạy trước policy. Đây là dữ liệu kiểm thử giao diện, không phải thông tin của một người bệnh thật.
-
-Kịch bản thứ ba vào Phân tích dữ liệu, chọn CDC, kiểm tra 21 trường và cách mã hóa rồi chạy MLP. Đầu ra gồm risk_score, threshold, predicted_class, label_semantics và trace. Đổi sang Hospital để quan sát schema 10 biến và nhãn tái nhập viện; không diễn giải score Hospital thành mức độ tiểu đường. Cuối cùng xóa một trường hoặc nhập giá trị ngoài miền qua API để xác nhận HTTP422.
-
-## 7.3. Giao diện và API
-
-Giao diện có ba khu vực: Trợ lý kiến thức, Phân tích dữ liệu và Kho tri thức. Menu bên cạnh thể hiện thông tin sinh viên. Các thẻ nguồn giữ liên kết gốc; khối trace mô tả từng bước thay vì chỉ hiện tên Agent. CSS có bố cục thay đổi theo chiều rộng, form từ ba cột xuống một cột khi màn hình nhỏ.
-
-| Endpoint | Phương thức | Mục đích |
-|---|---|---|
-| / | GET | Giao diện demo |
-| /health | GET | Tình trạng sẵn sàng, mô hình và kiểm kê KB |
-| /api/catalog | GET | Metadata, schema và thông tin bộ bài |
-| /api/knowledge | GET | Các thẻ tri thức và nguồn |
-| /api/chat | POST | Hỏi đáp, glucose tùy chọn, đơn vị |
-| /api/predict | POST | Phân loại theo dataset và vector đầu vào |
-| /api/results | GET | Một số kết quả tổng hợp được phép công bố |
-| /docs | GET | Tài liệu tương tác OpenAPI |
-
-Các endpoint và frontend được phục vụ cùng origin; JavaScript không nhúng secret, không gửi thông tin sang dịch vụ LLM. App không yêu cầu mở dữ liệu cá nhân để chạy demo. Bản giao diện desktop được xem trực tiếp trong Edge, còn kiểm thử chức năng hệ thống được thực hiện bằng API. Chưa có đánh giá người dùng hoặc kiểm thử giao diện tự động trên mọi trình duyệt/thiết bị.
-
-## 7.4. Đóng gói Docker
-
-Dockerfile dựa trên Python3.12 slim và cài dependency có khóa phiên bản. Image chỉ sao chép app, models và results, không sao chép raw dataset hoặc các split dùng huấn luyện. Ứng dụng chạy bằng user không phải root, một worker Uvicorn, đọc cổng từ PORT và đặt SQLite ở thư mục runtime có quyền ghi. Không cần GPU, khóa API hoặc train lại lúc khởi động.
-
-Từ thư mục project, chạy các lệnh:
+Các lệnh dưới tương đương thao tác trong notebook, dùng khi phát triển ứng dụng. Chạy từ thư mục Project01; không bắt buộc người học chạy chúng để xem notebook.
 
 ```powershell
-docker build -t diacare-hieugm299:1.0 .
-docker run -d --name diacare-demo -p 127.0.0.1:8000:8000 diacare-hieugm299:1.0
-python scripts/verify-deployment.py --url http://127.0.0.1:8000
+python scripts/prepare-database.py
+python scripts/run-benchmark.py --mode full --seeds 42 43 44 --reuse-prepared-db
+python scripts/ingest-knowledge.py --help
+python scripts/load-neo4j.py --help
+python -m compileall -q app scripts tests report
+python -m pytest tests -q
 ```
 
-Một worker giúp giảm việc nhân đôi model/index. Số thread CPU được giới hạn trong container. SQLite được dựng lại từ JSON nguồn nên không cần persistent disk để giữ KB. Cách này phù hợp demo có nội dung tĩnh; không phải thiết kế lưu hồ sơ người bệnh hoặc đồng bộ chỉnh sửa KB giữa nhiều replica.
+Ingestion/Neo4j dùng thông tin kết nối môi trường; không đặt key/password trực tiếp trong câu lệnh được đưa lên Git. Refit cây cần cùng dữ liệu, preprocessing, seed và config. Phiên bản thư viện hoặc nền tảng khác có thể làm sai số số học và thời gian thay đổi.
 
-## 7.5. Triển khai cloud và giới hạn bằng chứng
+## 7.3. Các lớp bằng chứng
 
-Repository HieuGM/PTHTTM_PTIT giữ project trong thư mục project01_CT_04_HieuGM.299. Bản triển khai thực được tạo qua Render MCP với runtime Docker, gói Free và vùng Singapore. Dockerfile và build context trỏ trực tiếp tới thư mục project tính từ gốc repository; PORT đặt 8000, APP_DATA_DIR đặt /tmp/diacare. Tệp render.yaml ở gốc repo vẫn cung cấp cấu hình Blueprint tương đương cho việc tái tạo; dịch vụ hiện tại dùng kiểm tra sẵn sàng TCP mặc định, còn endpoint /health được kiểm tra riêng qua HTTPS.
+Kiểm mô hình cần tính lại metric từ y/score, kiểm hash weights, threshold validation, scaler train-only, split/nhóm không giao và bảo toàn serving model cũ. Kiểm MAS cần request_id, thứ tự agent, dừng sớm, lỗi dependency, báo cáo và không ghi dữ liệu nhạy cảm. Kiểm KG cần import/query Neo4j thật, counts, idempotence, provenance và cache parity.
 
-Bản Docker đã được build từ đúng Dockerfile và chạy trên Docker Engine 29.9.2 trong môi trường Linux WSL2 riêng. Cả 13 kiểm tra HTTP đạt, gồm frontend/tài nguyên tĩnh, kiểm kê KB, suy luận hai mô hình, từ chối input thiếu, trả lời có nguồn, ưu tiên cảnh báo và xử lý NaN. Container báo healthy; một quan sát lúc nhàn rỗi sau kiểm tra ghi khoảng 254,9 MiB RAM, không phải benchmark tải. docker-verification.json giữ thời điểm, image ID và từng kết quả.
+Kiểm notebook cần chạy kernel mới trong thư mục không có source app; không chỉ kiểm JSON hoặc syntax. Kiểm Docker cần build đúng source cuối, gọi API/model/KB và kiểm health. Kiểm public cần chờ deploy live rồi gọi HTTPS, đối chiếu version/commit; việc localhost đạt không thay bằng chứng public.
 
-Render xác nhận deploy ở trạng thái live ngày 05/11/2026, lúc 17:16 giờ Việt Nam, với commit 6eb79dc0468bc76347b10c2ef0ab1a360974686a. Ứng dụng công khai tại [diacare-mas-hieugm299.onrender.com](https://diacare-mas-hieugm299.onrender.com). Cả 13/13 kiểm tra HTTP trên URL này đạt, bao gồm giao diện/tài nguyên tĩnh, KB, suy luận hai mô hình, từ chối dữ liệu thiếu/NaN, hỏi đáp có nguồn và ưu tiên cảnh báo. render-deployment.json giữ service ID, deploy ID và commit; render-http-verification.json ghi từng phép kiểm tra thực tế.
+55/55 pytest và 13/13 HTTP ghi ngày 05/11/2026 là bằng chứng lịch sử phiên bản đầu. Bộ 30 câu phát triển và 11 ca an toàn lịch sử không phải bộ clinical validation. Bản nâng cấp thay schema, retrieval, API và UI nên cần kết quả kiểm tra mới; đối chiếu file verification mới nhất khi nộp.
 
-Đây là kiểm chứng chức năng sau deploy tại thời điểm ghi nhận, chưa phải đánh giá tải hoặc bảo đảm thời gian hoạt động liên tục. Gói Free có thể ngủ khi không có truy cập; cần chờ khởi động lại ở lần mở tiếp theo. Hệ thống vẫn giữ các giới hạn về dữ liệu Mỹ, chất lượng mô hình và phạm vi giáo dục đã trình bày.
+Bản nâng cấp đạt 102 pytest ở lượt kiểm cuối. Kiểm độc lập tính lại 72 run/144 bộ metric, 36 checkpoint, 24 summary và 11 hash legacy. Bằng chứng nằm tại results/pytest-verification-v2.json và báo cáo tester.
 
-## 7.6. Kết luận và hướng phát triển
+Bản nâng cấp đã kiểm giao diện desktop/mobile thực với 24 kiểm tra: bốn form model, tám message luồng thường, sáu hàng benchmark/cohort, 34 node/19 relation, 26 document metadata, 24 thẻ, chat và năm tab không tràn ngang/lỗi JavaScript. Footprint ứng dụng đo khoảng 302 MiB trong môi trường kiểm; không là bảo đảm mọi tải. Notebook bàn giao có 61 ô/51 ô mã, gồm 25 ô mô-đun inline. Bản cuối chạy full trong kernel mới với nguồn cache thật đã kiểm hash: 72 lượt fit, 80 kiểm tra ML và 68 kiểm tra API đạt, 211,575 giây, không có source app cục bộ đi kèm. Một lượt full trước đó tải nguồn thật đạt trong 339,18 giây. Hai thời gian toàn luồng này không thay tổng fit từng run 145,588 giây của benchmark báo cáo; cache và phiên bản execution được ghi rõ trong notebook-verification.json.
 
-Project hiện thực đầy đủ luồng dữ liệu lớn đến mô hình đã huấn luyện, suy luận có schema, KB có nguồn, trả lời trích xuất, điều phối đa vai trò, Rule và minh họa RL. Các kết quả cho thấy MLP có thể học tín hiệu trong hai nhiệm vụ, nhưng mức phân biệt tái nhập viện còn hạn chế; pipeline hỏi đáp vẫn có thể chọn nguồn chưa cụ thể nhất.
+## 7.4. Docker và cấu hình FPT
 
-Hướng tiếp theo là đánh giá nhiều seed, khoảng tin cậy theo người, calibration và fairness; mở rộng đặc trưng Hospital có kiểm soát thời điểm quan sát; xin quyền dùng và kiểm định trên dữ liệu Việt Nam. Với KB cần rà soát chuyên môn, mở rộng bộ câu hỏi độc lập và kiểm tra phủ định, đa bệnh, mức độ cụ thể. Tích hợp LLM chỉ nên thực hiện sau khi có giao thức kiểm tra claim–citation và đo riêng chất lượng sinh, không suy từ kết quả trích xuất hiện tại.
+Image chứa model/corpus và không train tại startup. Một worker Uvicorn hạn chế nhân bản bộ nhớ; OMP_NUM_THREADS=2 giới hạn CPU thread. SQLite cache dựng lại dưới APP_DATA_DIR=/tmp/diacare. Raw/database và notebook-output không trong image.
 
-Ứng dụng được bàn giao ở mức demo học tập có thể chạy lại, không tự nhận là thiết bị y tế, công cụ kê đơn hoặc hệ thống quản lý điều trị đã được xác thực. Mọi mở rộng ứng dụng thực tế cần quy trình đánh giá phù hợp với dữ liệu, người dùng và mục đích triển khai.
+FPT_API_KEY, FPT_MODEL và FPT_API_URL cấu hình bằng biến môi trường. Gateway AI Marketplace đã kiểm endpoint HTTPS https://mkp-api.fptcloud.com/chat/completions. FPT_BASE_URL là lựa chọn thay thế; full URL được ưu tiên. Key thật không xuất hiện trong notebook/PDF/repository. HTTP 200 xác nhận kết nối chưa đủ để chứng minh câu trả lời grounded; cần thêm kiểm citation/evidence của output thật.
+
+## 7.5. Render và trạng thái phiên bản
+
+Demo tại https://diacare-mas-hieugm299.onrender.com, API docs tại /docs và readiness tại /health. Dịch vụ hiện có dùng Docker Free Singapore, repo HieuGM/PTHTTM_PTIT nhánh main, service `srv-dbm5dfgu01pc738ercq0`. Root Directory trống; Dockerfile và build context trỏ thư mục `project01_CT_04_HieuGM.299`.
+
+Bản nâng cấp chuyển live lúc 14:40:42 ngày 06/11/2026 theo giờ Việt Nam, commit `1d08d9ba7bc1d757ee856268f671ca035399a7b8`, deploy `dep-dbmo7ne7bikc73bj5rv0`. Kiểm public HTTPS cuối đạt 30/30, gồm suy luận bốn model, corpus/graph/benchmark và sinh câu trả lời FPT thật. Lượt trước đạt 29/30 vì một câu FPT dùng template fallback; giữ nguyên tại results/render-http-attempts.json. Chạy lại cùng câu hỏi/bộ kiểm đạt 30/30, không xóa lỗi ban đầu. Đây là kiểm chức năng theo lượt, không bảo đảm LLM luôn thành công. Kết quả cuối ở results/render-http-verification.json, metadata ở results/render-deployment.json.
+
+Dịch vụ dùng public Git URL nên cần manual deploy theo commit mới sau push; deploy do đổi environment ở commit cũ không được tính là bản nâng cấp. FPT Environment đã cấu hình riêng trên Render, không ship .env. Free có thể ngủ; lần mở đầu chậm không tự chứng minh lỗi model.
+
+Neo4j Docker cục bộ không truy cập từ Render bằng localhost. Muốn live graph production cần URI accessible và credential riêng; khi thiếu dùng sqlite_cache/degraded có nhãn. Không tạo thêm tài nguyên trả phí. Live của ứng dụng không chứng minh đã có Neo4j production hoặc kiểm định lâm sàng.
+
+## 7.6. Kịch bản demo bảo vệ
+
+Mở bảng benchmark, chọn lần lượt bốn cohort và giải thích khác nhiệm vụ. Trên report, chọn CDC và feature mặc định minh họa; đọc task, score, threshold, version. Nhập câu hỏi về chế độ ăn hoặc xét nghiệm, mở evidence Vinmec/PDF và trace để chỉ ra KG/RAG/Explanation.
+
+Thử thiếu feature hoặc nhập ngoài miền: Data từ chối trước DL. Thử yêu cầu kê liều: luật giới hạn phản hồi. Tắt FPT hoặc Neo4j có chủ đích trong môi trường cục bộ để xem nhãn fallback; không giả định fallback chính là dịch vụ ngoài đang chạy. Khi demo LLM thật, dùng câu hỏi công khai và không cung cấp hồ sơ nhận dạng.
+
+## 7.7. Hướng phát triển
+
+Ưu tiên bộ câu hỏi độc lập có thẩm định chuyên môn, đánh giá claim-level support, nguồn mới và prompt injection; so sánh retriever với neural embedding phù hợp tiếng Việt. Với ML, thêm external/temporal validation, calibration và phân tích nhóm. Với hệ thống, đo tải/RAM/latency/cost, rate limit và hạ tầng log có chính sách rõ.
+
+Không mở rộng số model chỉ để tăng số lượng khi chưa có giả thuyết so sánh. Ma trận hiện tại hữu hạn, có baseline và ba neural architecture, cho thấy cả kết quả tốt và yếu. Giá trị của bài là pipeline tái lập, không rò rỉ, provenance và ranh giới nghiên cứu được thể hiện trong sản phẩm.

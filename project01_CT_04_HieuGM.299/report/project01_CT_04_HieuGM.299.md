@@ -1,490 +1,587 @@
-# PROJECT 01 - HỆ ĐA AGENT HỖ TRỢ BỆNH ĐÁI THÁO ĐƯỜNG
+# PROJECT01 - HỆ ĐA AGENT HỖ TRỢ BỆNH ĐÁI THÁO ĐƯỜNG
 
-Giáp Minh Hiếu — B23DCCN299 — CT01 — Nhóm 04
+Giáp Minh Hiếu - B23DCCN299 - CT01 - Nhóm04
 
-# CHƯƠNG 1. GIỚI THIỆU ĐỀ TÀI
+# CHƯƠNG 1. BÀI TOÁN VÀ PHẠM VI THỰC HIỆN
 
-## 1.1. Bối cảnh và bài toán
+## 1.1. Mục tiêu của Project01
 
-Thông tin về đái tháo đường nằm ở nhiều nguồn: hồ sơ khám chữa bệnh, khảo sát sức khỏe, hướng dẫn chuyên môn và tài liệu giáo dục người bệnh. Một hệ thống chỉ đưa ra điểm dự đoán sẽ khó giải thích điểm đó có ý nghĩa gì. Một chatbot chỉ trả lời bằng văn bản cũng không tự bảo đảm đã dùng đúng nguồn hoặc nhận biết trường hợp ngoài phạm vi. Đề tài kết hợp mô hình học sâu, cơ sở tri thức và các vai trò Agent để mỗi thành phần thực hiện một nhiệm vụ có thể kiểm tra.
+DiaCare là nguyên mẫu học thuật về hệ đa agent hỗ trợ tìm hiểu bệnh đái tháo đường. Đề tài kết hợp hai nhánh: Knowledge Base từ Web/PDF, Knowledge Graph và RAG; dữ liệu Diabetes trong cơ sở dữ liệu để huấn luyện, so sánh Deep Learning. Báo cáo trình bày kết quả thực nghiệm và cách các thành phần phối hợp thành ứng dụng.
 
-Project xây dựng DiaCare MAS, ứng dụng học tập tiếng Việt với hai chức năng chính. Chức năng hỏi đáp truy xuất thông tin từ kho tri thức có nguồn. Chức năng phân tích tiếp nhận bộ biến đầu vào theo đúng schema của một trong hai dataset, chạy MLP đã huấn luyện và hiển thị ý nghĩa nhãn, điểm mô hình, ngưỡng cùng dấu vết xử lý. Các cảnh báo từ quy tắc được xử lý trước nhánh hỏi đáp thông thường.
+Tài liệu project_architecture_multiagent_diabet_v1.pdf do giảng viên cung cấp định nghĩa bảy agent cốt lõi, giao tiếp có cấu trúc và quy trình tạo báo cáo. Đây là đặc tả kiến trúc; không quy định số bộ dữ liệu hoặc mô hình. Ma trận bốn cohort, sáu loại mô hình, ba seed là phần mở rộng thực nghiệm để có so sánh rõ ràng.
 
-Hai nguồn dữ liệu lớn được sử dụng là CDC Diabetes Health Indicators với 253.680 bản ghi khảo sát và Diabetes 130-US Hospitals với 101.766 lượt điều trị nội trú. Chúng không phải dữ liệu Việt Nam và không cùng nhãn. Bộ thứ nhất phân loại trạng thái tiền đái tháo đường/đái tháo đường được ghi nhận trong khảo sát; bộ thứ hai phân loại tái nhập viện trong 30 ngày ở các lượt điều trị của người bệnh tiểu đường. Do vậy, thực nghiệm so sánh MLP với baseline trong từng dataset, không coi hai tập là kiểm định ngoại viện của nhau.
+Đầu vào gồm cohort, đầy đủ đặc trưng đúng schema và câu hỏi tùy chọn. Đầu ra gồm dự đoán, kết quả luật, bằng chứng truy xuất, giải thích, nguồn và giới hạn. Các thành phần được giữ riêng để người xem biết thông tin đến từ mô hình, luật hay tài liệu.
 
-## 1.2. Mục tiêu
+## 1.2. Kết quả chính và cách đếm
 
-Mục tiêu kỹ thuật thứ nhất là hình thành quy trình dữ liệu có nguồn, chống rò rỉ, huấn luyện thật và lưu trọng số để suy luận. Mục tiêu thứ hai là tổ chức KB tiếng Việt với mã thẻ và liên kết gốc, kết hợp truy xuất với tạo câu trả lời trích xuất. Mục tiêu thứ ba là hiện thực điều phối đa vai trò có thông điệp, quy tắc ưu tiên và giới hạn bước. Mục tiêu thứ tư là đóng gói API và giao diện thành một ứng dụng có thể chạy độc lập bằng Docker.
-
-Mục tiêu đánh giá gồm đo phân loại trên tập kiểm tra giữ riêng; kiểm tra truy xuất và khả năng từ chối bằng bộ câu hỏi có nhãn; kiểm thử dữ liệu nhập, dẫn nguồn, cảnh báo và suy luận từ trọng số thật. Thành công về kỹ thuật không đồng nghĩa hiệu quả lâm sàng. Dữ liệu lịch sử của Hoa Kỳ và bộ câu hỏi tự biên soạn chỉ hỗ trợ đánh giá trong phạm vi nghiên cứu của project.
-
-## 1.3. Sản phẩm và phạm vi
-
-| Sản phẩm | Nội dung thực hiện |
+| Thành phần | Kết quả và ý nghĩa |
 |---|---|
-| Dữ liệu | Hai dataset công khai, nguồn và hash, báo cáo làm sạch/chia tập |
-| Deep Learning | Hai MLP ba lớp ẩn, trọng số đã huấn luyện, Logistic và majority baseline |
-| Cơ sở tri thức | 24 thẻ tiếng Việt, 19 URL nguồn, SQLite |
-| Truy xuất và trả lời | TF-IDF, top-k, trả lời trích xuất có ID nguồn |
-| Multi-Agent | Bảy vai trò chuyên trách cùng Coordinator, trace có giới hạn |
-| Rule và RL | Cảnh báo/giới hạn theo luật; Q-learning một bước cho cách trình bày |
-| Demo | FastAPI, giao diện web responsive, Dockerfile, cấu hình Render |
-| Bằng chứng | JSON/NPZ kết quả, biểu đồ, kiểm thử và hướng dẫn tái lập |
+| Dữ liệu học có giám sát | 4 cohort độc lập: CDC, Hospital, Pima, Early Stage |
+| Loại mô hình | 6: Logistic Regression, Random Forest, Histogram Gradient Boosting, MLP hai tầng, MLP ba tầng, Residual MLP |
+| Deep Learning | 3 kiến trúc nhiều tầng ẩn; seed là lần khởi tạo, không là loại kiến trúc mới |
+| Ma trận | 4 × 6 = 24 tổ hợp dataset-model; mỗi tổ hợp 3 seed, tổng 72 lượt thật |
+| Tái sử dụng | Giữ nguyên artifact CDC/Hospital đã triển khai; benchmark mới lưu riêng |
+| Tri thức | Web, PDF tiếng Việt và thẻ có nguồn; KG được xây dựng mới và xuất Cypher |
+| Điều phối | 7 agent cốt lõi, request_id xuyên suốt, trạng thái và phiên bản |
+| Sản phẩm | Notebook độc lập, FastAPI, Docker, báo cáo, hướng dẫn bảo vệ |
 
-Hệ thống không thu thập họ tên người bệnh, mã hồ sơ, địa chỉ hoặc số điện thoại. Các câu hỏi và giá trị nhập chỉ đi qua bộ nhớ của request. SQLite dùng để tổ chức thẻ tri thức, không lưu nội dung hỏi đáp hay hồ sơ sức khỏe. Mã nguồn không chứa khóa API và không cần dịch vụ LLM trả phí để hoạt động mặc định.
+Hai cohort nhỏ bổ sung giúp quan sát độ nhạy khởi tạo và tác động của dữ liệu ít. Chúng không làm tăng bằng chứng kiểm định của cùng một mô hình vì nhiệm vụ, feature và quần thể khác nhau. Không cộng mọi hàng thành một tập huấn luyện chung.
 
-## 1.4. Cấu trúc báo cáo
+## 1.3. Điều chỉnh so với giả định của kiến trúc mẫu
 
-Báo cáo đi từ cơ sở Agent và kiến trúc, tới thiết kế dữ liệu, Deep Learning, KB/truy xuất, điều phối và Rule/RL. Phần thực nghiệm trình bày số đo và lỗi còn tồn tại. Phần triển khai ghi lệnh chạy cùng ranh giới giữa bản Docker đã kiểm tra và cấu hình cloud cần tài khoản thực. Phụ lục cung cấp schema, API và kịch bản demo.
+Kiến trúc mẫu giả định đã có DL và Neo4j KG. Hai mô hình CDC/Hospital đã tồn tại; người học xác nhận chưa có Neo4j hoặc DB_diabet.cypher. Bài thực hiện tái sử dụng DL hiện có và xây KG từ đầu. Cypher bàn giao là kết quả mới của project, không là kho tri thức có sẵn của giảng viên.
+
+Vinmec là nguồn bài viết sức khỏe cho KB/RAG. Bài viết công khai cung cấp văn bản, không cung cấp ma trận bệnh nhân có nhãn để thay cho bốn cohort. Không gọi bài viết là dữ liệu bệnh nhân Vinmec để train DL. PDF kiến trúc 11 trang không nêu bắt buộc dùng Vinmec; nguồn này được bổ sung theo trao đổi với người học.
+
+## 1.4. Giới hạn sử dụng
+
+Đây là nguyên mẫu giáo dục và nghiên cứu. Điểm sigmoid chưa được hiệu chuẩn thành xác suất bệnh cá nhân tại Việt Nam. Hospital dự đoán tái nhập viện dưới 30 ngày ở người có đái tháo đường; đây không phải phát hiện bệnh mới. CDC dùng nhãn gộp tiền đái tháo đường/đái tháo đường theo nguồn binary.
+
+Hệ thống không chẩn đoán xác nhận, kê thuốc hoặc tự điều chỉnh liều. Luật minh họa cần chuyên gia thẩm định trước khi dùng thật. RL chỉ mô phỏng cách trình bày. Citation đúng ID hoặc URL chứng minh truy vết, chưa chứng minh mọi phát biểu được nguồn hỗ trợ đầy đủ.
+
+## 1.5. Cách kiểm chứng
+
+Các số liệu Chương 3-4 lấy từ artifact thực. 72 lượt nằm tại results/benchmark/full; manifest nguồn, SQL và split tại results/benchmark/database-manifest.json; hash bảo toàn mô hình cũ tại results/benchmark/legacy-preservation.json. Chương 5 mô tả corpus/graph/RAG; Chương 6 mô tả luật và báo cáo; Chương 7 hướng dẫn notebook, kiểm thử và triển khai.
+
+Bằng chứng ngày 05/11/2026 là lịch sử phiên bản cũ. Kết quả kiểm tra của phiên bản nào chỉ áp dụng cho phiên bản đó. Trạng thái bản nâng cấp phải đối chiếu verification mới nhất, không suy ra từ việc URL cũ vẫn truy cập được.
 
 
-# CHƯƠNG 2. HỆ ĐA AGENT VÀ KIẾN TRÚC
+# CHƯƠNG 2. KIẾN TRÚC HYBRID MULTIAGENT SYSTEM
 
-## 2.1. Agent và hệ đa Agent
+## 2.1. Sáu lớp hệ thống
 
-Agent là một thành phần nhận quan sát, duy trì trạng thái liên quan và chọn hành động để thực hiện một mục tiêu trong môi trường. Trong project, môi trường là request hỏi đáp hoặc phân tích dữ liệu; hành động là kiểm tra luật, truy xuất thẻ, chọn cách trình bày, chạy mô hình hoặc xác minh cấu trúc dẫn nguồn. Tính tự chủ của các vai trò được giới hạn bằng nhiệm vụ và điều kiện chuyển tiếp rõ ràng.
+Sáu lớp gồm giao diện; API và xử lý dữ liệu; điều phối; agent chuyên biệt; model và knowledge; đánh giá/audit. Các agent chạy trong một tiến trình Python, giao tiếp qua object có cấu trúc. Cách triển khai này hỗ trợ kiểm thử và theo dõi; chưa là agent phân tán độc lập qua message broker.
 
-Hệ đa Agent tổ chức nhiều vai trò chuyên trách cùng giải quyết một nhiệm vụ chung. Cách tổ chức này giúp phân tách mục tiêu: SafetyAgent ưu tiên cảnh báo, RetrievalAgent ưu tiên bằng chứng liên quan, PredictionAgent ưu tiên suy luận đúng mô hình, còn CriticAgent kiểm tra cấu trúc và phạm vi đầu ra. Coordinator quyết định luồng chuyển thông điệp và dừng khi đã có kết quả.
+![Kiến trúc bảy agent và hai kho dữ liệu](figures/architecture.png)
 
-Hiện thực của project là điều phối xác định trong một tiến trình Python, không phải mạng Agent độc lập phân tán hoặc LLM tự lập kế hoạch. Các vai trò được biểu diễn qua các hàm công cụ và thông điệp trong context. Việc tách vai trò có lợi cho truy vết và kiểm thử, nhưng bản thân số lượng tên Agent không chứng minh cải thiện chất lượng so với một pipeline tương đương. Đánh giá lợi ích nhân quả của MAS cần ablation với cùng công cụ, dữ liệu và ngân sách.
+SQLite huấn luyện chứa raw/prepared và split, chỉ dùng cục bộ. SQLite cache tri thức chứa tài liệu/chunk/quan hệ công khai. Neo4j lưu graph; trọng số DL nạp từ artifact. Không huấn luyện lại tại request.
 
-## 2.2. Vai trò và giao thức phối hợp
+## 2.2. Bảy agent và ánh xạ mã nguồn
 
-| Vai trò | Đầu vào | Hành động và đầu ra |
+| Agent | Thành phần | Trách nhiệm |
 |---|---|---|
-| SafetyAgent | Câu hỏi, glucose tùy chọn, đơn vị | Phát hiện cảnh báo/ngoài phạm vi; có thể dừng luồng |
-| DataAgent | Tên dataset, dictionary đặc trưng | Kiểm tra đủ trường, kiểu số, miền và mã hóa |
-| PredictionAgent | Vector đã xác thực | Chuẩn hóa theo train và suy luận MLP |
-| RetrievalAgent | Câu hỏi tiếng Việt | Trả top-k thẻ, điểm và nguồn |
-| PolicyAgent | Có/không bằng chứng, yêu cầu độ chi tiết | Chọn abstain/brief/detail từ Q-table |
-| EducationAgent | Thẻ đã chọn, kiểu trình bày | Ghép văn bản của một hoặc hai thẻ, giữ ID |
-| CriticAgent | Dự thảo hoặc điểm mô hình | Kiểm tra ID/URL hoặc nhắc đúng ý nghĩa điểm |
-| Coordinator | Request và kết quả các vai trò | Điều phối, giới hạn bước và trả trace |
-
-Thông điệp có các trường sender, receiver, kind, detail và elapsed_ms. Context được tạo mới cho từng request, chứa câu hỏi trong bộ nhớ và danh sách trace; mỗi trace có tối đa tám thông điệp. Không có vòng lặp Agent không giới hạn. Nếu vượt ngân sách, hệ thống phát sinh lỗi thay vì tiếp tục gọi công cụ.
-
-<!-- pagebreak -->
-
-## 2.3. Kiến trúc tổng quan
-
-![Kiến trúc DiaCare: nhánh mô hình và nhánh tri thức cùng đi qua điều phối và kiểm tra](figures/architecture.png)
-
-Lớp giao diện dùng HTML, CSS và JavaScript, trao đổi JSON với FastAPI. API khởi tạo KB, policy và metadata mô hình khi ứng dụng bắt đầu. Dữ liệu huấn luyện không nằm trong image triển khai; suy luận chỉ cần hai state_dict, thống kê scaler và metadata. Cơ sở tri thức được đóng gói từ JSON có kiểm soát phiên bản rồi ghi vào SQLite ở thư mục runtime.
-
-Nhánh hỏi đáp đi qua SafetyAgent trước. Nếu có cảnh báo khẩn hoặc yêu cầu kê đơn, Coordinator trả lời theo quy tắc và dẫn nguồn. Nếu được phép, RetrievalAgent tạo vector câu hỏi, tìm bằng chứng và chuyển cho PolicyAgent. EducationAgent ghép nội dung trích xuất; CriticAgent chỉ chấp nhận các mã thẻ đã có và liên kết HTTPS. Nhánh này không gọi LLM và không phát sinh kiến thức mới ngoài thẻ đã chọn.
-
-Nhánh phân tích dùng DataAgent xác thực schema rồi gọi PredictionAgent. Vector được chuẩn hóa bằng mean/std fit trên train, qua mạng và sigmoid để thu điểm. Ngưỡng phân loại đã được chọn bằng validation trong quá trình huấn luyện. CriticAgent gắn lại ý nghĩa nhiệm vụ và giới hạn sử dụng. Điểm của nhánh CDC và Hospital không được gộp thành một điểm nguy cơ chung.
-
-## 2.4. Thiết kế cơ sở dữ liệu và tài nguyên
-
-Bảng SQLite cards gồm id làm khóa chính, title, content và url. Mỗi lần khởi động, nội dung được đồng bộ lại từ cards.json; kết nối được đóng sau khi ghi hoặc đọc để tránh giữ khóa file trên Windows. Vector TF-IDF được xây dựng trong RAM từ cùng danh sách thẻ, nên ID truy xuất và bản ghi DB có thể đối chiếu được.
-
-Tài nguyên mô hình được cache trong tiến trình. Đối tượng Predictor tải state_dict với weights_only=True, đặt model.eval và chạy trong inference_mode. Thống kê scaler nằm trong metadata JSON, tránh pickle đối tượng tiền xử lý. Predictor kiểm tra toàn bộ đặc trưng; không âm thầm bổ sung các trường người dùng chưa nhập. Các giá trị mặc định trên giao diện là dữ liệu minh họa thao tác và có thông báo rõ.
-
-## 2.5. Thiết kế lỗi và quyền riêng tư
-
-API từ chối dataset không hợp lệ, trường thừa/thiếu, số ngoài khoảng, mã phân loại không nguyên, kiểu boolean/string và giá trị NaN/Infinity. Phản hồi lỗi validation chỉ nêu vị trí và loại lỗi, không phản chiếu nguyên văn dữ liệu sức khỏe. JavaScript hiển thị đầu ra bằng textContent, tránh diễn dịch câu hỏi thành HTML.
-
-Ứng dụng không có chức năng quản lý hồ sơ bệnh nhân, đăng nhập, điều trị hoặc ghi đơn. Khi triển khai công khai, cần đặt sau HTTPS của nhà cung cấp, bổ sung giới hạn lưu lượng và theo dõi tải nếu mở rộng sử dụng. Đó là yêu cầu vận hành tiếp theo, không phải tính năng đã kiểm chứng trong demo cục bộ.
-
-
-# CHƯƠNG 3. DỮ LIỆU VÀ GIAO THỨC THỰC NGHIỆM
-
-## 3.1. Lựa chọn dữ liệu
-
-Ưu tiên của đề là dataset đủ lớn và có thể là dữ liệu Việt Nam. Khảo sát nguồn WHO cho thấy STEPS Việt Nam 2021 có 4.435 bản ghi và có điều kiện truy cập/sử dụng riêng. Project chưa tải hoặc huấn luyện bộ này. Một cổng dữ liệu đặt ở Việt Nam không tự khiến dữ liệu BRFSS thành dữ liệu người Việt. Hai tập chính vì thế được chọn theo khả năng tiếp cận công khai, quy mô và quyền tái sử dụng rõ ràng.
-
-| Thuộc tính | CDC BRFSS | Diabetes 130-US Hospitals |
-|---|---|---|
-| Nguồn | UCI 891; bản gốc Alex Teboul/BRFSS 2015 | UCI 296; dữ liệu bệnh viện 1999–2008 |
-| Quy mô gốc | 253.680 bản ghi, 21 biến đầu vào | 101.766 lượt nội trú, metadata nguồn 47 biến |
-| Biến chọn | Toàn bộ 21 biến khảo sát | 10 biến dễ nhập, có ở thời điểm ra viện |
-| Nhãn dương | Tiền đái tháo đường hoặc đái tháo đường gộp | readmitted bằng <30 |
-| Giấy phép | CC0 theo metadata tác giả Kaggle | CC BY 4.0 theo UCI |
-| Đơn vị chia tập | Vector đặc trưng duy nhất sau xử lý | Nhóm patient_nbr |
-
-Tệp CDC có sẵn trong bài trước được đối chiếu với CSV UCI sau khi bỏ ID và quy đổi kiểu số; kết quả nội dung tương ứng. Hash tệp đầu vào, cấu hình và kích thước thực sau xử lý được ghi trong results/data-manifest.json. Script fetch-data.py có thể tải lại từ hai URL chính thức mà không cần khóa API. Dữ liệu gốc Hospital có định danh giả của encounter và patient, chỉ dùng patient_nbr để chia nhóm; chúng không là đầu vào mô hình hoặc nội dung image triển khai.
-
-## 3.2. Đặc trưng CDC
-
-Các biến gồm tăng huyết áp, cholesterol, kiểm tra cholesterol, BMI, hút thuốc, đột quỵ, bệnh tim, vận động, ăn trái cây/rau, uống nhiều rượu, tiếp cận chăm sóc, rào cản chi phí, sức khỏe tổng quát/tinh thần/thể chất, khó đi lại, giới tính, nhóm tuổi, học vấn và thu nhập. Phần lớn biến là mã phân loại, không phải phép đo liên tục. Age là mã nhóm 1–13; không được nhập tuổi thật 65 vào trường này. GenHlth là thang 1–5, MentHlth/PhysHlth là số ngày 0–30.
-
-Diabetes_binary bằng 1 gộp cả tiền đái tháo đường và đái tháo đường của biến thể CDC nhị phân đang dùng. Vì nhãn phản ánh khảo sát cắt ngang, không được diễn giải đầu ra là xác suất một người hiện chưa mắc sẽ phát bệnh trong tương lai. Mô hình cũng không dùng glucose hay HbA1c xét nghiệm để xác nhận chẩn đoán.
-
-## 3.3. Đặc trưng Hospital
-
-Mười đặc trưng được chọn gồm time_in_hospital, num_lab_procedures, num_procedures, num_medications, number_outpatient, number_emergency, number_inpatient, number_diagnoses, AgeGroup và Gender. AgeGroup là nhóm tuổi 1–10 từ [0–10) đến [90–100); Gender được mã hóa 0 nữ, 1 nam theo hai giá trị có đủ mẫu trong nguồn. Ba dòng có gender không hợp lệ cho schema này bị loại, làm tập còn 101.763 lượt.
-
-Các biến như số ngày nằm viện và số thuốc trong lượt điều trị chỉ có đầy đủ khi ra viện. Vì vậy thời điểm dự đoán được xác định là lúc ra viện; mô hình không đại diện sàng lọc khi mới nhập viện. Thu gọn đặc trưng làm biểu mẫu dễ sử dụng nhưng bỏ qua nhiều thông tin bệnh học; đây là một nguyên nhân cần khảo sát khi hiệu năng còn hạn chế, không phải kết luận nhân quả từ một thí nghiệm.
-
-## 3.4. Làm sạch và chống rò rỉ
-
-CDC có 24.206 dòng trùng hoàn toàn. Ngoài ra có 5.218 dòng thuộc các nhóm cùng đặc trưng nhưng nhãn xung đột. Quy trình loại nhóm xung đột và giữ một vector đặc trưng duy nhất ở các nhóm còn lại, thu 226.342 mẫu. Hai số trên có phần giao nhau, không được cộng rồi trừ trực tiếp từ quy mô gốc. Cách làm thay đổi phân phối so với dữ liệu nguồn; hiệu năng chỉ áp dụng cho tập đã xử lý như mô tả.
-
-CDC được chia phân tầng 70/15/15 với seed 42 sau xử lý trùng. Hospital dùng chia nhóm theo patient_nbr, bảo đảm một người không xuất hiện đồng thời ở train, validation và test. Các ID không nằm trong vector X. Scaler chỉ fit trên train; cả validation và test dùng lại mean/std đó. Các biến đã chọn không có dữ liệu thiếu sau kiểm tra, nên không cần imputation.
-
-![Quy mô train, validation và test của hai bài toán sau làm sạch](../results/figures/dataset-splits.png)
-
-| Dataset | Train | Validation | Test | Giao nhóm giữa tập |
-|---|---|---|---|---|
-| CDC | 158.439 | 33.951 | 33.952 | 0 vector đặc trưng trùng |
-| Hospital | 71.583 | 15.055 | 15.125 | 0 patient trùng |
-
-Hospital có 50.060 người trong train, 10.727 trong validation và 10.728 trong test sau lọc. Đánh giá test trên lượt nội trú không tương đương đánh giá mỗi người một phiếu; người có nhiều lượt trong cùng tập vẫn có thể tạo phụ thuộc. Chưa tính khoảng tin cậy có bootstrap theo người, nên không tuyên bố khác biệt nhỏ giữa mô hình là có ý nghĩa thống kê.
-
-## 3.5. Thiết kế so sánh
-
-Trong mỗi dataset, MLP và Logistic Regression được huấn luyện trên cùng train, dùng cùng validation/test. Baseline luôn dự đoán âm được bổ sung để chỉ ra ảnh hưởng mất cân bằng. Checkpoint MLP được chọn theo ROC-AUC validation, ngưỡng nhị phân theo F1 validation và được cố định trước khi đo test. Không chọn mô hình, ngưỡng hoặc epoch bằng kết quả test.
-
-Các chỉ số chính là ROC-AUC, Average Precision (AP), F1, sensitivity, specificity, precision, Brier và ma trận nhầm lẫn. AP trong báo cáo là average_precision_score, không tự đổi tên thành diện tích PR nội suy hình thang. Accuracy được giữ để tham khảo nhưng không làm tiêu chí chính: dự đoán toàn âm vẫn có accuracy cao khi nhãn dương hiếm.
-
-
-# CHƯƠNG 4. MÔ HÌNH DEEP LEARNING
-
-## 4.1. Kiến trúc và hàm học
-
-Mỗi dataset sử dụng một mạng MLP gồm ba lớp ẩn 64, 32 và 16 nút, ReLU giữa các lớp và một đầu ra logit. Đầu vào có 21 chiều với CDC và 10 chiều với Hospital. Mạng được hiện thực bằng PyTorch; các tham số đã học được lưu thành state_dict độc lập với dữ liệu huấn luyện. Đầu ra sigmoid nằm trong khoảng 0–1 nhưng không tự bảo đảm là xác suất được hiệu chuẩn trong quần thể người dùng mới.
-
-Biểu diễn mạng là hợp các phép biến đổi tuyến tính và phi tuyến: vector chuẩn hóa đi qua Linear–ReLU, Linear–ReLU, Linear–ReLU rồi Linear. Số tham số của CDC là 4.033, Hospital là 3.329. Mạng nhiều lớp đáp ứng thành phần Deep Learning của project; không thay mạng bằng một hàm điểm tự đặt hoặc kết quả dự đoán giả.
-
-Loss là binary cross-entropy trên logits. Adam sử dụng learning rate 0,001, weight decay 0,00001 và batch size 2.048. Ngân sách tối đa 25 epoch, patience 5 theo ROC-AUC validation, seed 42. Lượt chạy hiện tại cả hai mô hình thực hiện 25 epoch; checkpoint tốt nhất được khôi phục trước khi đo test. Môi trường huấn luyện được lưu trong environment.json, gồm Python 3.14.6, PyTorch CPU 2.14.0, NumPy 2.4.6 và scikit-learn 1.9.0 trên Windows.
-
-## 4.2. Tiền xử lý và lựa chọn ngưỡng
-
-Mỗi đặc trưng được chuẩn hóa z-score bằng mean và standard deviation của train. Với biến mã phân loại có thứ tự, đây là một lựa chọn đơn giản cho demo; coi khoảng cách giữa các mã là tương đương có thể tạo giả định mạnh. Một hướng cải thiện là dùng one-hot hoặc embedding cho biến không thứ tự, giữ nguyên split để so sánh.
-
-Mặc định ngưỡng 0,5 có thể không tối ưu F1 khi nhãn mất cân bằng. Quy trình chọn ngưỡng bằng validation riêng, sau đó lưu trong metadata. Ngưỡng MLP CDC là khoảng 0,233954; Hospital khoảng 0,134504. Các ngưỡng này không phải mốc y khoa hoặc ngưỡng triển khai đã được bệnh viện chấp nhận. Tối ưu F1 cũng không đại diện mọi chi phí âm tính giả/dương tính giả.
-
-Logistic Regression là baseline tuyến tính trên cùng dữ liệu chuẩn hóa. Baseline always-negative minh họa rằng accuracy cao chưa đủ để nhận diện lớp dương. Không có tìm kiếm siêu tham số quy mô lớn hoặc nhiều seed cho hai MLP này, nên không kết luận kiến trúc đã tối ưu.
-
-<!-- pagebreak -->
-
-## 4.3. Kết quả CDC
-
-![CDC: đường ROC, precision–recall và tiến trình huấn luyện theo kết quả thật](../results/figures/cdc-evaluation.png)
-
-| Mô hình | ROC-AUC | AP | F1 | Sensitivity | Specificity | Brier |
-|---|---|---|---|---|---|---|
-| MLP | 0,8274 | 0,4393 | 0,4782 | 0,6368 | 0,8215 | 0,1017 |
-| Logistic | 0,8206 | 0,4156 | 0,4685 | 0,6551 | 0,8015 | 0,1038 |
-| Luôn âm | 0,5000 | 0,1482 | 0,0000 | 0,0000 | 1,0000 | 0,1482 |
-
-Test CDC có 33.952 mẫu, gồm 5.030 mẫu dương. MLP có 23.758 true negative, 5.164 false positive, 1.827 false negative và 3.203 true positive. Sensitivity khoảng 63,68% cho thấy mô hình vẫn bỏ sót nhiều nhãn dương. Precision khoảng 38,28% phản ánh phần đáng kể dự đoán dương không khớp nhãn nguồn.
-
-MLP cải thiện ROC-AUC và AP so với Logistic trong lượt đo này, trong khi sensitivity ở ngưỡng F1 đã chọn thấp hơn Logistic. Do đó không thể tóm tắt rằng MLP tốt hơn ở mọi tiêu chí. Chênh lệch AUC khoảng 0,0068 chưa được đánh giá khoảng tin cậy hoặc kiểm định cặp. Baseline luôn âm đạt accuracy 85,18%, cao hơn accuracy MLP 79,41%, nhưng sensitivity bằng 0; đây là lý do phải đọc nhiều chỉ số cùng nhau.
-
-<!-- pagebreak -->
-
-## 4.4. Kết quả Hospital
-
-![Hospital: kết quả phân loại tái nhập viện dưới 30 ngày và tiến trình huấn luyện](../results/figures/hospital-evaluation.png)
-
-| Mô hình | ROC-AUC | AP | F1 | Sensitivity | Specificity | Brier |
-|---|---|---|---|---|---|---|
-| MLP | 0,6334 | 0,1869 | 0,2505 | 0,4090 | 0,7688 | 0,0958 |
-| Logistic | 0,6285 | 0,1849 | 0,2396 | 0,4734 | 0,6914 | 0,0961 |
-| Luôn âm | 0,5000 | 0,1107 | 0,0000 | 0,0000 | 1,0000 | 0,1107 |
-
-Test Hospital gồm 15.125 lượt điều trị của 10.728 người. ROC-AUC MLP khoảng 0,6334 và AP khoảng 0,1869 thể hiện năng lực phân biệt còn khiêm tốn. MLP vượt baseline Logistic một khoảng nhỏ ở các chỉ số chính được chọn nhưng chưa đủ căn cứ nói có lợi ích lâm sàng, giảm tái nhập viện hoặc dùng được cho quyết định phân bổ chăm sóc.
-
-Các đặc trưng thu gọn, dữ liệu cũ, phân bố bệnh viện và nhiều yếu tố chưa quan sát có thể ảnh hưởng kết quả. Cần thêm nghiên cứu có kiểm soát trước khi kết luận nguyên nhân. Đặc biệt, mô hình này dự báo readmission của một lượt ra viện chứ không phát hiện một người có tiểu đường hay không. Giao diện giữ hai nhánh riêng và luôn trình bày label_semantics.
-
-## 4.5. Suy luận, tái lập và giới hạn
-
-Predictor kiểm tra tên dataset, tập trường, miền giá trị và mã nguyên, tạo vector theo thứ tự metadata, chuẩn hóa rồi gọi mạng. Test parity đối chiếu 30 dòng mỗi dataset giữa kết quả tính lúc đánh giá và trọng số được nạp mới; score phải khớp trong sai số số học cho phép. Các ví dụ trong example-predictions.json lấy từ tập test thật, đã loại ID, dùng để minh họa kỹ thuật chứ không là hồ sơ người dùng.
-
-Các file NPZ dự đoán test lưu y_true và score để dựng lại metric; JSON ghi cấu hình, thời gian, checkpoint và protocol. Không cần huấn luyện lại mỗi lần chạy web. Việc tái huấn luyện trên máy khác có thể làm thay đổi số học/thời gian; khi thay kết quả phải dựng lại bảng/hình thay vì sửa con số trong báo cáo bằng tay.
-
-Chưa có calibration hậu nghiệm, kiểm định theo nhóm tuổi/giới, khảo sát độ lệch phân phối hoặc dữ liệu bệnh nhân Việt Nam. MLP không được dùng để loại trừ cấp cứu, thay xét nghiệm, tính liều thuốc hoặc xác nhận chẩn đoán. Các giới hạn này gắn trực tiếp với ý nghĩa nhãn và phạm vi bằng chứng của dữ liệu, không chỉ là chú thích ở cuối trang.
-
-
-# CHƯƠNG 5. KNOWLEDGE BASE VÀ TRUY XUẤT TĂNG CƯỜNG TRẢ LỜI
-
-## 5.1. Xây dựng Knowledge Base
-
-KB gồm 24 thẻ biên soạn bằng tiếng Việt, dựa trên 19 URL từ WHO, NIDDK, CDC, NHS và nguồn chuyên môn Việt Nam. Mỗi thẻ chứa id, title, text, topics, source_title, url và retrieved_at. Văn bản là phần tóm tắt phục vụ học tập; không sao chép nguyên sách hoặc tự nhận đã đọc hướng dẫn điều trị đầy đủ nếu mới xác minh trang giới thiệu.
-
-Các nhóm nội dung gồm khái niệm, típ 1/típ 2/thai kỳ, triệu chứng, yếu tố nguy cơ, xét nghiệm, HbA1c, phòng ngừa, dinh dưỡng, vận động, thuốc, hạ đường huyết, nhiễm toan ceton, theo dõi, biến chứng, bàn chân, thận, mắt, tài liệu Việt Nam và nguồn dữ liệu mô hình. Mã thẻ cho phép kiểm tra đầu ra đang dùng đúng văn bản nào, nguồn nào và ngày thu thập nào.
-
-Kho thẻ đặt trong app/knowledge/cards.json là nguồn có kiểm soát phiên bản. Khi khởi động, ứng dụng đồng bộ các thẻ sang SQLite để minh họa thành phần DB của kiến trúc và phục vụ kiểm kê. Tài liệu không được tải tự động lại từ web trong mỗi câu hỏi; khả năng cập nhật phụ thuộc việc rà soát phiên bản KB. retrieved_at không đồng nghĩa tài liệu còn là phác đồ mới nhất cho mọi trường hợp.
-
-## 5.2. Quy trình truy xuất
-
-Câu hỏi và văn bản thẻ được chuyển về chữ thường, bỏ dấu để giảm khác biệt khi người dùng gõ tiếng Việt không dấu, giữ chữ số để phân biệt típ 1 và típ 2. TF-IDF dùng unigram và bigram, sublinear term frequency. Vector thẻ được chuẩn hóa L2; tích vô hướng giữa vector câu hỏi và thẻ tương ứng độ tương đồng cosine trong không gian này.
-
-Mỗi request lấy tối đa ba thẻ có điểm từ 0,09 trở lên. Ngoài ngưỡng điểm, một kiểm tra phạm vi chủ đề giúp hạn chế câu hỏi hoàn toàn không liên quan. Ngưỡng và từ khóa là tham số kỹ thuật của demo, chưa được tối ưu trên tập kiểm định độc lập. Điểm tương đồng không là xác suất câu trả lời đúng và không tự chứng minh câu hỏi có thể trả lời.
-
-TF-IDF phù hợp với KB nhỏ, chạy CPU và không cần tải embedding lớn. Hạn chế chính là phụ thuộc từ vựng, nhạy với cách diễn đạt và không suy luận được câu hỏi đa bước. Có thể nghiên cứu dense retrieval, reranking và GraphRAG ở bước sau, nhưng phải đo cùng giao thức và bộ câu hỏi tách riêng để đánh giá lợi ích.
-
-## 5.3. Tạo câu trả lời dựa trên bằng chứng
-
-Sau truy xuất, PolicyAgent chọn abstain, brief hoặc detail. Với brief, EducationAgent lấy một thẻ; detail có thể lấy hai thẻ. Văn bản được ghép trực tiếp với mã nguồn dạng [KBxx], sau đó danh sách URL đi kèm để người dùng mở tài liệu. CriticAgent kiểm tra ID thuộc KB và URL dùng HTTPS trước khi Coordinator trả kết quả.
-
-Đây là pipeline truy xuất tăng cường trả lời theo hướng trích xuất. Bản chạy mặc định không có LLM, không fine-tune và không đo chất lượng sinh văn bản của mô hình ngôn ngữ. Vì vậy kết quả có nguồn không được trình bày như đánh giá một hệ RAG sinh tự do. Cách trích xuất giảm nguy cơ tự tạo claim mới nhưng vẫn có thể chọn sai thẻ hoặc trả lời quá tổng quát.
-
-Quan hệ với RAG nằm ở nguyên tắc lấy bằng chứng bên ngoài thành phần trả lời, giữ thông tin nguồn và kiểm soát khi không đủ chứng cứ. Muốn chuyển sang generation bằng LLM cần bổ sung provider, prompt chỉ dùng context, kiểm tra claim–citation, xử lý prompt injection, chi phí và bộ đánh giá khác. Những thành phần đó chưa là kết quả thực nghiệm của project.
-
-## 5.4. Đánh giá truy xuất và khả năng trả lời
-
-Bộ phát triển có 30 câu tự biên soạn: 22 câu có nguồn mong đợi, 8 câu yêu cầu tính liều/kê đơn, dữ liệu thời gian thực, nội dung ngoài lĩnh vực hoặc bịa bằng chứng. Mỗi câu có expected_ids, answerable và kind. Bộ này là kiểm thử chức năng nhỏ được dùng trong quá trình phát triển, không phải benchmark độc lập, kiểm định chuyên gia y tế hoặc bằng chứng an toàn lâm sàng.
-
-| Phép đo | Kết quả | Mẫu số và ý nghĩa |
-|---|---|---|
-| Recall@1 | 21/22 = 95,45% | Nguồn mong đợi đứng đầu với câu có đáp án |
-| Recall@3 | 22/22 = 100% | Nguồn mong đợi nằm trong top 3 |
-| MRR@3 | 0,97727 | Trung bình nghịch đảo hạng nguồn đúng |
-| Quyết định trả lời/từ chối | 30/30 | Phân loại khả năng trả lời trên bộ phát triển |
-| Từ chối câu âm | 8/8 | Gồm cả rule boundary và thiếu bằng chứng |
-| Nguồn mong đợi được trích trong câu trả lời | 21/22 | Khác Recall@3 vì brief chỉ chọn một thẻ |
-
-Ở Q22 về tiền đái tháo đường, KB24 nằm hạng 2 nhưng câu trả lời ngắn chọn KB01 tổng quát ở hạng 1. Truy xuất top 3 thành công không bảo đảm phần trả lời dùng nguồn cụ thể nhất. Lỗi này được giữ trong system-evaluation.json và báo cáo để tránh đồng nhất chất lượng truy xuất với chất lượng câu trả lời.
-
-Các giá trị trên có thể tăng cao vì corpus nhỏ và câu hỏi được viết sau khi biết phạm vi KB. Chưa có đánh giá người dùng, nhiều cách viết không dấu/lỗi chính tả, câu hỏi dài có phủ định phức tạp, đa bệnh hoặc xung đột tài liệu. Những hạn chế đó quan trọng hơn việc làm tròn chỉ số thành 100%.
-
-## 5.5. Ví dụ tương tác
-
-Câu hỏi “HbA1c là gì?” đi qua kiểm tra phạm vi, truy xuất thẻ xét nghiệm, chọn brief và trả đoạn tóm tắt cùng nguồn NIDDK. Câu hỏi về điều chỉnh liều insulin dừng ở SafetyAgent, không chạy nhánh giáo dục thông thường. Câu hỏi về cổ phiếu hoặc địa chỉ phòng khám đang mở cửa không được thay bằng một đoạn y tế bất kỳ chỉ vì có vài từ trùng.
-
-Khi không có bằng chứng, ứng dụng trả trạng thái insufficient_evidence và nêu phạm vi hiện có. Khi yêu cầu vượt phạm vi, trạng thái boundary đi kèm lý do trong trace. Nhờ phân biệt các trạng thái này, người dùng và người chấm có thể quan sát lý do hệ thống dừng thay vì chỉ nhìn một câu trả lời cuối.
-
-
-# CHƯƠNG 6. ĐIỀU PHỐI, RULE VÀ REINFORCEMENT LEARNING
-
-## 6.1. Điều phối có giới hạn
-
-Coordinator có hai luồng rõ ràng. Luồng hỏi đáp gọi các vai trò Safety, Retrieval, Policy, Education và Critic theo thứ tự. Luồng phân tích gọi Data, Prediction và Critic. Mỗi lần chuyển đều ghi sender, receiver, kind, mô tả ngắn và thời gian đã trôi qua. Tám thông điệp là giới hạn cứng; không có Agent tự gọi lại không kiểm soát.
-
-Các vai trò không trao đổi hồ sơ giữa những request khác nhau. Context mới được tạo cho từng lượt; không có bộ nhớ hội thoại dài hạn hoặc suy diễn từ những câu trước. Người dùng cần nhập đầy đủ đặc trưng mỗi lần phân tích. Thiết kế này làm demo dễ tái lập và giảm dữ liệu lưu trữ nhưng chưa hỗ trợ quản lý điều trị liên tục.
-
-## 6.2. Hệ quy tắc
-
-Quy tắc xử lý cảnh báo dựa trên triệu chứng được mô tả và glucose nhập tùy chọn, tách biệt hoàn toàn với score MLP. Hệ thống quy đổi mmol/L sang mg/dL bằng hệ số 18,0182. Đường huyết dưới 70 mg/dL kích hoạt cảnh báo hạ đường huyết; giá trị từ 300 mg/dL kích hoạt cảnh báo cần chú ý khẩn, đặc biệt khi kéo dài hoặc kèm dấu hiệu nặng. Đây là hướng dẫn giáo dục dựa trên tài liệu, không phải các ngưỡng duy nhất để chẩn đoán hoặc loại trừ cấp cứu.
-
-Các cụm như bất tỉnh, co giật, khó thở, hôn mê hoặc không nuốt được có thể dừng hỏi đáp thông thường. Logic có kiểm tra một số từ phủ định ngay trước triệu chứng và phân biệt câu hỏi kiến thức với mô tả cá nhân hiện tại. Đây vẫn là xử lý ngôn ngữ bằng luật; không bao phủ hết cách nói tiếng Việt, không thể bảo đảm độ nhạy/specificity lâm sàng và không thay hệ thống phân loại cấp cứu chuyên môn.
-
-| Nhóm quy tắc | Hành vi |
-|---|---|
-| Dấu hiệu nguy hiểm | Khuyên tìm trợ giúp cấp cứu, không cho đồ ăn/nước khi không nuốt an toàn |
-| Glucose thấp | Nhắc xử trí theo kế hoạch đã được nhân viên y tế hướng dẫn và tìm hỗ trợ nếu nặng |
-| Glucose cao | Nhắc liên hệ y tế, chú ý DKA và không bỏ qua triệu chứng |
-| Kê đơn/điều chỉnh thuốc | Từ chối tính liều hoặc thay đổi thuốc cá nhân |
-| Bịa nguồn hoặc bỏ qua bằng chứng | Không thực hiện yêu cầu tạo thông tin giả |
-| Vị trí/lịch mở cửa trực tiếp | Nêu chưa có công cụ và dữ liệu tương ứng |
-| Dinh dưỡng định lượng cá nhân | Không tự tính gram/kcal khi thiếu đánh giá lâm sàng |
-
-Các quy tắc cảnh báo được áp dụng trước policy học. Q-table không có quyền bỏ qua hoặc giảm mức cảnh báo; MLP cũng không tham gia quyết định có cần cảnh báo hay không. Thiết kế này tránh dùng một mô hình khảo sát cắt ngang làm công cụ đánh giá tình huống cấp tính mà dữ liệu huấn luyện không bao phủ.
-
-## 6.3. Thiết kế Q-learning
-
-RL trong project là một contextual bandit một bước, được huấn luyện bằng cập nhật Q-learning với gamma bằng 0. Môi trường có bốn trạng thái, tạo từ hai biến nhị phân: đã có bằng chứng phù hợp hay chưa, và người dùng có yêu cầu giải thích chi tiết hay không. Ba hành động là abstain, brief và detail.
-
-Reward là rubric kỹ thuật tự thiết kế: hành động đúng kiểu trình bày nhận +1; sai nhận -1; trả lời khi không có bằng chứng bị phạt -3. Với trạng thái không có bằng chứng, mục tiêu là abstain. Với bằng chứng có sẵn, câu hỏi ngắn chọn brief và câu yêu cầu giải thích chọn detail. Reward không dùng kết cục sức khỏe, tuân thủ điều trị hoặc sự hài lòng người bệnh thật.
-
-Huấn luyện dùng seed 299, 4.000 episode, learning rate 0,15 và epsilon giảm từ 1 xuống tối thiểu 0,08. Công thức cập nhật là Q(s,a) ← Q(s,a) + α[r − Q(s,a)] vì bài toán kết thúc sau một hành động. Script train-policy.py ghi Q-table, số lần thăm từng state–action và reward trung bình 500 episode cuối.
-
-## 6.4. Kết quả và cách diễn giải RL
-
-Sau huấn luyện, greedy policy chọn đúng hành động theo rubric ở 4/4 trạng thái. Kết quả này chỉ chứng minh thuật toán học được bảng thưởng đơn giản trong môi trường mô phỏng. Nó không cho biết việc thêm RL tốt hơn điều kiện if/else tương đương, không chứng minh cải thiện hiểu biết và không phải học tăng cường điều trị.
-
-Với môi trường nhỏ, triển khai điều kiện trực tiếp có thể đơn giản hơn. RL được đưa vào để minh họa mối liên hệ state–action–reward và cách tích hợp policy đã học dưới các ràng buộc cố định. Mở rộng hợp lý trong tương lai là thu phản hồi đồng thuận về cách trình bày/chủ đề giáo dục, đánh giá offline và bảo vệ quyền riêng tư; không mở rộng sang tối ưu liều thuốc bằng dữ liệu mô phỏng của demo.
-
-## 6.5. Kiểm thử phối hợp
-
-Kiểm thử riêng bao gồm 11 tình huống cảnh báo, chuyển đổi đơn vị, phủ định triệu chứng, câu hỏi giáo dục, yêu cầu điều chỉnh thuốc và thứ tự ưu tiên luật. Các trường hợp đều đạt sau sửa lỗi được phát hiện trong quá trình phát triển. Bộ test kiểm tra cả trace không vượt tám bước và chỉ dẫn nguồn tồn tại trong KB.
-
-Các test đạt là bằng chứng về hợp đồng phần mềm trong những trường hợp đã viết. Chưa có đánh giá độc lập đủ lớn để ước lượng xác suất bỏ sót nguy hiểm. Cần tiếp tục ghi nhận lỗi thật và mở rộng kiểm thử theo cách diễn đạt mới, thay vì coi một danh sách test ngắn là bảo đảm an toàn.
-
-
-# CHƯƠNG 7. KIỂM THỬ, DEMO VÀ TRIỂN KHAI
-
-## 7.1. Kiểm thử phần mềm
-
-Bộ pytest gồm 55 trường hợp và chạy với hai mô hình đã huấn luyện thật. Các nhóm kiểm tra gồm truy xuất, thông điệp Agent, giới hạn bước, nguồn trích dẫn, schema mô hình, nạp trọng số mới, tính ổn định score, điều kiện cảnh báo và các phản hồi HTTP lỗi. Không dùng mock mô hình hoặc thay mạng bằng hàm điểm cố định để làm test đạt.
-
-Trong quá trình kiểm thử, ba lỗi kỹ thuật đã được phát hiện và sửa. Kết nối SQLite không tự đóng khi chỉ dùng context manager của sqlite3 gây khóa file trên Windows; bản sửa dùng closing và commit rõ ràng. Pydantic có thể ép boolean hoặc chuỗi số sang float trước khi Predictor nhận dữ liệu; bản sửa dùng strict numeric types. Phản hồi lỗi chứa NaN/Infinity có thể lỗi serialize JSON; handler mới chỉ trả vị trí, loại và thông điệp lỗi, không phản chiếu input.
-
-Lượt kiểm tra cuối đạt 55/55, còn một cảnh báo deprecation của thư viện TestClient không làm test thất bại. Kiểm thử mô hình riêng đối chiếu score từ state_dict với dự đoán test đã lưu, kiểm tra scaler dùng đúng train và xác nhận tập nhóm không giao nhau. Thành công các test là bằng chứng triển khai đúng hợp đồng phần mềm ở những trường hợp đã xét, không bảo đảm mọi cách diễn đạt hoặc tình huống y tế đều được xử lý đúng.
-
-## 7.2. Kịch bản demo
-
-Kịch bản thứ nhất mở trang Trợ lý kiến thức và hỏi “HbA1c là gì?”. Người xem kiểm tra phần trả lời, ID nguồn, URL NIDDK và trace qua các vai trò. Tiếp theo thử câu hỏi ngoài chủ đề để quan sát insufficient_evidence, rồi yêu cầu kê đơn để thấy boundary và lý do dừng.
-
-Kịch bản thứ hai nhập glucose theo mg/dL hoặc mmol/L cùng câu hỏi giáo dục, quan sát quy tắc cảnh báo nếu dưới ngưỡng. Có thể dùng tình huống thử nghiệm có mô tả dấu hiệu nguy hiểm để thấy safety_override chạy trước policy. Đây là dữ liệu kiểm thử giao diện, không phải thông tin của một người bệnh thật.
-
-Kịch bản thứ ba vào Phân tích dữ liệu, chọn CDC, kiểm tra 21 trường và cách mã hóa rồi chạy MLP. Đầu ra gồm risk_score, threshold, predicted_class, label_semantics và trace. Đổi sang Hospital để quan sát schema 10 biến và nhãn tái nhập viện; không diễn giải score Hospital thành mức độ tiểu đường. Cuối cùng xóa một trường hoặc nhập giá trị ngoài miền qua API để xác nhận HTTP422.
-
-## 7.3. Giao diện và API
-
-Giao diện có ba khu vực: Trợ lý kiến thức, Phân tích dữ liệu và Kho tri thức. Menu bên cạnh thể hiện thông tin sinh viên. Các thẻ nguồn giữ liên kết gốc; khối trace mô tả từng bước thay vì chỉ hiện tên Agent. CSS có bố cục thay đổi theo chiều rộng, form từ ba cột xuống một cột khi màn hình nhỏ.
-
-| Endpoint | Phương thức | Mục đích |
-|---|---|---|
-| / | GET | Giao diện demo |
-| /health | GET | Tình trạng sẵn sàng, mô hình và kiểm kê KB |
-| /api/catalog | GET | Metadata, schema và thông tin bộ bài |
-| /api/knowledge | GET | Các thẻ tri thức và nguồn |
-| /api/chat | POST | Hỏi đáp, glucose tùy chọn, đơn vị |
-| /api/predict | POST | Phân loại theo dataset và vector đầu vào |
-| /api/results | GET | Một số kết quả tổng hợp được phép công bố |
-| /docs | GET | Tài liệu tương tác OpenAPI |
-
-Các endpoint và frontend được phục vụ cùng origin; JavaScript không nhúng secret, không gửi thông tin sang dịch vụ LLM. App không yêu cầu mở dữ liệu cá nhân để chạy demo. Bản giao diện desktop được xem trực tiếp trong Edge, còn kiểm thử chức năng hệ thống được thực hiện bằng API. Chưa có đánh giá người dùng hoặc kiểm thử giao diện tự động trên mọi trình duyệt/thiết bị.
-
-## 7.4. Đóng gói Docker
-
-Dockerfile dựa trên Python3.12 slim và cài dependency có khóa phiên bản. Image chỉ sao chép app, models và results, không sao chép raw dataset hoặc các split dùng huấn luyện. Ứng dụng chạy bằng user không phải root, một worker Uvicorn, đọc cổng từ PORT và đặt SQLite ở thư mục runtime có quyền ghi. Không cần GPU, khóa API hoặc train lại lúc khởi động.
-
-Từ thư mục project, chạy các lệnh:
-
-```powershell
-docker build -t diacare-hieugm299:1.0 .
-docker run -d --name diacare-demo -p 127.0.0.1:8000:8000 diacare-hieugm299:1.0
-python scripts/verify-deployment.py --url http://127.0.0.1:8000
+| Patient Data | PatientDataAgent, roles.py | Kiểm schema, kiểu, thứ tự, miền, thiếu giá trị |
+| DL Prediction | DLPredictionAgent, predict.py | Nạp model/scaler/ngưỡng; score, nhãn, metadata |
+| Rule-Based | RuleBasedAgent, rules.py | Luật có lý do, cảnh báo và review flags |
+| KG/RAG | KnowledgeAgent, retrieval.py | Thực thể, graph, chunk, ranking và nguồn |
+| Coordinator | ReportWorkflow, workflow.py | Điều phối, dừng sớm, tổng hợp và xử lý lỗi |
+| Explanation | ExplanationAgent, generation.py | Giải thích bằng FPT hoặc template có nhãn |
+| Monitoring | MonitoringAgent, roles.py | Metadata, trạng thái, version và độ trễ |
+
+Coordinator không thay thuật toán của agent khác. Prediction suy luận; KG tìm tài liệu; Explanation dùng kết quả đã có. Có thể thay retriever hoặc LLM mà không đổi schema dự đoán. Số lần message không phải số loại agent, vì Coordinator có thể phát nhiều sự kiện trong một request.
+
+## 2.3. Hợp đồng giao tiếp
+
+Message có request_id, agent, status, payload, evidence, model_version và elapsed_ms. Phiên bản nhận diện model hoặc agent; request_id liên kết toàn bộ cùng yêu cầu. Payload tùy chức năng, không phải chuỗi log không cấu trúc.
+
+```json
+{"request_id":"ma-tu-sinh", "agent":"DLPredictionAgent",
+ "status":"ok", "payload":{"dataset":"cdc"},
+ "evidence":[], "model_version":"legacy-1.0", "elapsed_ms":12.5}
 ```
 
-Một worker giúp giảm việc nhân đôi model/index. Số thread CPU được giới hạn trong container. SQLite được dựng lại từ JSON nguồn nên không cần persistent disk để giữ KB. Cách này phù hợp demo có nội dung tĩnh; không phải thiết kế lưu hồ sơ người bệnh hoặc đồng bộ chỉnh sửa KB giữa nhiều replica.
+Ví dụ minh họa cấu trúc, không phải đo độ trễ. Monitoring mặc định chỉ ghi metadata, không vector sức khỏe, câu hỏi hoặc khóa API.
 
-## 7.5. Triển khai cloud và giới hạn bằng chứng
+## 2.4. Luồng chính và dừng sớm
 
-Repository HieuGM/PTHTTM_PTIT giữ project trong thư mục project01_CT_04_HieuGM.299. Bản triển khai thực được tạo qua Render MCP với runtime Docker, gói Free và vùng Singapore. Dockerfile và build context trỏ trực tiếp tới thư mục project tính từ gốc repository; PORT đặt 8000, APP_DATA_DIR đặt /tmp/diacare. Tệp render.yaml ở gốc repo vẫn cung cấp cấu hình Blueprint tương đương cho việc tái tạo; dịch vụ hiện tại dùng kiểm tra sẵn sàng TCP mặc định, còn endpoint /health được kiểm tra riêng qua HTTPS.
+API nhận cohort và feature. Coordinator tạo request_id, gọi Data. Nếu schema/giá trị sai, trả validation_error trước DL, Rule và KG. Nếu hợp lệ: DL suy luận; Rule đánh giá; KG lấy evidence; Coordinator tổng hợp; Explanation tạo báo cáo; Monitoring ghi metadata.
 
-Bản Docker đã được build từ đúng Dockerfile và chạy trên Docker Engine 29.9.2 trong môi trường Linux WSL2 riêng. Cả 13 kiểm tra HTTP đạt, gồm frontend/tài nguyên tĩnh, kiểm kê KB, suy luận hai mô hình, từ chối input thiếu, trả lời có nguồn, ưu tiên cảnh báo và xử lý NaN. Container báo healthy; một quan sát lúc nhàn rỗi sau kiểm tra ghi khoảng 254,9 MiB RAM, không phải benchmark tải. docker-verification.json giữ thời điểm, image ID và từng kết quả.
+Luồng hữu hạn có trace. Cảnh báo nguy cấp và yêu cầu vượt phạm vi được luật ưu tiên để LLM không trì hoãn hoặc ghi đè thông báo an toàn. Điểm dự đoán nghiên cứu không phủ quyết cảnh báo luật; tài liệu giáo dục không là quan sát của cá nhân.
 
-Render xác nhận deploy ở trạng thái live ngày 05/11/2026, lúc 17:16 giờ Việt Nam, với commit 6eb79dc0468bc76347b10c2ef0ab1a360974686a. Ứng dụng công khai tại [diacare-mas-hieugm299.onrender.com](https://diacare-mas-hieugm299.onrender.com). Cả 13/13 kiểm tra HTTP trên URL này đạt, bao gồm giao diện/tài nguyên tĩnh, KB, suy luận hai mô hình, từ chối dữ liệu thiếu/NaN, hỏi đáp có nguồn và ưu tiên cảnh báo. render-deployment.json giữ service ID, deploy ID và commit; render-http-verification.json ghi từng phép kiểm tra thực tế.
+## 2.5. Lỗi và dự phòng
 
-Đây là kiểm chứng chức năng sau deploy tại thời điểm ghi nhận, chưa phải đánh giá tải hoặc bảo đảm thời gian hoạt động liên tục. Gói Free có thể ngủ khi không có truy cập; cần chờ khởi động lại ở lần mở tiếp theo. Hệ thống vẫn giữ các giới hạn về dữ liệu Mỹ, chất lượng mô hình và phạm vi giáo dục đã trình bày.
+DL lỗi thì trả dependency_error, không tạo score giả. Thiếu Neo4j/kết nối lỗi thì dùng cache và nêu backend. Thiếu FPT, lỗi API hoặc citation không hợp lệ thì dùng template có nhãn. Không gọi template là output đã sinh bằng LLM.
 
-## 7.6. Kết luận và hướng phát triển
+Fallback giúp demo cục bộ, không là bằng chứng Neo4j production. Health/catalog công bố model, inventory, graph và LLM configuration; bằng chứng gọi API thật được ghi riêng với metadata an toàn.
 
-Project hiện thực đầy đủ luồng dữ liệu lớn đến mô hình đã huấn luyện, suy luận có schema, KB có nguồn, trả lời trích xuất, điều phối đa vai trò, Rule và minh họa RL. Các kết quả cho thấy MLP có thể học tín hiệu trong hai nhiệm vụ, nhưng mức phân biệt tái nhập viện còn hạn chế; pipeline hỏi đáp vẫn có thể chọn nguồn chưa cụ thể nhất.
+## 2.6. Ranh giới dữ liệu và bảo mật
 
-Hướng tiếp theo là đánh giá nhiều seed, khoảng tin cậy theo người, calibration và fairness; mở rộng đặc trưng Hospital có kiểm soát thời điểm quan sát; xin quyền dùng và kiểm định trên dữ liệu Việt Nam. Với KB cần rà soát chuyên môn, mở rộng bộ câu hỏi độc lập và kiểm tra phủ định, đa bệnh, mức độ cụ thể. Tích hợp LLM chỉ nên thực hiện sau khi có giao thức kiểm tra claim–citation và đo riêng chất lượng sinh, không suy từ kết quả trích xuất hiện tại.
+API không nhận SQL/Cypher tùy ý. Query graph dùng tham số. Corpus ingest trước, không tải URL tùy ý từ request. Nội dung nguồn là dữ liệu hỗ trợ, không được thực thi như chỉ thị.
 
-Ứng dụng được bàn giao ở mức demo học tập có thể chạy lại, không tự nhận là thiết bị y tế, công cụ kê đơn hoặc hệ thống quản lý điều trị đã được xác thực. Mọi mở rộng ứng dụng thực tế cần quy trình đánh giá phù hợp với dữ liệu, người dùng và mục đích triển khai.
+FPT key và Neo4j password chỉ ở môi trường/.env bị ignore. Raw/database chứa patient_nbr phục vụ split không vào Git/image/ZIP. Artifact state_dict nạp weights_only=True; không pickle toàn bộ object mô hình. Audit ra file chỉ bật khi cấu hình rõ đường dẫn.
 
 
-# PHỤ LỤC. TÁI LẬP VÀ HỢP ĐỒNG DỮ LIỆU
+# CHƯƠNG 3. BỐN COHORT VÀ CƠ SỞ DỮ LIỆU HUẤN LUYỆN
 
-## A.1. Chạy trực tiếp
+## 3.1. Nguồn và nhiệm vụ
 
-Các lệnh sau chạy từ chính thư mục project. requirements-lock.txt ghi môi trường Linux của image; môi trường huấn luyện Windows được lưu riêng để đối chiếu.
+| Cohort | Dòng nguồn / sạch | Feature | Nhãn |
+|---|---:|---:|---|
+| CDC BRFSS 2015 | 253.680 / 226.342 | 21 | Binary gộp tiền đái tháo đường/đái tháo đường |
+| Hospital 130-US | 101.766 / 101.763 | 10 | Tái nhập viện dưới 30 ngày |
+| Pima | 768 / 768 | 8 | Tested positive/negative, phụ nữ Pima từ 21 tuổi |
+| Early Stage | 520 / 251 | 16 | Positive/Negative, Sylhet Hospital Bangladesh |
+
+CDC lấy từ UCI891, bản binary của Alex Teboul khai báo CC0. Hospital UCI296 và Early Stage UCI529 có CC BY 4.0. Pima lấy từ ARFF OpenML37, metadata ghi licence Public, original owner NIDDK. Không tự đổi giấy phép Pima thành CC0.
+
+Endpoint Pima UCI cũ không tải được. UCI34 là AIM94 time-series khác, không dùng thay thế. ARFF OpenML được đối chiếu toàn bộ 768 hàng, tám feature, nhãn và thứ tự với CSV đã có; MD5 khớp metadata. URL/hash ở data/README.md và manifest.
+
+## 3.2. CDC và Hospital
+
+CDC loại nhóm vector có nhãn mâu thuẫn rồi giữ một bản/vector còn lại. Làm sạch trước split ngăn cùng vector qua train và test. Nhóm mâu thuẫn có thể chứa bản sao nên không cộng số duplicate và số mâu thuẫn để suy ra kích thước sạch.
+
+Hospital loại ba dòng gender Unknown/Invalid. Split theo patient_nbr ngăn các lượt của cùng người giao train/validation/test. ID chỉ tạo nhóm, không trong X, trọng số hoặc API. Mười feature được chọn mang thông tin khi ra viện; không diễn giải là dự báo ngay lúc nhập viện. Chia nhóm chưa kiểm chứng bệnh viện mới hoặc dữ liệu tương lai.
+
+## 3.3. Pima: zero-coded missing
+
+Glucose, BloodPressure, SkinThickness, Insulin, BMI bằng 0 được coi là missing theo giao thức bài. Median tính chỉ trên train rồi dùng nguyên vẹn cho validation/test/inference. Pregnancies bằng 0 vẫn hợp lệ. Không xóa mọi hàng có số 0 và không lấy median toàn tập vì sẽ thay quần thể hoặc rò rỉ test.
+
+Pima có 768 dòng, không phát hiện duplicate/conflict trong kiểm kê. Cohort chỉ gồm một nhóm phụ nữ lịch sử nên không suy rộng mặc nhiên cho nam giới, người trẻ hoặc dân số Việt.
+
+## 3.4. Early Stage: vì sao 520 còn 251?
+
+Nguồn 520 dòng có 269 dòng trùng hoàn toàn; sau dedup còn 251 vector, gồm 173 dương và 78 âm. Không có feature-group mâu thuẫn nhãn. Giữ 520 rồi split ngẫu nhiên dễ làm cùng vector lọt test và tăng điểm thiếu tin cậy.
+
+Tuổi thật trong CSV 16-90, khác mô tả ngắn 20-65 trên trang nguồn. Schema dựa kiểm kê thật và ghi khác biệt. Test chỉ 38 dòng; một vài dự đoán đổi làm metric thay đáng kể, không xem AUC cao là bằng chứng mạnh về tổng quát hóa.
+
+## 3.5. SQLite dùng thật trong huấn luyện
+
+database.py đọc/tải CSV và lưu raw_cdc, raw_hospital, raw_pima, raw_early cùng provenance. datasets.py SELECT bảng raw để làm sạch/chia, fit median/mean/std train, rồi ghi prepared_<dataset> với split_order. load_prepared() SELECT từng split; mảng nhận từ query trực tiếp cấp mọi vòng fit.
+
+```sql
+SELECT split, COUNT(*) AS rows, SUM(target) AS positives
+FROM prepared_early GROUP BY split;
+SELECT Glucose, BMI, Age, target FROM prepared_pima
+WHERE split='train' ORDER BY split_order LIMIT 5;
+```
+
+Benchmark không đọc NPZ cũ để giả lập database. NPZ đầu ra giữ nhãn/score hoặc hệ số nhỏ để kiểm metric. CSV dễ mở Excel; NPZ giữ nhiều mảng đúng dtype và nén. Định dạng không quyết định thuật toán.
+
+## 3.6. Chia tập và tiền xử lý
+
+| Cohort | Train | Validation | Test | Giao thức |
+|---|---:|---:|---:|---|
+| CDC | 158.439 | 33.951 | 33.952 | Vector sạch, split cố định |
+| Hospital | 71.583 | 15.055 | 15.125 | Không giao nhóm bệnh nhân |
+| Pima | 537 | 115 | 116 | Stratified, median train |
+| Early Stage | 175 | 38 | 38 | Dedup trước stratified split |
+
+Split seed 42; model seed 42/43/44. Đổi model seed không tạo ba test mới. Mean/std fit train và áp cùng thứ tự feature. Checkpoint chọn validation ROC-AUC; ngưỡng chọn validation F 1; đóng băng trước đo test. Không lựa mô hình phục vụ bằng test.
+
+## 3.7. Provenance và giới hạn
+
+Manifest lưu URL, hash, số dòng, SQL, split và thống kê. Raw/database chỉ ở máy cục bộ, bị loại khỏi phát hành. Bốn cohort khác nguồn/nhãn/quần thể, không gộp thành một nhiệm vụ và không là bốn tập external validation của một model.
+
+Bài viết Vinmec và PDF Việt giúp truy xuất tài liệu Việt, không thay tập bệnh nhân Việt có nhãn. Trước dùng thực cần quyền dữ liệu, kiểm định ngoài miền, hiệu chuẩn, đánh giá theo nhóm và chuyên gia y tế.
+
+
+# CHƯƠNG 4. DEEP LEARNING VÀ BENCHMARK SO SÁNH
+
+## 4.1. Sáu cấu hình chốt trước
+
+Ba mô hình cổ điển cung cấp baseline tuyến tính và phi tuyến. Ba mạng neural khảo sát độ sâu và kết nối residual trên cùng feature/split. Không thay hyperparameter theo điểm test. Seed mô hình 42,43,44 được áp cho mọi loại; bộ chia dữ liệu giữ cố định seed 42.
+
+| ID | Kiến trúc / cấu hình full |
+|---|---|
+| logistic | Logistic Regression, C=1, max_iter=1000 |
+| random_forest | 100 cây, max_depth=12, min_samples_leaf=5, n_jobs=2 |
+| hist_gradient_boosting | 100 iteration, max_depth=6, early_stopping=False |
+| mlp 2 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 1 logit |
+| mlp 3 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 16 ReLU → 1 logit |
+| resmlp | Input projection 32, hai residual block gồm hai linear 32 mỗi block, output 1 |
+
+Mạng trả logit khi học, dùng BCEWithLogitsLoss; suy luận áp sigmoid. Residual block có shortcut cộng đầu vào với phép biến đổi rồi ReLU. Cả ba là mạng nhiều tầng ẩn; không dùng ba seed để tuyên bố có chín kiến trúc DL.
+
+## 4.2. Ngân sách huấn luyện và lựa chọn
+
+Adam learning_rate 0.001, weight_decay1e-5. CDC/Hospital tối đa 25 epoch, batch 2048; Pima/Early tối đa 100 epoch, batch 32. Patience 10 theo validation ROC-AUC, chỉ cập nhật checkpoint khi AUC tăng hơn1e-5. Sau nạp checkpoint tốt nhất, chọn threshold đạt F 1 cao nhất trên validation rồi mới tính score/test metric.
+
+Ba mạng được học từ đầu trong benchmark riêng. Hai model phục vụ CDC/Hospital đã có từ phiên bản trước vẫn được tái sử dụng, không bị thay bằng model mới có test đẹp hơn. Pima/Early là cohort mới nên chọn DL phục vụ theo validation AUC trong chín run neural/cohort; không dùng test chọn.
+
+## 4.3. Chỉ số và cách diễn giải
+
+ROC-AUC đo thứ hạng score. AP là Average Precision theo scikit-learn, không phải diện tích hình thang PR-AUC. F1, sensitivity, specificity và accuracy được tính tại ngưỡng validation; confusion matrix theo nhãn[0,1]. Luôn đọc prevalence và always-negative baseline khi lệch lớp.
+
+Brier là trung bình squared error score-label, chưa chứng minh hiệu chuẩn lâm sàng Việt. Mean ± SD dùng sample SD ba seed trên một split, không là khoảng tin cậy quần thể. SD0 có thể do thuật toán xác định, không chứng minh hết bất định.
+
+<!-- BENCHMARK_START -->
+
+<!-- pagebreak -->
+
+## 4.4. Kết quả CDC BRFSS
+
+Các giá trị là test mean ± SD ba seed; ngưỡng từng run chọn trên validation.
+
+| Model | ROC-AUC | AP | F1 | Brier |
+|---|---:|---:|---:|---:|
+| HGB | 0,8270 ± 0,0000 | 0,4386 ± 0,0000 | 0,4767 ± 0,0000 | 0,1018 ± 0,0000 |
+| Logistic | 0,8206 ± 0,0000 | 0,4156 ± 0,0000 | 0,4685 ± 0,0000 | 0,1038 ± 0,0000 |
+| MLP2 | 0,8277 ± 0,0003 | 0,4382 ± 0,0011 | 0,4778 ± 0,0011 | 0,1016 ± 0,0001 |
+| MLP3 | 0,8277 ± 0,0004 | 0,4385 ± 0,0006 | 0,4783 ± 0,0001 | 0,1016 ± 0,0000 |
+| Random Forest | 0,8247 ± 0,0001 | 0,4352 ± 0,0004 | 0,4771 ± 0,0023 | 0,1022 ± 0,0000 |
+| ResMLP | 0,8271 ± 0,0001 | 0,4358 ± 0,0013 | 0,4783 ± 0,0002 | 0,1018 ± 0,0000 |
+
+![So sánh metric trong cohort CDC BRFSS, error bar là SD ba seed](../results/benchmark/full/figures/cdc-benchmark.png)
+
+<!-- pagebreak -->
+
+## 4.5. Kết quả Hospital
+
+Các giá trị là test mean ± SD ba seed; ngưỡng từng run chọn trên validation.
+
+| Model | ROC-AUC | AP | F1 | Brier |
+|---|---:|---:|---:|---:|
+| HGB | 0,6296 ± 0,0000 | 0,1820 ± 0,0000 | 0,2441 ± 0,0000 | 0,0961 ± 0,0000 |
+| Logistic | 0,6285 ± 0,0000 | 0,1849 ± 0,0000 | 0,2396 ± 0,0000 | 0,0961 ± 0,0000 |
+| MLP2 | 0,6341 ± 0,0007 | 0,1858 ± 0,0009 | 0,2470 ± 0,0015 | 0,0959 ± 0,0000 |
+| MLP3 | 0,6348 ± 0,0012 | 0,1866 ± 0,0004 | 0,2498 ± 0,0020 | 0,0958 ± 0,0000 |
+| Random Forest | 0,6249 ± 0,0011 | 0,1781 ± 0,0017 | 0,2446 ± 0,0028 | 0,0963 ± 0,0001 |
+| ResMLP | 0,6330 ± 0,0024 | 0,1856 ± 0,0005 | 0,2466 ± 0,0021 | 0,0959 ± 0,0000 |
+
+![So sánh metric trong cohort Hospital, error bar là SD ba seed](../results/benchmark/full/figures/hospital-benchmark.png)
+
+<!-- pagebreak -->
+
+## 4.6. Kết quả Pima
+
+Các giá trị là test mean ± SD ba seed; ngưỡng từng run chọn trên validation.
+
+| Model | ROC-AUC | AP | F1 | Brier |
+|---|---:|---:|---:|---:|
+| HGB | 0,8104 ± 0,0000 | 0,7280 ± 0,0000 | 0,6458 ± 0,0000 | 0,1921 ± 0,0000 |
+| Logistic | 0,8624 ± 0,0000 | 0,7832 ± 0,0000 | 0,7292 ± 0,0000 | 0,1493 ± 0,0000 |
+| MLP2 | 0,8550 ± 0,0229 | 0,7675 ± 0,0357 | 0,6934 ± 0,0114 | 0,1629 ± 0,0231 |
+| MLP3 | 0,8653 ± 0,0049 | 0,7866 ± 0,0048 | 0,7189 ± 0,0213 | 0,1521 ± 0,0022 |
+| Random Forest | 0,8357 ± 0,0026 | 0,7660 ± 0,0043 | 0,6826 ± 0,0196 | 0,1585 ± 0,0018 |
+| ResMLP | 0,8608 ± 0,0117 | 0,7848 ± 0,0148 | 0,7145 ± 0,0116 | 0,1524 ± 0,0060 |
+
+![So sánh metric trong cohort Pima, error bar là SD ba seed](../results/benchmark/full/figures/pima-benchmark.png)
+
+<!-- pagebreak -->
+
+## 4.7. Kết quả Early Stage
+
+Các giá trị là test mean ± SD ba seed; ngưỡng từng run chọn trên validation.
+
+| Model | ROC-AUC | AP | F1 | Brier |
+|---|---:|---:|---:|---:|
+| HGB | 0,9519 ± 0,0000 | 0,9801 ± 0,0000 | 0,9091 ± 0,0000 | 0,0908 ± 0,0000 |
+| Logistic | 0,9487 ± 0,0000 | 0,9781 ± 0,0000 | 0,9020 ± 0,0000 | 0,1036 ± 0,0000 |
+| MLP2 | 0,9241 ± 0,0385 | 0,9660 ± 0,0224 | 0,8770 ± 0,0526 | 0,1679 ± 0,0682 |
+| MLP3 | 0,9081 ± 0,0837 | 0,9589 ± 0,0397 | 0,8782 ± 0,0750 | 0,1632 ± 0,0683 |
+| Random Forest | 0,9615 ± 0,0000 | 0,9841 ± 0,0003 | 0,9140 ± 0,0104 | 0,0921 ± 0,0011 |
+| ResMLP | 0,9391 ± 0,0400 | 0,9733 ± 0,0212 | 0,9020 ± 0,0151 | 0,0855 ± 0,0307 |
+
+![So sánh metric trong cohort Early Stage, error bar là SD ba seed](../results/benchmark/full/figures/early-benchmark.png)
+
+<!-- BENCHMARK_END -->
+
+## 4.8. Tổng hợp quan sát
+
+CDC: ba mạng và HGB cho ROC-AUC gần nhau quanh 0,827; chênh lệch giữa MLP2/MLP3 rất nhỏ. Không có cơ sở kết luận độ sâu hơn luôn tốt hơn từ ba seed một split. AP quanh 0,44 cho thấy bài toán khó hơn con số accuracy riêng lẻ có thể gợi ý.
+
+Hospital: ROC-AUC mọi mô hình chỉ quanh 0,625-0,635 và AP quanh 0,178-0,187. Mạng không giải quyết hoàn toàn bài toán tái nhập viện với mười feature hiện tại. Cần bổ sung thông tin, thiết kế thời điểm dự báo rõ và kiểm định theo thời gian/bệnh viện; không giấu kết quả thấp.
+
+Pima: logistic có ROC-AUC 0,8624; MLP3 trung bình 0,8653±0,0049, MLP2 dao động lớn hơn. Đây là ví dụ baseline đơn giản vẫn cạnh tranh trên dữ liệu bảng nhỏ. Không chọn architecture vì test cao nhất rồi trình bày như lựa chọn có trước.
+
+Early: Random Forest có ROC-AUC trung bình 0,9615, nhưng test chỉ 38 dòng. Các mạng dao động đáng kể giữa seed, MLP3 SD khoảng 0,0837. AUC cao ở một cohort nhỏ không chứng minh tốt hơn CDC/Hospital, vì nhãn/quần thể/test khác nhau.
+
+## 4.9. Tái sử dụng artifact và chi phí
+
+11 artifact mô hình/kết quả cũ của CDC/Hospital được đối chiếu SHA256 và giữ nguyên. serving CDC/Hospital dùng model_version legacy-1.0; Pima/Early dùng 2.0-db-benchmark. Pima chọn MLP2 seed 42 theo validation AUC 0,8387; Early chọn ResMLP seed 42 theo validation AUC 0,9744. Đây là lựa chọn validation, khác bảng test mean/SD.
+
+72 run được thực thi thật trên CPU Linux với Python 3.12.16, torch 2.15.0+cpu, NumPy 2.5.4, pandas 3.1.1, scikit-learn 1.9.1. Tổng các thời gian fit+evaluate ghi theo run là 145,588 giây. Đây không gồm mọi thời gian tải nguồn, build container và kiểm thử.
+
+Lượt đầu đã hoàn thành 54 run nhưng bước copy artifact Pima gặp lỗi cập nhật timestamp trên Windows bind-mount. Sửa copy 2 thành copyfile chỉ sao nội dung, xác minh hash/nhãn 54 run, rồi chạy tiếp 18 run Early. Giá trị 23,449 giây của invocation resume không phải thời gian train 72 run. execution-history.json lưu rõ hai pha.
+
+## 4.10. Artifact và khả năng tái lập
+
+Mỗi run giữ config, seed, checkpoint/history khi phù hợp, SQL source/hash, threshold, metric và score validation/test. Neural weights lưu state_dict; logistic giữ coefficient/intercept trong NPZ. Cây RF/HGB không đóng gói để tránh artifact lớn; cần refit bằng cùng config/seed/data để tái tạo model, còn score test đã lưu để tính lại metric.
+
+Các hình so sánh biểu diễn metric theo cohort. Báo cáo không tạo leaderboard gộp AUC của bốn nhiệm vụ. Đánh giá thêm bootstrap, calibration, temporal/external validation và kiểm định khác biệt là hướng phát triển, chưa được tuyên bố đã làm.
+
+
+# CHƯƠNG 5. KNOWLEDGE GRAPH, WEB/PDF VÀ RAG
+
+## 5.1. Corpus thực và nguồn Việt Nam
+
+Corpus hiện có 12 tài liệu tải thật:11 Web gồm 7 WHO/NIDDK và 4 Vinmec, cùng 1 PDF tiếng Việt 77 trang do Sở Y tế Đồng Nai đăng tải. Ngoài ra có 14 record chỉ tham chiếu URL và 24 thẻ biên soạn có nguồn. Tổng 340 chunk đã bao gồm các thẻ; không cộng 24 lần nữa và không gọi 26 record là 26 tài liệu tải thành công.
+
+Vinmec bổ sung nội dung tiếng Việt về chế độ ăn, xét nghiệm chẩn đoán type 2, tổng quan type 2 và thai kỳ. Bốn trang được tải HTTP 200, lưu hash, URL cuối, ngày tải và nhãn cập nhật hiển thị. Bài viết là evidence giáo dục, không là dữ liệu bệnh nhân gán nhãn hoặc dataset có giấy phép mở đã xác minh.
+
+PDF là tài liệu hướng dẫn type 2 lịch sử năm 2020, bản tải từ website Sở Y tế Đồng Nai. File có 77 trang, SHA256 `305fc9c51d54418f5798e7691d59f94d24545e0dd728945e2225794730694486`. Không tuyên bố đây là hướng dẫn mới nhất. Số trang, văn bản trích và metadata giúp xác định nguồn khi trả kết quả.
+
+## 5.2. Ingestion và provenance
+
+Luồng ingestion tải nguồn → xác định HTML/PDF → bỏ phần giao diện khi trích HTML hoặc đọc text từng trang PDF → chia chunk có ngữ cảnh → gắn nguồn/hash/page → nhận diện concept → lưu corpus → tạo graph và Cypher. Corpus được chuẩn bị trước, app không cần tải lại tài liệu lúc startup.
+
+Raw cache không phát hành; JSON corpus giữ phần văn bản dùng trong thực nghiệm và metadata. Cần tôn trọng quyền nội dung của nhà xuất bản, trích dẫn nguồn và không xem nguồn công khai đồng nghĩa dữ liệu mở để tái phân phối không giới hạn.
+
+Nguồn CDC về ketoacidosis có lần tải HTTPError được ghi failures; không tính là tải thành công. Một số URL PDF cũ chuyển hướng lỗi nên không dùng làm bằng chứng đã ingest. Với cache cũ không có HTTP metadata, retrieved_at được ghi theo timestamp cache, không bịa thời gian HTTP ban đầu.
+
+## 5.3. Schema graph
+
+Graph có 34 Concept,26 Document và 340 Chunk, tổng 400 node. Document gồm 12 downloaded và 14 reference-only. HAS_CHUNK nối tài liệu và đoạn; MENTIONS nối chunk với concept. Có 2160 MENTIONS tự nhận diện từ alias, khác với 19 quan hệ chuyên môn có rule và đoạn nguồn.
+
+19 quan hệ chuyên môn gồm 3 IS_A,1 REQUIRES,3 RISK_ASSOCIATION,5 MAY_HAVE_SYMPTOM,4 MAY_HAVE_COMPLICATION và 3 DIAGNOSED_USING. Mỗi relation có evidence_chunk_id, document_id, URL, page và phương pháp kiểm mẫu trong văn bản. Đây là đồ thị kiến thức giáo dục, không là đồ thị chẩn đoán cá nhân hay causal discovery.
+
+DB_diabet.cypher đặt unique constraint cho Concept/Document/Chunk, dùng MERGE để import lặp không nhân node/edge. Tham chiếu source từ relation giúp truy ngược đến đoạn thực thay vì triple không có dẫn chứng. File seed không chứa mật khẩu hoặc khóa.
+
+## 5.4. Neo4j thật và cache offline
+
+Neo4j Community 5.26 được chạy cục bộ bằng Docker riêng. Seed đã import; kiểm node/edge, idempotence và đối chiếu cache thực. Kết quả có 400 node và 2545 edge ở corpus này. Tập quan hệ gồm HAS_CHUNK, MENTIONS, MEDICAL_RELATION và SUPPORTS nên tổng edge không chỉ là 19.
+
+Knowledge Agent query graph bằng tham số và lấy chunk liên quan; không cho người dùng chạy Cypher tùy ý. Khi thiếu Neo4j, cache SQLite trả bằng chứng công khai và trạng thái sqlite_cache/degraded. Neo4j local đã kiểm không đồng nghĩa Render có kết nối graph production; cần URI/user/password của instance truy cập được từ Render nếu muốn chế độ đó.
+
+## 5.5. Ba phương pháp retrieval
+
+Lexical dùng word TF-IDF unigram/bigram. Semantic dùng Latent Semantic Analysis với TruncatedSVD 32 trên TF-IDF; đây không phải neural embedding hoặc mô hình ngôn ngữ đã huấn luyện thêm. Hybrid_graph kết hợp word 0,50, character TF-IDF 0,25, LSA 0,25 và boost nhỏ cho chunk/concept graph liên quan. Alias Việt/Anh giúp nối truy vấn với ontology.
+
+Mọi variant đều có prior cố định +0,045 cho curated card khi word score>0,03; lexical và semantic trong bảng cũng bao gồm prior này. Các kết quả có id, title, text, URL, document_id, page, retrieval_method, graph_backend, matched_entities và graph_paths. Score là điểm xếp hạng trong retriever, không là xác suất độ đúng. Threshold hạn chế kết quả không liên quan nhưng không bảo đảm luôn từ chối đúng.
+
+## 5.6. Đánh giá retrieval và lỗi
+
+Bộ 30 câu phát triển cũ gồm 22 câu có thẻ gold và 8 câu ngoài phạm vi. Để so sánh, dùng cùng 22 gold thẻ; cách chấm nghiêm này có thể bỏ qua chunk mới tương đương nội dung. Không xem đây là holdout y khoa độc lập vì thẻ và câu hỏi đã được dùng trong phát triển.
+
+| Phương pháp | Recall@1 | Recall@3 | MRR@3 |
+|---|---:|---:|---:|
+| Lexical | 0,9545 | 1,0000 | 0,9773 |
+| LSA semantic | 0,5909 | 0,8636 | 0,7121 |
+| Hybrid graph | 0,9091 | 1,0000 | 0,9470 |
+
+Hybrid graph không thắng lexical ở Recall@1 trong bộ này. Giá trị của graph là cấu trúc thực thể, đường quan hệ và provenance; cải thiện chất lượng retrieval cần đánh giá thêm. Không che kết quả semantic yếu hoặc dùng câu hỏi mới để chỉnh ranking rồi gọi holdout.
+
+Ca Q22 trong phiên bản cũ đã có thẻ phù hợp ở hạng 2, nhưng giải thích ngắn lấy nguồn tổng quát hạng 1. Lỗi này cho thấy Recall@3 cao không đủ chứng minh câu trả lời cuối đúng trọng tâm. knowledge-verification.json giữ từng kết quả; các câu mới kiểm nguồn bổ sung có ghi phạm vi riêng.
+
+Tám truy vấn mới chưa tune kiểm đúng tên tài liệu Vinmec có lexical Recall@1=0,0000, Recall@3=0,8750, MRR@3=0,4167; semantic=0,2500/0,5000/0,3750; hybrid=0,2500/0,5000/0,3542. Gold hẹp này có thể không chấp nhận thẻ hoặc bài khác vẫn liên quan. Không xem đây là clinical benchmark; các lỗi được giữ để thấy hạn chế retrieval.
+
+## 5.7. FPT Cloud và grounded generation
+
+Explanation Agent dùng HTTPS Chat Completions với Bearer key và model người dùng cấu hình. Gateway AI Marketplace đã xác minh là https://mkp-api.fptcloud.com, full endpoint /chat/completions. Không tự thêm /v 1 vì gateway này có route theo tài liệu nhà cung cấp; base và full URL là hai cách cấu hình thay thế.
+
+Prompt chỉ gửi câu hỏi, evidence giới hạn, kết quả mô hình đã chọn trường và rule. Không gửi toàn bộ raw feature/patient ID. LLM được yêu cầu trả JSON chứa answer và citation_ids, mỗi đoạn gắn [ID], không thêm URL hoặc chẩn đoán/kê liều. Request có timeout, giới hạn token, không theo redirect để tránh gửi Bearer key sang đích khác.
+
+Validator kiểm cấu trúc, ID thuộc evidence, citation inline khớp danh sách và không có URL mới. Validator không kiểm chứng ngữ nghĩa từng claim và không thay chuyên gia. Không có evidence thì từ chối; thiếu cấu hình/lỗi API/JSON/citation thì template có nhãn. Bằng chứng API thực chỉ ghi status/model/usage/citation, không khóa. Lượt gọi thực đã tạo câu trả lời có citation KB08 và đoạn PDF trang 19 trong 4,78 giây; usage 1612 prompt token và 388 completion token, gồm 256 reasoning token. Đây là số đo một request, không là benchmark latency hoặc kiểm chứng đúng y khoa. Kết quả nằm tại results/fpt-api-verification.json.
+
+## 5.8. Giới hạn của RAG hiện tại
+
+Corpus nhỏ và không bảo đảm bao phủ mọi câu hỏi. PDF lịch sử cần ngày/phiên bản rõ; nhiều nguồn có thể khác ngữ cảnh. Concept graph dùng alias và rule lexical nên có thể nhận diện thiếu hoặc dư. LSA nhỏ không có năng lực ngữ nghĩa như embedding hiện đại; ngôn ngữ Việt/Anh và câu hỏi dài có thể giảm thứ hạng.
+
+Chưa có hội đồng lâm sàng chấm claim-level support trên tập lớn, chưa đánh giá đầy đủ prompt injection hoặc thay đổi nguồn theo thời gian. Số citation hợp lệ không là tỷ lệ đúng y khoa. Hướng tiếp theo là bộ hỏi đáp độc lập có người thẩm định, kiểm nguồn/phiên bản và đo riêng retrieval, groundedness, refusal, latency/cost.
+
+
+# CHƯƠNG 6. LUẬT, BÁO CÁO CÓ CẤU TRÚC VÀ RL MÔ PHỎNG
+
+## 6.1. Vai trò của Rule-Based Agent
+
+Rule Agent áp dụng điều kiện minh bạch và trả rule_id, severity, reason, source. Nó tách cảnh báo an toàn khỏi score DL và khỏi nội dung RAG. Điều kiện nhập glucose kiểm kiểu, số hữu hạn, đơn vị và miền. Chuỗi số, boolean, NaN/Infinity hoặc giá trị ngoài miền không được im lặng ép thành input hợp lệ.
+
+Luật cảnh báo xử lý tín hiệu nguy cấp và ranh giới thuốc/liều. Nội dung này phục vụ minh họa nghiên cứu, cần người có chuyên môn duyệt trước dùng thật. Người xem phải đọc lý do và nguồn của luật; không xem luật là chẩn đoán đã xác nhận.
+
+## 6.2. Review flags vận hành
+
+Nếu score cách threshold mô hình không quá 0,05, hệ thống gắn near_model_threshold để lưu ý độ ổn định phân lớp. Đây là quy tắc vận hành, không là ngưỡng y khoa. Nó không tương đương uncertainty Bayesian hoặc khoảng tin cậy.
+
+Nếu model trả nhãn nghiên cứu dương, hệ thống gắn positive_research_label và nhắc đọc nhiệm vụ/giới hạn. Nhãn dương Hospital chỉ liên quan tái nhập viện, không thể diễn giải là phát hiện bệnh mới. Nếu thiếu evidence hoặc knowledge dependency degraded, report bổ sung review flag tương ứng.
+
+## 6.3. Báo cáo và bất định
+
+Báo cáo có prediction, rule_results, retrieved_evidence, explanation, sources, review_flags, limitations và clinical_use=False. Thiết kế giữ riêng các luồng thông tin để không trộn một đoạn giáo dục với nhận định về cá nhân.
+
+Bất định gồm độ nhạy gần threshold, giới hạn quần thể, dữ liệu nhỏ, sigmoid chưa hiệu chuẩn và dependency dự phòng. Ba seed benchmark đo biến thiên khởi tạo trên cùng split, không cung cấp interval cho score của một người. Báo cáo không tạo con số confidence khi chưa có phép ước lượng tương ứng.
+
+Kết quả model và rule có thể khác mục đích: một score thấp không bác bỏ cảnh báo triệu chứng, tài liệu tổng quát không xác nhận feature bệnh nhân. Xung đột hoặc thiếu bằng chứng cần người có chuyên môn xem lại; không lấy biểu quyết giữa ba nguồn để kết luận bệnh. Cảnh báo có ưu tiên trình bày trước giải thích thông thường.
+
+## 6.4. Explanation Agent và việc xem nguồn
+
+Explanation nhận output đã tổng hợp, không tự sửa model hoặc threshold. FPT được dùng khi cấu hình hợp lệ và phản hồi qua kiểm citation; template được dùng khi thiếu cấu hình hoặc lỗi. Trạng thái generation cho biết đường đi thực tế.
+
+Người dùng có thể xem source title, URL và page của PDF để kiểm chứng. Thẻ biên soạn mang source_type khác tài liệu tải thật. Đường graph cho biết concept và evidence, không tự tạo một chuỗi suy luận lâm sàng đáng tin cậy cho mọi người.
+
+## 6.5. Monitoring và audit
+
+Metadata audit gồm request_id, status, duration_ms, danh sách agent/status/model_version/elapsed_ms. Mặc định không ghi file; AUDIT_LOG_PATH bật ghi JSONL metadata. Audit không ghi patient feature, câu hỏi hoặc API key. Trace trong phản hồi vẫn giúp xem agent nào chạy, bị bỏ qua hoặc degraded.
+
+Không công bố log có ID bệnh nhân. Cấu hình logger của hạ tầng là phạm vi riêng cần rà trước khi mở cho sử dụng thật. Bài hiện chưa có hệ phân quyền bệnh viện, quản trị hồ sơ hoặc lưu trữ dữ liệu khám chữa bệnh.
+
+## 6.6. RL là phần mở rộng tùy chọn
+
+Đặc tả cho phép bỏ RL trong bản đầu. Project giữ mô-đun Q-learning mô phỏng từ phiên bản trước để minh họa chọn kiểu trình bày. Đây là one-step contextual bandit với gamma=0, bốn trạng thái và ba hành động; không có bệnh nhân thật hay phần thưởng sức khỏe.
+
+Thực nghiệm lịch sử dùng seed 299, 4.000 episode. Greedy policy khớp rubric ở 4/4 state; reward trung bình 500 episode cuối 0,844. Những số này chỉ phản ánh rubric synthetic đã thiết kế. Không gọi là hiệu quả điều trị, cá nhân hóa thuốc hoặc giảm biến chứng.
+
+Core bảy agent không phụ thuộc RL để dự đoán hoặc truy xuất. Nếu mở rộng RL sau này, cần mô phỏng riêng và đánh giá chính sách có ràng buộc trước mọi ứng dụng thực; không cho policy tự kê đơn, đổi liều hoặc điều khiển chăm sóc người thật.
+
+
+# CHƯƠNG 7. TÁI LẬP, NOTEBOOK, KIỂM THỬ VÀ TRIỂN KHAI
+
+## 7.1. Notebook là lối chạy chính
+
+Notebook chứa mã trực tiếp trong ô, chạy từ trên xuống trong kernel mới, không import module Python cục bộ của project. Script builder chỉ dùng bảo trì. Luồng gồm môi trường, schema/nguồn, CSV→SQLite→SELECT, benchmark/biểu đồ, serving model tái sử dụng, KB/graph/RAG, bảy agent, demo/API.
+
+Full chạy ngân sách đầy đủ; smoke giảm seed/epoch/cây để kiểm luồng, không thay số đo full. Output ở thư mục riêng, không ghi đè serving model hoặc báo cáo. Dữ liệu tải thật/cache phải có provenance; model nhúng để reuse không thay việc fit benchmark trên nguồn thật.
+
+## 7.2. Tái chạy bằng module khi bảo trì
+
+Các lệnh dưới tương đương thao tác trong notebook, dùng khi phát triển ứng dụng. Chạy từ thư mục Project01; không bắt buộc người học chạy chúng để xem notebook.
 
 ```powershell
-python -m pip install -r requirements.txt -c requirements-lock.txt
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+python scripts/prepare-database.py
+python scripts/run-benchmark.py --mode full --seeds 42 43 44 --reuse-prepared-db
+python scripts/ingest-knowledge.py --help
+python scripts/load-neo4j.py --help
+python -m compileall -q app scripts tests report
 python -m pytest tests -q
-python tests/evaluate-system.py
 ```
 
-Không cần raw dataset để suy luận. Muốn huấn luyện lại, dùng fetch-data.py, prepare-data.py và train-models.py theo README-models.md. Sau huấn luyện cần chạy plot-model-results.py, kiểm thử và dựng lại báo cáo. Không chỉnh kết quả bằng tay để giữ nguyên một con số cũ.
+Ingestion/Neo4j dùng thông tin kết nối môi trường; không đặt key/password trực tiếp trong câu lệnh được đưa lên Git. Refit cây cần cùng dữ liệu, preprocessing, seed và config. Phiên bản thư viện hoặc nền tảng khác có thể làm sai số số học và thời gian thay đổi.
 
-## A.2. Ví dụ JSON hỏi đáp
+## 7.3. Các lớp bằng chứng
 
-```json
-{
-  "question": "HbA1c là gì?",
-  "glucose": null,
-  "unit": "mg/dL"
-}
-```
+Kiểm mô hình cần tính lại metric từ y/score, kiểm hash weights, threshold validation, scaler train-only, split/nhóm không giao và bảo toàn serving model cũ. Kiểm MAS cần request_id, thứ tự agent, dừng sớm, lỗi dependency, báo cáo và không ghi dữ liệu nhạy cảm. Kiểm KG cần import/query Neo4j thật, counts, idempotence, provenance và cache parity.
 
-Phản hồi có answer, status, sources, trace, policy_action và generation. Với trả lời có nguồn, generation bằng extractive. Với luật ưu tiên, generation bằng rule. Trường sources chứa ID/title/url; elapsed_ms là thời gian từ đầu request tới thông điệp, không phải thời gian riêng của toàn bộ model hoặc benchmark latency.
+Kiểm notebook cần chạy kernel mới trong thư mục không có source app; không chỉ kiểm JSON hoặc syntax. Kiểm Docker cần build đúng source cuối, gọi API/model/KB và kiểm health. Kiểm public cần chờ deploy live rồi gọi HTTPS, đối chiếu version/commit; việc localhost đạt không thay bằng chứng public.
 
-## A.3. Ví dụ JSON phân tích
+55/55 pytest và 13/13 HTTP ghi ngày 05/11/2026 là bằng chứng lịch sử phiên bản đầu. Bộ 30 câu phát triển và 11 ca an toàn lịch sử không phải bộ clinical validation. Bản nâng cấp thay schema, retrieval, API và UI nên cần kết quả kiểm tra mới; đối chiếu file verification mới nhất khi nộp.
 
-```json
-{
-  "dataset": "hospital",
-  "features": {
-    "time_in_hospital": 4,
-    "num_lab_procedures": 40,
-    "num_procedures": 1,
-    "num_medications": 15,
-    "number_outpatient": 0,
-    "number_emergency": 0,
-    "number_inpatient": 1,
-    "number_diagnoses": 8,
-    "AgeGroup": 7,
-    "Gender": 1
-  }
-}
-```
+Bản nâng cấp đạt 102 pytest ở lượt kiểm cuối. Kiểm độc lập tính lại 72 run/144 bộ metric, 36 checkpoint, 24 summary và 11 hash legacy. Bằng chứng nằm tại results/pytest-verification-v2.json và báo cáo tester.
 
-Đây là input minh họa kỹ thuật tự nhập, không phải hồ sơ bệnh nhân. Nên lấy schema đầy đủ từ /api/catalog thay vì tự suy ý nghĩa biến. Trường CDC Age hoặc Hospital AgeGroup phải nhập mã nhóm đúng phạm vi, không phải số tuổi trực tiếp. Kết quả luôn có clinical_use bằng false và score_semantics giải thích điểm sigmoid.
+Bản nâng cấp đã kiểm giao diện desktop/mobile thực với 24 kiểm tra: bốn form model, tám message luồng thường, sáu hàng benchmark/cohort, 34 node/19 relation, 26 document metadata, 24 thẻ, chat và năm tab không tràn ngang/lỗi JavaScript. Footprint ứng dụng đo khoảng 302 MiB trong môi trường kiểm; không là bảo đảm mọi tải. Notebook bàn giao có 61 ô/51 ô mã, gồm 25 ô mô-đun inline. Bản cuối chạy full trong kernel mới với nguồn cache thật đã kiểm hash: 72 lượt fit, 80 kiểm tra ML và 68 kiểm tra API đạt, 211,575 giây, không có source app cục bộ đi kèm. Một lượt full trước đó tải nguồn thật đạt trong 339,18 giây. Hai thời gian toàn luồng này không thay tổng fit từng run 145,588 giây của benchmark báo cáo; cache và phiên bản execution được ghi rõ trong notebook-verification.json.
 
-## A.4. Danh sách tài nguyên
+## 7.4. Docker và cấu hình FPT
 
-| Nhóm tệp | Vai trò |
+Image chứa model/corpus và không train tại startup. Một worker Uvicorn hạn chế nhân bản bộ nhớ; OMP_NUM_THREADS=2 giới hạn CPU thread. SQLite cache dựng lại dưới APP_DATA_DIR=/tmp/diacare. Raw/database và notebook-output không trong image.
+
+FPT_API_KEY, FPT_MODEL và FPT_API_URL cấu hình bằng biến môi trường. Gateway AI Marketplace đã kiểm endpoint HTTPS https://mkp-api.fptcloud.com/chat/completions. FPT_BASE_URL là lựa chọn thay thế; full URL được ưu tiên. Key thật không xuất hiện trong notebook/PDF/repository. HTTP 200 xác nhận kết nối chưa đủ để chứng minh câu trả lời grounded; cần thêm kiểm citation/evidence của output thật.
+
+## 7.5. Render và trạng thái phiên bản
+
+Demo tại https://diacare-mas-hieugm299.onrender.com, API docs tại /docs và readiness tại /health. Dịch vụ hiện có dùng Docker Free Singapore, repo HieuGM/PTHTTM_PTIT nhánh main, service `srv-dbm5dfgu01pc738ercq0`. Root Directory trống; Dockerfile và build context trỏ thư mục `project01_CT_04_HieuGM.299`.
+
+Bản nâng cấp chuyển live lúc 14:40:42 ngày 06/11/2026 theo giờ Việt Nam, commit `1d08d9ba7bc1d757ee856268f671ca035399a7b8`, deploy `dep-dbmo7ne7bikc73bj5rv0`. Kiểm public HTTPS cuối đạt 30/30, gồm suy luận bốn model, corpus/graph/benchmark và sinh câu trả lời FPT thật. Lượt trước đạt 29/30 vì một câu FPT dùng template fallback; giữ nguyên tại results/render-http-attempts.json. Chạy lại cùng câu hỏi/bộ kiểm đạt 30/30, không xóa lỗi ban đầu. Đây là kiểm chức năng theo lượt, không bảo đảm LLM luôn thành công. Kết quả cuối ở results/render-http-verification.json, metadata ở results/render-deployment.json.
+
+Dịch vụ dùng public Git URL nên cần manual deploy theo commit mới sau push; deploy do đổi environment ở commit cũ không được tính là bản nâng cấp. FPT Environment đã cấu hình riêng trên Render, không ship .env. Free có thể ngủ; lần mở đầu chậm không tự chứng minh lỗi model.
+
+Neo4j Docker cục bộ không truy cập từ Render bằng localhost. Muốn live graph production cần URI accessible và credential riêng; khi thiếu dùng sqlite_cache/degraded có nhãn. Không tạo thêm tài nguyên trả phí. Live của ứng dụng không chứng minh đã có Neo4j production hoặc kiểm định lâm sàng.
+
+## 7.6. Kịch bản demo bảo vệ
+
+Mở bảng benchmark, chọn lần lượt bốn cohort và giải thích khác nhiệm vụ. Trên report, chọn CDC và feature mặc định minh họa; đọc task, score, threshold, version. Nhập câu hỏi về chế độ ăn hoặc xét nghiệm, mở evidence Vinmec/PDF và trace để chỉ ra KG/RAG/Explanation.
+
+Thử thiếu feature hoặc nhập ngoài miền: Data từ chối trước DL. Thử yêu cầu kê liều: luật giới hạn phản hồi. Tắt FPT hoặc Neo4j có chủ đích trong môi trường cục bộ để xem nhãn fallback; không giả định fallback chính là dịch vụ ngoài đang chạy. Khi demo LLM thật, dùng câu hỏi công khai và không cung cấp hồ sơ nhận dạng.
+
+## 7.7. Hướng phát triển
+
+Ưu tiên bộ câu hỏi độc lập có thẩm định chuyên môn, đánh giá claim-level support, nguồn mới và prompt injection; so sánh retriever với neural embedding phù hợp tiếng Việt. Với ML, thêm external/temporal validation, calibration và phân tích nhóm. Với hệ thống, đo tải/RAM/latency/cost, rate limit và hạ tầng log có chính sách rõ.
+
+Không mở rộng số model chỉ để tăng số lượng khi chưa có giả thuyết so sánh. Ma trận hiện tại hữu hạn, có baseline và ba neural architecture, cho thấy cả kết quả tốt và yếu. Giá trị của bài là pipeline tái lập, không rò rỉ, provenance và ranh giới nghiên cứu được thể hiện trong sản phẩm.
+
+
+# PHỤ LỤC. HỒ SƠ KIỂM CHỨNG VÀ ĐỐI CHIẾU YÊU CẦU
+
+## A.1. Ánh xạ đặc tả sang sản phẩm
+
+| Yêu cầu từ kiến trúc | Sản phẩm |
 |---|---|
-| models/cdc và models/hospital | State_dict, metadata, baseline tham chiếu |
-| models/presentation-policy.json | Q-table và cấu hình bandit |
-| results/data-manifest.json | Quy mô, hash và giao thức chia tập |
-| results/*-training.json | Cấu hình, lịch sử loss, validation, test |
-| results/*-test-predictions.npz | Nhãn và dự đoán để tính lại metric |
-| results/system-evaluation.json | Từng câu hỏi, hạng nguồn và quyết định |
-| results/model-tests.json | Kiểm chứng score, scaler và đầu vào |
-| results/docker-verification.json | Kiểm tra HTTP của container đã chạy |
-| report/sections và builders | Nguồn báo cáo có thể chỉnh và dựng lại |
+| Tái sử dụng DL | models/cdc, models/hospital; legacy-preservation.json |
+| Patient validation, dừng sớm | PatientDataAgent, ReportWorkflow, /api/report |
+| KG Neo4j và RAG | corpus/ontology, DB_diabet.cypher, neo4j_backend.py |
+| Contract có trạng thái/version | AgentResult, Context.emit, messages và request_id |
+| Báo cáo prediction/rule/evidence riêng | structured_report và ExplanationAgent |
+| Monitoring | Metadata audit; mặc định không ghi file/patient data |
+| Đánh giá thành phần và hệ | 72 run, retrieval checks, Neo4j proof, pytest, notebook/API |
+| RL tùy chọn | One-step contextual bandit mô phỏng, tách core |
 
-Tệp raw Hospital không được đưa vào gói nộp hoặc image vì không cần cho demo và chứa định danh giả dùng chia nhóm. Có script tải từ nguồn chính thức để tái lập. Manifest gói nộp ghi SHA256 cho các tệp đã đóng gói, tự loại chính manifest để tránh tự tham chiếu.
+## A.2. Cấu trúc bàn giao
+
+```text
+notebook/project01-diacare.ipynb    Mã độc lập chạy từ trên xuống
+app/ml/                           Database, dataset, training, inference
+app/knowledge/                    Corpus, ontology, retrieval, generation
+app/agents/                       Bảy agent, contracts, rules, workflow
+app/static/                       Report, Chat, Benchmark, Graph, Knowledge
+models/                           Serving weights và benchmark neural
+results/benchmark/full/            72run, summary, scores, figures
+results/*verification.json         Bằng chứng theo phạm vi/phiên bản
+DB_diabet.cypher                  Seed graph mới có provenance
+report/                           PDF, Markdown, sections, builder
+bao-ve-project01.md                Câu hỏi bảo vệ và demo
+.env.example                      Tên biến, không có key/password
+```
+
+## A.3. Năm câu cần trả lời ngay khi bảo vệ
+
+Dùng mấy bộ dữ liệu? Bốn cohort độc lập cho học có giám sát; corpus Web/PDF là nguồn tri thức riêng. Không gọi 12 tài liệu là 12 dataset train DL.
+
+Dùng mấy mô hình? Sáu loại: ba cổ điển, ba Deep Learning. Có 24 tổ hợp dataset-model,72 lượt do ba seed. Bốn serving model là bốn artifact đang được API nạp, không là bốn kiến trúc khác nhau.
+
+Vì sao không chọn test cao nhất để deploy? Làm vậy dùng test tham gia lựa chọn và làm kết quả lạc quan. Pima/Early chọn validation; CDC/Hospital giữ artifact cũ để đúng yêu cầu tái sử dụng.
+
+Có dùng Neo4j/LLM thật không? Neo4j local đã import/query thật và có verification; FPT gọi HTTPS thật có evidence/citation check. Render có backend nào phải đọc health/verification thực tế, không suy từ kết quả local.
+
+Kết quả có chẩn đoán được không? Chưa. Quần thể nước ngoài, test nhỏ ở hai cohort, sigmoid chưa calibration Việt, RAG chỉ có kiểm citation cơ bản. Core là nguyên mẫu học thuật có human review.
+
+## A.4. Bảng kiểm trước khi nộp
+
+Mở notebook và kiểm kernel mới; chọn full khi cần tái lập benchmark. Đọc kết quả full ở results, không thay bằng smoke. Kiểm PDF cover đúng tên/MSV/CT01/04, không còn tên người mẫu. Mở link demo, đối chiếu model_count/system_version; kiểm graph_backend và generation thực.
+
+Loại .env thật, key/password, raw/database, runtime log và patient ID khỏi ZIP/Git/image. Kiểm manifest/CRC sau gói. Báo cáo kiểm thử ngày nào và phiên bản nào phải được ghi rõ; không đổi ngày của bằng chứng cũ để làm như đã chạy lại.
+
+## A.5. Những việc chưa được chứng minh
+
+Chưa có xác thực lâm sàng Việt Nam; chưa có external/temporal validation hay calibration production; chưa có nghiên cứu tác động chăm sóc. Chưa có benchmark tải/SLA. Chưa có đánh giá claim-level support lớn được chuyên gia chấm. SD ba seed không là uncertainty đầy đủ. Chế độ cache không là Neo4j production, citation hợp lệ không là sự thật y khoa.
 
 
 # TÀI LIỆU THAM KHẢO
 
-Các nguồn web được kiểm tra trong quá trình thực hiện ngày 05/11/2026; từng thẻ KB giữ retrieved_at riêng. Trọng số và kết quả đo do mã project tạo, không lấy số liệu của bài mẫu.
+Tài liệu kiến trúc do giảng viên cung cấp: project_architecture_multiagent_diabet_v1.pdf (11 trang,11/2026). Đây là đặc tả được đối chiếu, không là kết quả đo của project.
 
-1. [WHO — Diabetes](https://www.who.int/news-room/fact-sheets/detail/diabetes)
+Nguồn Web/PDF được kiểm tra trong quá trình thực hiện; ngày tải/hash/note cụ thể lưu trong corpus và knowledge-ingestion.json. PDF Việt 2020 là nguồn lịch sử. Số liệu mô hình được tính bằng mã và dữ liệu của bài, không chép số liệu báo cáo mẫu.
 
-2. [NIDDK — Type 1 Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-1-diabetes)
+1. [WHO — Diabetes fact sheet](https://www.who.int/news-room/fact-sheets/detail/diabetes)
 
-3. [NIDDK — Type 2 Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-2-diabetes)
+2. [NIDDK — What Is Diabetes?](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes)
 
-4. [NIDDK — Gestational Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/gestational)
+3. [NIDDK — Type 1 Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-1-diabetes)
 
-5. [NIDDK — Symptoms & Causes of Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/symptoms-causes)
+4. [NIDDK — Type 2 Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-2-diabetes)
 
-6. [NIDDK — Diabetes Tests & Diagnosis](https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis)
+5. [NIDDK — Diabetes Tests & Diagnosis](https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis)
 
-7. [NIDDK — Healthy Living with Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes)
+6. [NIDDK — Healthy Living with Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes)
 
-8. [NIDDK — Insulin, Medicines, & Other Diabetes Treatments](https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments)
+7. [NIDDK — Low Blood Glucose (Hypoglycemia)](https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/low-blood-glucose-hypoglycemia)
 
-9. [CDC — Treatment of Low Blood Sugar](https://www.cdc.gov/diabetes/treatment/treatment-low-blood-sugar-hypoglycemia.html)
+8. [Bộ Y tế — Hướng dẫn chẩn đoán và điều trị đái tháo đường típ 2 (2020), bản do Sở Y tế Đồng Nai đăng tải](https://syt.dongnai.gov.vn/vi/van-ban/detail/V-v-trien-khai-thuc-hien-Quyet-dinh-so-5481-QD-BYT-ngay-30-12-2020-cua-Bo-truong-Bo-Y-te-4905/?download=1&id=0)
 
-10. [NHS — Low blood sugar (hypoglycaemia)](https://www.nhs.uk/conditions/low-blood-sugar-hypoglycaemia/)
+9. [Vinmec — Bệnh đái tháo đường: chế độ ăn như thế nào?](https://www.vinmec.com/vie/bai-viet/benh-dai-thao-duong-che-do-nhu-nao-vi)
 
-11. [CDC — Diabetic Ketoacidosis](https://www.cdc.gov/diabetes/about/diabetic-ketoacidosis.html)
+10. [Vinmec — Các xét nghiệm dùng để chẩn đoán đái tháo đường type 2](https://www.vinmec.com/vie/bai-viet/cac-xet-nghiem-dung-de-chan-doan-dai-thao-duong-type-2-vi)
 
-12. [NIDDK — Managing Diabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes)
+11. [Vinmec — Hiểu biết về đái tháo đường type 2 - Phần 1](https://www.vinmec.com/vie/bai-viet/hieu-biet-ve-dai-thao-duong-type-2-phan-1-vi)
 
-13. [NIDDK — Diabetes & Foot Problems](https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/foot-problems)
+12. [Vinmec — Dấu hiệu đái tháo đường thai kỳ và các câu hỏi thường gặp](https://www.vinmec.com/vie/bai-viet/nhung-dieu-can-biet-ve-dai-thao-duong-thai-ky-vi)
 
-14. [NIDDK — Diabetic Kidney Disease](https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/diabetic-kidney-disease)
+13. [UCI891. CDC Diabetes Health Indicators.](https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators)
 
-15. [NIDDK — Diabetic Eye Disease](https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/diabetic-eye-disease)
+14. [Alex Teboul. Binary BRFSS2015; nguồn khai báo CC0.](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset)
 
-16. [Cục Quản lý Khám chữa bệnh — Hướng dẫn chẩn đoán và điều trị đái tháo đường típ 2](https://daithaoduong.kcb.vn/huong-dan-chan-doan-va-dieu-tri-dai-thao-duong-tip-2)
+15. [UCI296. Diabetes130-US Hospitals; DOI10.24432/C5230J; CC BY4.0.](https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008)
 
-17. [UCI. CDC Diabetes Health Indicators. DOI 10.24432/C53919.](https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators)
+16. [Strack và cộng sự (2014). Impact of HbA1c Measurement on Hospital Readmission Rates.](https://doi.org/10.1155/2014/781670)
 
-18. [UCI. Diabetes 130-US Hospitals 1999–2008. DOI 10.24432/C5230J; CC BY 4.0.](https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008)
+17. [OpenML37. Pima; metadata licence Public, không tự gán CC0.](https://www.openml.org/d/37)
 
-19. [NIDDK — Insulin Resistance & Prediabetes](https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/prediabetes-insulin-resistance)
+18. [OpenML. Metadata và MD5 ARFF của dataset37.](https://api.openml.org/api/v1/json/data/37)
 
-20. [Alex Teboul. Diabetes Health Indicators Dataset, BRFSS 2015; CC0.](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset)
+19. [UCI529. Early Stage Diabetes Risk Prediction; DOI10.24432/C5VG8H; CC BY4.0.](https://archive.ics.uci.edu/dataset/529/early+stage+diabetes+risk+prediction+dataset)
 
-21. [WHO. Viet Nam STEPS 2021, VNM_2021_STEPS_v01; nguồn khảo sát, chưa tải/huấn luyện trong project.](https://extranet.who.int/ncdsmicrodata/index.php/catalog/948/study-description)
+20. [Lewis và cộng sự (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.](https://arxiv.org/abs/2005.11401)
 
-22. [Lewis và cộng sự (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.](https://arxiv.org/abs/2005.11401)
+21. [Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.](https://www.cs.rhul.ac.uk/~mike/pubs/ker95.pdf)
 
-23. [Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.](https://www.cs.rhul.ac.uk/~mike/pubs/ker95.pdf)
+22. [Sutton và Barto (2018). Reinforcement Learning: An Introduction.](http://incompleteideas.net/book/the-book-2nd.html)
 
-24. [Sutton và Barto (2018). Reinforcement Learning: An Introduction, 2nd edition.](http://incompleteideas.net/book/the-book-2nd.html)
+23. [PyTorch. Tài liệu chính thức tensor, neural network, state_dict.](https://docs.pytorch.org/docs/stable/index.html)
 
-25. [PyTorch. Tài liệu chính thức về tensor, neural network và state_dict.](https://docs.pytorch.org/docs/stable/index.html)
+24. [scikit-learn. Model evaluation, Average Precision và ROC-AUC.](https://scikit-learn.org/stable/modules/model_evaluation.html)
 
-26. [scikit-learn. Model evaluation và định nghĩa Average Precision/ROC-AUC.](https://scikit-learn.org/stable/modules/model_evaluation.html)
+25. [Neo4j. Python Driver Manual.](https://neo4j.com/docs/python-manual/current/)
+
+26. [FPT Cloud AI Marketplace. API integration, gateway mkp-api.fptcloud.com và /chat/completions.](https://ai-docs.fptcloud.com/api-reference/ai-marketplace/api-reference/api-integration-multimodal-model-text-md)
 
 27. [FastAPI. FastAPI in Containers - Docker.](https://fastapi.tiangolo.com/deployment/docker/)
 
 28. [Render. Blueprint YAML Reference.](https://render.com/docs/blueprint-spec)
+
+29. [Render. Deploy lifecycle and manual deploys for public Git repository URLs.](https://render.com/docs/deploys)

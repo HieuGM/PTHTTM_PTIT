@@ -80,7 +80,7 @@ def main():
     order=json.loads((HERE/'section-order.json').read_text(encoding='utf-8'))
     for name in order:
         if name=='09-references.md':
-            fmt.STYLES['body']=ParagraphStyle('reference-body',parent=fmt.STYLES['body'],spaceAfter=5)
+            fmt.STYLES['body']=ParagraphStyle('reference-body',parent=fmt.STYLES['body'],fontSize=11,leading=14.5,spaceAfter=4,alignment=0)
         contents.extend(fmt.parse((HERE/'sections'/name).read_text(encoding='utf-8')))
     doc.multiBuild(contents,maxPasses=8)
     print(HERE/(STEM+'.pdf'))

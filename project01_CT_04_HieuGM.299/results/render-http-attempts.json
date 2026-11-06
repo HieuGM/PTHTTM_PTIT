@@ -1,0 +1,167 @@
+{
+  "scope": "Preserve first strict live provider check failure; all HTTP/model checks passed, one LLM sample returned fallback. Retry is recorded separately.",
+  "attempts": [
+    {
+      "checked_at_utc": "2026-11-06T07:42:50.173098+00:00",
+      "url": "https://diacare-mas-hieugm299.onrender.com",
+      "checks": [
+        {
+          "name": "health",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "frontend",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "asset_app.js",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "asset_workflow.js",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "asset_benchmark.js",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "asset_style.css",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "knowledge_inventory",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "four_datasets",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "seven_core_agents",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "downloaded_web_pdf",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "prediction_cdc",
+          "passed": true,
+          "detail": "score=0.06448593735694885"
+        },
+        {
+          "name": "missing_fields_cdc",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "report_cdc",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "generation_mode_visible",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "actual_fpt_generation",
+          "passed": false,
+          "detail": ""
+        },
+        {
+          "name": "prediction_hospital",
+          "passed": true,
+          "detail": "score=0.09600485861301422"
+        },
+        {
+          "name": "missing_fields_hospital",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "report_hospital",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "prediction_pima",
+          "passed": true,
+          "detail": "score=0.30342769622802734"
+        },
+        {
+          "name": "missing_fields_pima",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "report_pima",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "prediction_early",
+          "passed": true,
+          "detail": "score=0.2121228724718094"
+        },
+        {
+          "name": "missing_fields_early",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "report_early",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "grounded_answer",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "safety_priority",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "nonfinite_input",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "off_topic_refusal",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "graph_evidence",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "benchmark_72_runs",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "passed": 29,
+      "total": 30,
+      "system_version": "hybrid-mas-2.0",
+      "graph_backend": "sqlite_cache",
+      "llm_required": true,
+      "scope": "Live HTTP checks, actual model/provider/network responses; schema defaults are synthetic UI examples."
+    }
+  ]
+}

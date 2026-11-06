@@ -1,9 +1,56 @@
 {
-  "checked_at_utc": "2026-11-05T05:17:55.259376+00:00",
-  "pytest_passed": 55,
-  "pytest_failed": 0,
-  "isolated_extraction": true,
-  "no_raw_or_split_cache": true,
-  "source_files_match": true,
-  "note": "Tests from extracted source; rebuild package after report-only updates."
+  "status": "passed",
+  "archive_sha256": "66831d7c908c86c667e042abf90e5ca28c7199e56b1bc63f82186389ae48a779",
+  "archive_bytes": 13872377,
+  "extraction": "D:\\CodexTaskCache\\diacare-hieugm299-261105\\upgrade-261106\\package-final-review",
+  "checks": {
+    "safe_paths": true,
+    "no_existing_data_overwritten": true,
+    "crc": true,
+    "manifest_sha256_all": true,
+    "entries": 367,
+    "manifest_files": 366,
+    "no_private_credentials": true,
+    "no_raw_database_patient_cache": true,
+    "notebook": {
+      "sha256": "dcace0e4b14563c53da92f1368616a538c5f2f4875c2a650c22cbeb53d9cca64",
+      "cells": 61,
+      "code_cells": 51,
+      "inline_module_cells": 25,
+      "nbformat_valid": true,
+      "all_cells_compile": true,
+      "no_error_outputs": true,
+      "credentials_absent": true
+    },
+    "pdf": {
+      "sha256": "e48e1efe2658328393d01cf3f931b56608fcc3f0e104b8a9a5ed29651195e034",
+      "pages": 26,
+      "identity_correct": true,
+      "no_sample_identity": true,
+      "audit_passed": 24,
+      "audit_total": 24,
+      "upgraded_public_metadata_present": true,
+      "visual_review_all26pages_recorded": true,
+      "cover_render_independently_reviewed": true,
+      "cover_defects_remaining": []
+    },
+    "extracted_package_pytest": {
+      "passed": 102,
+      "failed": 0,
+      "duration_seconds": 11.08,
+      "command": "python -m pytest tests -q",
+      "working_directory": "/work/upgrade-261106/package-final-review/project01_CT_04_HieuGM.299",
+      "warnings": [
+        "Starlette/httpx deprecation",
+        "Pytest cache could not be written on Windows bind mount; all tests passed"
+      ],
+      "uses_workspace_app_files": false
+    }
+  },
+  "checked_at_utc": "2026-11-06T07:50:59.548212+00:00",
+  "note": "Independent QA of the recorded 367-entry archive. Parent may replace only package-verification.json and regenerate manifest/ZIP to include this proof; archive hash then necessarily changes. Application, weights, notebook and PDF content tested here must remain unchanged.",
+  "final_repack": {
+    "changes": "package verification proof, public-browser verification JSON and regenerated manifest only",
+    "tested_application_models_notebook_pdf_unchanged": true
+  }
 }

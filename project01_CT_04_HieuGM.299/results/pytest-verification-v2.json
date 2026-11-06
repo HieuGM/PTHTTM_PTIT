@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "tested_on": "2026-11-06",
+  "command": "python -m pytest tests -q",
+  "passed": 102,
+  "failed": 0,
+  "duration_seconds": 8.14,
+  "warnings": [
+    "StarletteDeprecationWarning: installed httpx compatibility; does not fail tests"
+  ],
+  "runtime": "Linux Docker Python3.12, real four serving model artifacts and actual evidence cache",
+  "paid_provider_calls_in_pytest": false,
+  "fault_injection_labeled": true,
+  "compileall": "passed",
+  "independent_benchmark": "results/benchmark/full/independent-audit.json",
+  "live_neo4j_provider_failure": "results/failure-injection-verification.json"
+}
