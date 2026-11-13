@@ -77,6 +77,8 @@ def para(text,style='body'):
 
 
 def picture(path,caption=None,max_height=360):
+    if Path(path).name == 'ui-trace.png':
+        max_height = 580
     image=Image(str(path));scale=min(WIDTH/image.imageWidth,max_height/image.imageHeight)
     image.drawWidth=image.imageWidth*scale;image.drawHeight=image.imageHeight*scale
     return KeepTogether([image,Spacer(1,5),para(caption,'caption')]) if caption else image
@@ -123,9 +125,10 @@ def parse(text):
             while i<len(lines) and not lines[i].startswith('```'):
                 code.extend(textwrap.wrap(lines[i],width=88,replace_whitespace=False,drop_whitespace=False) or [' ']);i+=1
             i+=1
-            style=ParagraphStyle('code',fontName='Mono',fontSize=8.4,leading=11,spaceAfter=10)
+            style=ParagraphStyle('code',fontName='Mono',fontSize=8.4,leading=11,spaceAfter=0)
             # One line per flowable allows code listings to split across pages.
-            out.extend(Preformatted(value,style) for value in code);continue
+            out.extend(Preformatted(value,style) for value in code)
+            out.append(Spacer(1,10));continue
         match=re.match(r'^(#{1,4})\s+(.*)',line)
         if match:
             level=min(len(match[1]),3);title=match[2]

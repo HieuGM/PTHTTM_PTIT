@@ -1,4 +1,4 @@
-"""Create new cover and a multi-agent PDF with generated table of contents."""
+"""Build the report with generated contents and preserve the original cover page."""
 from pathlib import Path
 import importlib.util
 import json
@@ -83,6 +83,18 @@ def main():
             fmt.STYLES['body']=ParagraphStyle('reference-body',parent=fmt.STYLES['body'],fontSize=11,leading=14.5,spaceAfter=4,alignment=0)
         contents.extend(fmt.parse((HERE/'sections'/name).read_text(encoding='utf-8')))
     doc.multiBuild(contents,maxPasses=8)
+    # Keep the user's existing cover, including its original vector/text content.
+    import pymupdf
+    path=HERE/(STEM+'.pdf')
+    original=HERE/'assets/original-cover.pdf'
+    with pymupdf.open(path) as result, pymupdf.open(original) as first:
+        outline=result.get_toc()
+        result.delete_page(0)
+        result.insert_pdf(first,from_page=0,to_page=0,start_at=0)
+        result.set_toc(outline)
+        temporary=HERE/(STEM+'-build.pdf')
+        result.save(temporary,garbage=4,deflate=True)
+    temporary.replace(path)
     print(HERE/(STEM+'.pdf'))
 
 

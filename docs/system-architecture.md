@@ -93,3 +93,12 @@ Notebook 61 ô/51 ô mã/25 mô-đun source inline thực thi 72 lượt fit, 80
 Render live 14:40:42 ngày 06/11 giờ Việt Nam từ commit `1d08d9ba7bc1d757ee856268f671ca035399a7b8`, deploy `dep-dbmo7ne7bikc73bj5rv0`. Dịch vụ public Git URL dùng manual deploy; deploy commit cũ do đổi env không là mã mới. FPT Environment cấu hình riêng. Neo4j production không được suy từ bằng chứng local. Metadata và từng lượt kiểm HTTPS trong results là nguồn trạng thái; LLM có thể fallback dù một lượt grounded đã thành công.
 
 Public HTTPS cuối 30/30 đạt, có FPT sinh thật; lượt đầu 29/30 với một template fallback được giữ trong render-http-attempts.json. Chạy lại cùng câu hỏi/bộ kiểm đạt 30/30; không suy thành SLA hoặc provider luôn thành công.
+
+
+## Project01 2.1 — 13/11/2026
+
+Giữ bảy vai trò core và workflow ngoài hữu hạn. KG/RAG dùng app/knowledge/adaptive.py: ontology/cardtopicanchors, provenance/lexicalsupport, aliasrewrite vàlexicalfallback cóbudget3. BaselineKnowledgeBase.retrieve không đổi để giữ ý nghĩa phép đo cũ. Explanation dùng app/knowledge/review.py: cấu trúc/citation/provenance, mẫu câu an toàn vàlexicalsupport>=0,35;max1extractiverevision, recheckjoinedtext, terminaltrustedrefusal nếu candidatevẫnlỗi. Đây không là kiểm chứng ngữ nghĩa hoặc learnedSelfRAG.
+
+Context.emit giữelapsed_ms vàthêmduration_ms đoquanhcall;workflowtrảdecision_trace,feature_usage,report.retrieval/quality. Auditfileopt-in vẫn chỉmetadata. app/capabilities.py và /api/capabilities nối implemented/configured/executed với file/hàm/điểmvào/demo; không khai cóLangGraph/neuralembedding/SSE/resume. RLbandit vẫn chỉchat. UI vànotebook dùngchungsource; notebook28moduleinline và6assets.
+
+Mã livebc67a979d74db02195ed2b9d927cb59d63c3c7fb, service/deployproof và39HTTP tại results/render-agent-upgrade-*.json. Public dùngsqlite_cache vàFPTcóthểfallback có nhãn; localNeo4jproof cũ không thànhproductionNeo4j.

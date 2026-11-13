@@ -1,0 +1,244 @@
+{
+  "checked_at_utc": "2026-11-13T04:28:24.668803+00:00",
+  "url": "https://diacare-mas-hieugm299.onrender.com",
+  "checks": [
+    {
+      "name": "health",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "expected_system_version",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "frontend",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "asset_app.js",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "asset_workflow.js",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "asset_benchmark.js",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "asset_upgrade.js",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "asset_style.css",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "knowledge_inventory",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "four_datasets",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "seven_core_agents",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "downloaded_web_pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "prediction_cdc",
+      "passed": true,
+      "detail": "score=0.06448593735694885"
+    },
+    {
+      "name": "missing_fields_cdc",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "report_cdc",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "review_cdc",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "generation_mode_visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "prediction_hospital",
+      "passed": true,
+      "detail": "score=0.09600485861301422"
+    },
+    {
+      "name": "missing_fields_hospital",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "report_hospital",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "review_hospital",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "prediction_pima",
+      "passed": true,
+      "detail": "score=0.30342769622802734"
+    },
+    {
+      "name": "missing_fields_pima",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "report_pima",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "review_pima",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "prediction_early",
+      "passed": true,
+      "detail": "score=0.2121228724718094"
+    },
+    {
+      "name": "missing_fields_early",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "report_early",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "review_early",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "grounded_answer",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "safety_priority",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "nonfinite_input",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "off_topic_refusal",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "graph_evidence",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "benchmark_72_runs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "capabilities_source_mapping",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "truthful_unimplemented_features",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "actual_bounded_retry",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "report_outside_domain_abstention",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "passed": 39,
+  "total": 39,
+  "system_version": "hybrid-mas-2.1",
+  "graph_backend": "sqlite_cache",
+  "llm_required": false,
+  "report_generations": {
+    "cdc": {
+      "generation": "fpt_cloud_llm",
+      "status": "grounded",
+      "original_generation": "fpt_cloud_llm"
+    },
+    "hospital": {
+      "generation": "safety_rule",
+      "status": "emergency",
+      "original_generation": "safety_rule"
+    },
+    "pima": {
+      "generation": "safety_rule",
+      "status": "emergency",
+      "original_generation": "safety_rule"
+    },
+    "early": {
+      "generation": "safety_rule",
+      "status": "emergency",
+      "original_generation": "safety_rule"
+    }
+  },
+  "retry_feature_usage": {
+    "deep_learning": true,
+    "adaptive_retrieval": true,
+    "retrieval_attempts": 2,
+    "retrieval_retry": true,
+    "output_review": true,
+    "review_revision": 0,
+    "fpt_called": true,
+    "final_generation": "fpt_cloud_llm",
+    "graph_backend": "sqlite_cache",
+    "rl_policy": false,
+    "neural_embedding": false,
+    "langgraph": false,
+    "streaming": false
+  },
+  "scope": "Live HTTP checks, actual model/provider/network responses; schema defaults are synthetic UI examples."
+}

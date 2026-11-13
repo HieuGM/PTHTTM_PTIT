@@ -43,7 +43,7 @@ def json_data(relative, variable):
         cells[-1].metadata.update(tags=['data-artifact'], jupyter={'source_hidden':True})
 
 
-md('''# Project01 — DiaCare Hybrid Multi-Agent System
+md('''# Project01 — DiaCare Hybrid Multi-Agent System 2.1
 **Giáp Minh Hiếu · B23DCCN299 · CT01 · Nhóm 04**  
 Giảng viên: **PGS.TS. Trần Đình Quế**
 
@@ -58,12 +58,14 @@ Mã nằm trực tiếp trong các ô. Magic `%%diacare_module` chỉ tạo name
 JSON tri thức và4trọng số phục vụ được nhúng như **dữ liệu**, không giấu source code.
 Ô corpus lớn và tensor được gập mặc định trong JupyterLab; bấm mở ô để xem dữ liệu.
 CDC/Hospital tái sử dụng trọng số cũ; benchmark lưu riêng. Pima/Early được chọn bằng validation.
+Bản 2.1 thêm truy xuất tối đa3lượt, kiểm/sửa tối đa1lần, decision trace và bản đồ năng lực.
 API FPT/Neo4j là tùy chọn cần credentials; mặc định template và graph cache có nhãn.
 Điểm nghiên cứu chưa hiệu chuẩn; không chẩn đoán/kê đơn. Không có dữ liệu bệnh nhân Việt Nam.
 Nguồn Vinmec/WHO/NIDDK/PDF phục vụ **tri thức**, không phải4cohort có nhãn để train.''')
 helper('notebook-setup.py')
 helper('notebook-config.py')
 helper('notebook-runtime.py')
+module('app.capabilities')
 md('''## 1. Schema và dữ liệu từ Database
 CDC khảo sát binary; Hospital tái nhập viện<30ngày; Pima diabetes; Early-stage triệu chứng.
 Không xếp hạng chéo AUC giữa nhiệm vụ/quần thể. Nguồn/giấy phép nằm trong `SOURCE_URLS/LICENSES`.
@@ -132,18 +134,27 @@ Không thuộc7agent cốt lõi và không được dùng để tăng số mô h
 policy_source = (PROJECT/'scripts/train-policy.py').read_text(encoding='utf-8')
 policy_source = policy_source.replace('ROOT = Path(__file__).resolve().parents[1]', '')
 code(policy_source)
-for name in ('ingestion', 'graph_builder', 'store', 'neo4j_backend', 'retrieval', 'generation'):
+for name in ('ingestion', 'graph_builder', 'store', 'neo4j_backend', 'retrieval', 'adaptive', 'review', 'generation'):
     module('app.knowledge.'+name)
 helper('notebook-knowledge.py')
 md('''## 5. Bảy agent và hợp đồng thông điệp
 Data → DL Prediction → Rule-Based → KG/RAG → Coordinator tổng hợp → Explanation → Monitoring.
 Mỗi message có request_id/agent/status/payload/evidence/model_version. Input sai dừng trước DL.
 Luật an toàn ưu tiên; report tách score/luật/bằng chứng/bất định/xung đột/hạn chế.
-Monitoring chỉ metadata, không lưu feature/câu hỏi/key. FPT khi USE_FPT=True và bạn nhập khóa riêng.
+Monitoring chỉ metadata, không lưu feature/câu hỏi/key. KG tối đa3lượt; Explanation kiểm/sửa tối đa1lần.
+FPT khi USE_FPT=True và bạn nhập khóa riêng; sửa extractive không gọi thêm LLM.
 Q-learning trình bày của API chat cũ chỉ là phần mở rộng tùy chọn, không chọn điều trị.''')
 for name in ('roles', 'reporting', 'workflow', 'coordinator'):
     module('app.agents.'+name)
 helper('notebook-demos.py')
+md('''### Năng lực dùng ở đâu và quyết định có giới hạn
+Bảng dưới nối tính năng với agent, mã nguồn, endpoint và ví dụ chạy thật.
+Implemented, configured và executed là ba thông tin riêng; đọc feature_usage của từng yêu cầu.
+HbA1c dừng khi đủ bằng chứng; cách gọi đường ba tháng cần viết lại truy vấn; câu bóng đá từ chối.
+Kiểm đầu ra dùng luật hẹp và độ hỗ trợ lexical, không chứng minh mọi claim đúng y khoa.
+Ví dụ kiểm bản nháp không an toàn do tác giả tạo có nhãn test_candidate, không phải lượt gọi FPT.
+duration_ms là thời gian call riêng; elapsed_ms là mốc tích lũy từ đầu yêu cầu.''')
+helper('notebook-upgrade.py')
 md('''## 6. So sánh truy xuất trên bộ câu hỏi phát triển
 Ba phương pháp trên cùng câu hỏi đã xây dựng; không gọi đây là kiểm định ngoài miền.
 Giữ từng ca sai. Citation đúng ID không tự chứng minh mọi mệnh đề đúng y khoa.
@@ -180,7 +191,7 @@ Chưa kiểm định trên bệnh nhân Việt Nam; không hiệu chuẩn lâm s
 Không gửi khóa vào chat, không lưu notebook với output có secrets; dùng getpass/environment.''')
 notebook = nbf.v4.new_notebook(cells=cells, metadata={
     'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},
-    'language_info':{'name':'python','version':'3.12.9'}, 'diacare':{'version':'2.0','inline_source_sha256':manifest}})
+    'language_info':{'name':'python','version':'3.12.9'}, 'diacare':{'version':'2.1','inline_source_sha256':manifest}})
 nbf.validate(notebook)
 nbf.write(notebook, HERE/'project01-diacare.ipynb')
 print(f'Wrote {len(cells)} readable cells; Python source compiles.')

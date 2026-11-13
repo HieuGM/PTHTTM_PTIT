@@ -53,10 +53,41 @@ Benchmark không đọc NPZ cũ để giả lập database. NPZ đầu ra giữ 
 | Pima | 537 | 115 | 116 | Stratified, median train |
 | Early Stage | 175 | 38 | 38 | Dedup trước stratified split |
 
-Split seed 42; model seed 42/43/44. Đổi model seed không tạo ba test mới. Mean/std fit train và áp cùng thứ tự feature. Checkpoint chọn validation ROC-AUC; ngưỡng chọn validation F 1; đóng băng trước đo test. Không lựa mô hình phục vụ bằng test.
+Split seed 42; model seed 42/43/44. Đổi model seed không tạo ba test mới. Mean/std fit train và áp cùng thứ tự feature. Checkpoint chọn validation ROC-AUC; ngưỡng chọn validation F1; đóng băng trước đo test. Không lựa mô hình phục vụ bằng test.
 
 ## 3.7. Provenance và giới hạn
 
 Manifest lưu URL, hash, số dòng, SQL, split và thống kê. Raw/database chỉ ở máy cục bộ, bị loại khỏi phát hành. Bốn cohort khác nguồn/nhãn/quần thể, không gộp thành một nhiệm vụ và không là bốn tập external validation của một model.
 
 Bài viết Vinmec và PDF Việt giúp truy xuất tài liệu Việt, không thay tập bệnh nhân Việt có nhãn. Trước dùng thực cần quyền dữ liệu, kiểm định ngoài miền, hiệu chuẩn, đánh giá theo nhóm và chuyên gia y tế.
+
+## 3.8. Tên và thứ tự feature khi suy luận
+
+Đặc tả yêu cầu ghi rõ feature/order, không chỉ số lượng cột. Bốn danh sách dưới theo đúng metadata serving và app/ml/schema.py. API nhận object theo tên; validate_features tạo vector theo SCHEMAS và Predictor kiểm thứ tự đó khớp metadata trước khi tạo tensor. Không dựa vào thứ tự khóa JSON người dùng gửi.
+
+```text
+CDC (21):
+HighBP, HighChol, CholCheck, BMI, Smoker, Stroke,
+HeartDiseaseorAttack, PhysActivity, Fruits, Veggies,
+HvyAlcoholConsump, AnyHealthcare, NoDocbcCost, GenHlth,
+MentHlth, PhysHlth, DiffWalk, Sex, Age, Education, Income
+
+Hospital (10):
+time_in_hospital, num_lab_procedures, num_procedures,
+num_medications, number_outpatient, number_emergency,
+number_inpatient, number_diagnoses, AgeGroup, Gender
+
+Pima (8):
+Pregnancies, Glucose, BloodPressure, SkinThickness,
+Insulin, BMI, DiabetesPedigreeFunction, Age
+
+Early Stage (16):
+Age, Gender, Polyuria, Polydipsia, sudden weight loss,
+weakness, Polyphagia, Genital thrush, visual blurring,
+Itching, Irritability, delayed healing, partial paresis,
+muscle stiffness, Alopecia, Obesity
+```
+
+CDC Age là mã nhóm 1-13, không phải tuổi tính theo năm; Sex dùng 0=Nữ, 1=Nam; GenHlth là mã 1-5. Hospital AgeGroup dùng nhóm 1-10; các biến đếm phản ánh một đợt nằm viện hoặc lịch sử năm trước. Pima Age là tuổi thật; Glucose là feature của cohort, không tự đồng nhất với trường glucose tùy chọn phục vụ luật của API. Early có Age thật, Gender 0/1 và 14 biến triệu chứng Có/Không mã 1/0; tên trường có dấu cách phải giữ nguyên trong JSON.
+
+Miền nhập, kiểu integer/float, nhãn và coding đầy đủ nằm trong feature_specs của models/<cohort>/metadata.json, đồng thời được công bố qua GET /api/catalog. Bản mô hình kèm preprocessing chứa mean/std và median khi áp dụng. Sai tên, thiếu/thừa cột hoặc giá trị không nguyên cho trường nguyên sẽ bị từ chối; giá trị 1.0 vẫn có thể hợp lệ vì bằng một số nguyên. API không tự lấp feature thiếu. Riêng zero-coded missing của Pima là quy ước tiền xử lý đã được định nghĩa, khác với thiếu khóa JSON.

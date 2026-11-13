@@ -20,8 +20,8 @@ def architecture():
         (.25,3.9,3.0,'Patient Data Agent\nStrict schema / early stop'),
         (4.0,3.9,3.0,'DL Prediction Agent\nReuse serving weights + metadata'),
         (7.75,3.9,3.0,'Rule-Based Agent\nSafety + review flags'),
-        (.25,2.4,3.0,'KG/RAG Agent\nEntities / graph / chunks / sources'),
-        (4.0,2.4,3.0,'Explanation Agent\nFPT API or labelled template'),
+        (.25,2.4,3.0,'KG/RAG Agent\nBounded adaptive evidence retrieval'),
+        (4.0,2.4,3.0,'Explanation Agent\nFPT/template + review + bounded revision'),
         (7.75,2.4,3.0,'Monitoring Agent\nRequest / version / metadata only'),
         (.25,.65,4.5,'Model + data layer\n4 SQL cohorts / 6 types / 72 benchmark runs'),
         (6.25,.65,4.5,'Knowledge layer\nNeo4j / Web + PDF / SQLite evidence cache')]
@@ -84,7 +84,7 @@ def references():
       'https://api.openml.org/api/v1/json/data/37':'OpenML. Metadata và MD5 ARFF của dataset37.',
       'https://archive.ics.uci.edu/dataset/529/early+stage+diabetes+risk+prediction+dataset':'UCI529. Early Stage Diabetes Risk Prediction; DOI10.24432/C5VG8H; CC BY4.0.',
       'https://arxiv.org/abs/2005.11401':'Lewis và cộng sự (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.',
-      'https://www.cs.rhul.ac.uk/~mike/pubs/ker95.pdf':'Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.',
+      'https://www.cs.ox.ac.uk/people/michael.wooldridge/pubs/ker95.pdf':'Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.',
       'http://incompleteideas.net/book/the-book-2nd.html':'Sutton và Barto (2018). Reinforcement Learning: An Introduction.',
       'https://docs.pytorch.org/docs/stable/index.html':'PyTorch. Tài liệu chính thức tensor, neural network, state_dict.',
       'https://scikit-learn.org/stable/modules/model_evaluation.html':'scikit-learn. Model evaluation, Average Precision và ROC-AUC.',
@@ -94,12 +94,15 @@ def references():
       'https://render.com/docs/blueprint-spec':'Render. Blueprint YAML Reference.',
       'https://render.com/docs/deploys':'Render. Deploy lifecycle and manual deploys for public Git repository URLs.'}
     sources.update(extra)
-    text='# TÀI LIỆU THAM KHẢO\n\nTài liệu kiến trúc do giảng viên cung cấp: project_architecture_multiagent_diabet_v1.pdf (11 trang,11/2026). Đây là đặc tả được đối chiếu, không là kết quả đo của project.\n\nNguồn Web/PDF được kiểm tra trong quá trình thực hiện; ngày tải/hash/note cụ thể lưu trong corpus và knowledge-ingestion.json. PDF Việt 2020 là nguồn lịch sử. Số liệu mô hình được tính bằng mã và dữ liệu của bài, không chép số liệu báo cáo mẫu.\n\n'
+    text='# TÀI LIỆU THAM KHẢO\n\nTài liệu kiến trúc do giảng viên cung cấp: project_architecture_multiagent_diabet_v1.pdf (11 trang,11/2026), đặc biệt mục 3-7 và 9-10. Đây là đặc tả được đối chiếu, không là kết quả đo của project.\n\nBáo cáo project_01_CT_04_linhvtm_v2.pdf (53 trang): tham khảo cách trình bày nền tảng Agent/MAS, hợp đồng API, ví dụ và ảnh giao diện. Không sử dụng số liệu, ảnh giao diện hoặc mã của báo cáo mẫu làm kết quả DiaCare.\n\nNguồn Web/PDF được kiểm tra trong quá trình thực hiện; ngày tải/hash/note cụ thể lưu trong corpus và knowledge-ingestion.json. PDF Việt 2020 là nguồn lịch sử. Số liệu mô hình được tính bằng mã và dữ liệu của bài, không chép số liệu báo cáo mẫu.\n\n'
     text+='\n\n'.join(f'{i}. [{title}]({url})' for i,(url,title) in enumerate(sources.items(),1))
     (HERE/'sections/09-references.md').write_text(text+'\n',encoding='utf-8')
     return len(sources)
 
 def main():
+    import runpy
+    runpy.run_path(str(HERE/'prepare-upgrade.py'),run_name='__main__')
+    runpy.run_path(str(HERE/'prepare-analysis.py'),run_name='__main__')
     architecture();benchmark_tables();count=references()
     order=sorted(p.name for p in (HERE/'sections').glob('*.md'))
     (HERE/'section-order.json').write_text(json.dumps(order,indent=2),encoding='utf-8')

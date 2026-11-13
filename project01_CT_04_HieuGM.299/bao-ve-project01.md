@@ -1,5 +1,69 @@
 # Chuẩn bị bảo vệ Project01 - Giáp Minh Hiếu, B23DCCN299
 
+**Vì sao system_version=2.1 nhưng model_version còn legacy-1.0 hoặc 2.0?** Mã điều phối/truy xuất/kiểm duyệt đã nâng cấp; trọng số dự đoán đang phục vụ được giữ để đúng yêu cầu tái sử dụng. Đây là hai loại phiên bản khác nhau. Mở `feature_usage`, trace và `models/<cohort>/metadata.json` để chứng minh; không đổi nhãn phiên bản model cho đẹp.
+
+**Bản dùng để bảo vệ hiện tại: 2.1, đã cập nhật public ngày 13/11/2026.** Demo: https://diacare-mas-hieugm299.onrender.com. Mở tab **Công nghệ và kiểm chứng** để trả lời “có dùng không, dùng ở đâu”; mở mục **Quyết định và kiểm duyệt** trong report để chứng minh thành phần nào đã chạy trong chính request đó.
+
+Bằng chứng cuối: **156 pytest**, **10/10 ca API**, **18 kiểm tra UI**, **39/39 HTTPS public**. Notebook **67 ô/56 ô mã/28 module inline** đã chạy full **72 fit + 80 ML + 99 API + 37 kiểm tra nâng cấp**. Bìa và trọng số phục vụ giữ nguyên. Mã live: `bc67a979d74db02195ed2b9d927cb59d63c3c7fb`.
+
+Ca demo retry thật: chọn Pima mặc định, hỏi **“Mờ mắt là gì?”**. `retrieval.attempts` có hai lượt: original thiếu hỗ trợ, alias_rewrite chuẩn hóa sang “nhìn mờ”, lấy được KB05. Với **“HbA1c phản ánh điều gì?”**, lượt đầu đã đủ thì dừng. Hỏi bóng đá sẽ trả `insufficient_evidence`; không gửi LLM khi không có evidence.
+
+Nếu thầy hỏi cải tiến có làm điểm tốt hơn hết không: trả lời **chưa**. Bộ phát triển 22 gold có Recall@3 adaptive=21/22, baseline=22/22; Q21 về provenance còn bị bỏ sót. Bản nâng cấp thêm khả năng điều khiển, truy vết, sửa/từ chối và xử lý diễn đạt, với chi phí kiểm tra/retry. Không gọi đây là kiểm định độc lập hoặc chiến thắng mọi metric.
+
+
+## Trả lời giảng viên: Có dùng không? Dùng ở đâu? Chứng minh thế nào?
+
+**Phần này mô tả bản nâng cấp 2.1.** Bảy agent core vẫn giữ nguyên; bổ sung quyết định truy xuất và kiểm duyệt có giới hạn bên trong KG/RAG và Explanation. Không thêm một “LLM Critic” thứ tám. Bìa giữ nguyên. Các con số huấn luyện và 38 câu hỏi phía dưới là nền tảng từ bản trước; khi hỏi về phần mới, dùng contract, mã và output 2.1 ở mục này.
+
+Trước khi demo, mở `/health` và `/api/capabilities` để đọc `system_version` và backend. Bằng chứng public 2.0 với cache của lần triển khai trước không tự chứng minh bản nâng cấp 2.1 đã được deploy. Chỉ nói đang chạy phiên bản nào theo response thực; Neo4j/FPT có hoạt động hay không còn phụ thuộc cấu hình và kết nối của môi trường đó.
+
+| Thành phần | Có dùng không, dùng ở đâu? | Chứng minh bằng gì? |
+|---|---|---|
+| Hệ đa agent | Có bảy vai trò; `app/agents/workflow.py: ReportWorkflow.run` điều phối `/api/report` | `messages`, `decision_trace`, `request_id`; dữ liệu sai dừng trước DL |
+| SQLite huấn luyện | Có, ở pipeline offline; `app/ml/datasets.py: load_prepared` đọc bảng prepared bằng SELECT | Notebook/benchmark và `results/benchmark/database-manifest.json`; không train trong request |
+| Deep Learning | Có bốn artifact phục vụ, một/cohort; `app/ml/predict.py: Predictor.predict` | `report.prediction` có task, score, threshold, model_version; không đếm bốn artifact thành bốn kiến trúc |
+| ML cổ điển | Logistic/RF/HGB dùng làm baseline benchmark | Tab So sánh mô hình và 24 hàng summary; API report đang phục vụ DL, không tự chọn RF vì điểm test đẹp hơn |
+| KB và RAG | Có; corpus/chunk có nguồn, `KnowledgeBase.retrieve` lấy evidence và `EvidenceGenerator.generate` tạo giải thích | `report.retrieved_evidence`, `sources`, ID/page/URL; generation cho biết FPT hay template |
+| Knowledge Graph | Có graph đã xây và kiểm local; `app/knowledge/retrieval.py: KnowledgeBase.graph_evidence` chọn Neo4j hoặc SQLite cache | Đọc `graph_backend` của request; snapshot tab Graph không chứng minh live Neo4j |
+| Truy xuất thích ứng | Có; `app/knowledge/adaptive.py: AdaptiveRetrieval.run`, bên trong KG/RAG của `/api/report` | `report.retrieval.attempts`, `reason`, `sufficient`, `selected_attempt`; không cần retry nếu đã đủ |
+| Kiểm duyệt sau sinh | Có; `app/knowledge/review.py: review_and_revise`, được `ExplanationAgent.run` gọi sau generator | `report.quality` và `explanation.review`: checks, initial_passed, attempts, revision_count, status |
+| Luật an toàn | Có; `app/agents/rules.py: check` | Request thuộc phạm vi cảnh báo/giới hạn trả safety_rule; KG có thể skipped; score không phủ quyết luật |
+| Monitoring | Có; workflow đo mỗi call rồi truyền vào `app/agents/contracts.py: Context.emit` | `duration_ms` là thời lượng call; `elapsed_ms` là mốc tích lũy từ đầu request; audit chỉ metadata |
+| RL | Có mô phỏng một bước; `app/agents/policy.py: PresentationPolicy.choose` dùng ở `/api/chat` | `policy-training.json` và trace chat; `feature_usage.rl_policy=False` trong `/api/report` |
+| Khai báo và thực dùng | Registry tại `app/capabilities.py`, công bố qua GET `/api/capabilities`; mỗi report có `feature_usage` | Tab **Công nghệ và kiểm chứng** cho phần đã triển khai; mục **6. Truy xuất và kiểm duyệt** của report cho đường đã chạy |
+
+Ba trạng thái phải phân biệt: **implemented** nghĩa có mã; **configured** nghĩa môi trường đã cấu hình phụ thuộc; **executed** nghĩa thành phần thực sự tham gia request. Có mã FPT không có nghĩa mọi câu trả lời dùng FPT. Một request safety không truy xuất vẫn là hành vi có chủ đích, không phải KG “biến mất”. Xem `feature_usage.fpt_called`, `final_generation`, `graph_backend`, `retrieval_attempts`, `review_revision` của đúng response.
+
+Ngân sách hiện tại: tối đa **ba lượt retrieval**, tối đa **một lần sửa extractive**, **không gọi thêm LLM để sửa**. Đây là giới hạn, không phải số lần bắt buộc phải chạy. Các message core vẫn là bảy vai trò; Coordinator có thể phát nhiều message. Đọc attempts để biết thực tế, không đếm số file/class rồi suy thành số agent.
+
+Các công nghệ **chưa triển khai**: LangGraph, checkpoint/resume cho workflow request, SSE streaming, bge-m3 hoặc neural embedding, learned Self-RAG. LSA32 là TruncatedSVD trên TF-IDF. Truy xuất thích ứng ở đây là chính sách xác định kiểm evidence và chọn lượt tiếp theo trong ngân sách; không phải mô hình tự học cách retrieval. “Resume” của benchmark lịch sử là chạy tiếp các lượt huấn luyện đã kiểm hash, không phải checkpoint/resume của agent.
+
+### Những câu hỏi dễ bị hỏi tiếp về bản 2.1
+
+**Em đã bổ sung gì trong mã, ngoài viết thêm báo cáo?**  
+Em thêm chính sách retrieval có lý do và ngân sách, gate kiểm output có thể sửa một lần hoặc từ chối, thời lượng thực của từng call, registry công nghệ và UI hiển thị những thành phần thực sự chạy. Em mở source symbol và response tương ứng để chứng minh, không chỉ chỉ vào một sơ đồ.
+
+**Agent đã tự chủ hoàn toàn chưa?**  
+Chưa. Outer workflow vẫn theo hợp đồng bảy vai trò; các quyết định tự động mới nằm trong miền giới hạn: chấp nhận evidence, thử truy xuất bổ sung, sửa bằng đoạn trích hoặc từ chối. Agent không tự đặt mục tiêu mở, thay model, học từ dữ liệu người dùng hoặc tự điều khiển điều trị.
+
+**Retry có luôn cải thiện câu trả lời không?**  
+Không. Retry có thể tốn thêm thời gian mà vẫn thiếu evidence; nếu đủ ngay thì dừng. Em xem attempts/reason/selected_attempt và kết quả trên cùng bộ câu hỏi, giữ cả ca từ chối và ca không cải thiện. Benchmark retrieval cũ đã cho lexical có thể tốt hơn hybrid ở một số metric; thêm chính sách không làm kết quả đó tự đổi thành thắng lợi.
+
+**Review kiểm được gì và có phải Critic hiểu y khoa không?**  
+Nó kiểm cấu trúc, citation khớp evidence và metadata, URL mới, một số mẫu chẩn đoán cá nhân/liều thuốc, disclaimer và mức giao token với nguồn. Ngưỡng lexical **35%** là heuristic kỹ thuật; không là confidence hay tỷ lệ câu đúng. Nó không chứng minh từng claim, con số hoặc quan hệ suy luận. Mẫu ngôn ngữ và negation cục bộ có thể bỏ sót hoặc bắt nhầm. Review thuộc Explanation, không phải một agent LLM độc lập xác thực y khoa.
+
+**Nếu draft bị loại thì có giấu việc LLM đã chạy không?**  
+Không. `quality.initial_passed` và attempts giữ verdict của draft và bản cuối; `revision_count` cho biết đã sửa. `original_generation`, `original_provider`, `original_model` và `provider_attempted` giữ đường đi gốc; output cuối có thể là template dù FPT đã được gọi. Review/audit không lưu lại nguyên văn draft bị loại. Sửa bằng evidence không phát sinh lần gọi LLM thứ hai.
+
+**Nếu không có FPT hoặc Neo4j thì còn chứng minh được gì?**  
+Vẫn kiểm được trọng số DL, luật, retrieval từ cache, contract, template và review với trạng thái rõ. Nhưng em không gọi đó là bằng chứng live FPT/Neo4j. Health cho cấu hình; response cho đường thực dùng; phép kiểm dịch vụ ngoài cần kết quả riêng theo phiên bản/ngày chạy.
+
+**Tại sao không dùng số LLM review đạt để kết luận an toàn?**  
+Vì các check là guard kỹ thuật hẹp. Một câu có citation và từ khóa trùng nguồn vẫn có thể diễn giải sai. Mọi output giữ phạm vi học tập, score chưa calibration cá nhân và yêu cầu human review khi có cờ; hệ thống không tự chẩn đoán, kê thuốc hoặc điều chỉnh liều.
+
+**Vì sao cần cả elapsed_ms và duration_ms?**  
+Elapsed là vị trí trên timeline; duration là thời lượng workflow đo quanh call cụ thể. Thời lượng KG bao gồm các lượt retrieval bên trong; thời lượng Explanation gồm generator và review. Không cộng các mốc elapsed để tính tổng. Tổng duration cũng không đại diện đầy đủ mọi overhead hoặc một benchmark latency nhiều request.
+
 ## Mở đầu trong khoảng một phút
 
 “Em xây dựng DiaCare theo kiến trúc Hybrid Multiagent System được cung cấp, gồm bảy agent cốt lõi. Nhánh Deep Learning lấy dữ liệu thật qua SQLite, so sánh sáu loại mô hình trên bốn cohort với ba seed, tổng 72 lượt. Nhánh tri thức ingest Web/PDF, có Neo4j, truy xuất RAG và FPT Cloud sinh giải thích có nguồn. Em giữ model CDC/Hospital đã có để đúng yêu cầu tái sử dụng; KG được xây mới vì trước đó em chưa có. Đây là nguyên mẫu học thuật, chưa dùng chẩn đoán hoặc kê đơn.”
@@ -145,12 +209,12 @@ Chưa external/temporal validation, calibration Việt, bộ bệnh nhân Việt
 
 ## Demo khoảng năm phút
 
-1. Mở Benchmark: chỉ bốn cohort, sáu model, mean/SD, khác task.
-2. Mở Report, chọn CDC, dùng feature mặc định minh họa; chỉ task/version/score/threshold/limitations.
-3. Hỏi về chế độ ăn hoặc xét nghiệm; mở evidence Vinmec/PDF và trace bảy agent.
-4. Mở Graph: đây là snapshot corpus; chọn relation xem nguồn. Giải thích live query Neo4j và cache khác nhau.
-5. Thử thiếu feature hoặc yêu cầu kê liều; chỉ dừng sớm/luật ưu tiên.
-6. Chỉ health và generation thực để biết FPT/Neo4j đang bật hay fallback; không tuyên bố live nếu chưa kiểm.
+1. **0:00-0:40 — Chốt phiên bản và công nghệ.** Mở `/health`, tab Công nghệ và kiểm chứng hoặc `/api/capabilities`. Chỉ system_version, source path/symbol và sự khác nhau giữa có mã, có cấu hình, đã chạy. Nếu đang mở public 2.0 thì chuyển sang môi trường 2.1 đã kiểm để demo phần mới.
+2. **0:40-1:20 — Dữ liệu và mô hình.** Mở Benchmark: bốn cohort, sáu loại, mean/SD trong từng task. Chuyển Report, chọn một cohort với feature mặc định minh họa. Nói rõ bốn serving DL khác bảng sáu loại benchmark; không dùng hồ sơ cá nhân thật.
+3. **1:20-2:25 — Một request phối hợp.** Chọn câu hỏi giáo dục từ bộ ca đã ghi cho bản cuối, tạo report. Chỉ task/version/score/threshold, rồi mở mục 6 để đọc retrieval.attempts và reason. Nếu đủ ngay một lượt thì dừng là đúng; dùng ca retry đã đo trong artifact khi cần minh họa, không ép retry chỉ để có nhiều bước.
+4. **2:25-3:15 — Evidence và backend.** Mở ID nguồn, document/page/URL và một relation có evidence. Đối chiếu graph_backend của request với health; nói rõ graph UI là snapshot, còn Neo4j/cache là backend thực dùng. Không diễn giải một nguồn giáo dục thành chẩn đoán cá nhân.
+5. **3:15-4:10 — Review và giới hạn.** Chỉ quality.initial_passed, checks, attempts và revision_count. Nếu output thường đạt ngay, dùng ca kiểm trong `tests/test_output_review.py` và artifact đã chạy để chứng minh đường sửa/refusal; không nói một draft LLM thật bị loại nếu chỉ là ca unit test. Chỉ feature_usage để biết FPT có thực sự được gọi; nhắc tối đa một sửa và không gọi LLM thêm.
+6. **4:10-5:00 — Dừng sớm và timing.** Trong `/docs`, gửi lại input minh họa nhưng bỏ một feature: chỉ HTTP lỗi/trace dừng trước DL. Thử yêu cầu thuộc giới hạn thuốc để xem safety_rule và KG skipped. Cuối cùng chỉ hai cột duration_ms/elapsed_ms, nguồn mã và ranh giới chưa xác thực lâm sàng.
 
 ## Khi chưa biết câu trả lời
 

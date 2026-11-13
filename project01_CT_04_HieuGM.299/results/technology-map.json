@@ -1,0 +1,508 @@
+{
+  "system_version": "hybrid-mas-2.1",
+  "exported_at": "2026-11-13T11:09:30.781064+07:00",
+  "features": [
+    {
+      "id": "sql_training",
+      "name": "Dữ liệu huấn luyện từ SQLite",
+      "agent": "DL Prediction",
+      "implemented": true,
+      "source": {
+        "path": "app/ml/datasets.py",
+        "symbol": "load_prepared",
+        "line": 123,
+        "sha256": "5638a44f56f3b501b86b3619c369153bdfd79290e6018bef82f5da642d271dc7"
+      },
+      "endpoint": "notebook / benchmark",
+      "scope": "SELECT prepared tables cấp dữ liệu fit; không train trong request.",
+      "demo": "Mở database-manifest.json"
+    },
+    {
+      "id": "deep_learning",
+      "name": "Deep Learning suy luận từ trọng số thật",
+      "agent": "DL Prediction",
+      "implemented": true,
+      "source": {
+        "path": "app/ml/predict.py",
+        "symbol": "Predictor.predict",
+        "line": 62,
+        "sha256": "de0d014692f3416ba997d477c2b9887aa70e911b3180e607ae3e9cf20d7cd6ea"
+      },
+      "endpoint": "/api/report",
+      "scope": "Bốn cohort, model/version/scaler riêng; score chưa hiệu chuẩn lâm sàng.",
+      "demo": "Bốn form model mặc định"
+    },
+    {
+      "id": "classical_ml",
+      "name": "ML cổ điển làm baseline",
+      "agent": "Thực nghiệm offline",
+      "implemented": true,
+      "source": {
+        "path": "app/ml/training.py",
+        "symbol": "train_one",
+        "line": 76,
+        "sha256": "3d2765eb460a1b2d55be921b08ee381dfd43a8e2d0388e8f2e27a2851df0e6e2"
+      },
+      "endpoint": "notebook / benchmark",
+      "scope": "Logistic, Random Forest, HGB trong 72 lượt; API report phục vụ model neural đã chọn.",
+      "demo": "Mở bảng benchmark từng cohort"
+    },
+    {
+      "id": "adaptive_retrieval",
+      "name": "Truy xuất bổ sung có giới hạn",
+      "agent": "KG/RAG",
+      "implemented": true,
+      "source": {
+        "path": "app/knowledge/adaptive.py",
+        "symbol": "AdaptiveRetrieval.run",
+        "line": 79,
+        "sha256": "49f76758fd227c1f324c328a603009a66870e2ec6617bea26e77e9855ef1c056"
+      },
+      "endpoint": "/api/report",
+      "scope": "Tối đa 3 lượt; sufficiency heuristic, không là xác suất đúng.",
+      "demo": "Mờ mắt là gì? → xem alias_rewrite"
+    },
+    {
+      "id": "graph",
+      "name": "Knowledge Graph có evidence",
+      "agent": "KG/RAG",
+      "implemented": true,
+      "source": {
+        "path": "app/knowledge/retrieval.py",
+        "symbol": "KnowledgeBase.graph_evidence",
+        "line": 50,
+        "sha256": "9c8c2ab10fcf1b38854b4487237974a64d7f9d910872c8dfce334d575e735168"
+      },
+      "endpoint": "/api/report",
+      "scope": "Neo4j khi cấu hình/kết nối; cache SQLite được công bố riêng.",
+      "demo": "Xem graph_backend và nguồn PDF"
+    },
+    {
+      "id": "rag",
+      "name": "Truy xuất văn bản để giải thích",
+      "agent": "KG/RAG + Explanation",
+      "implemented": true,
+      "source": {
+        "path": "app/knowledge/generation.py",
+        "symbol": "EvidenceGenerator.generate",
+        "line": 71,
+        "sha256": "580a16c458facf837ba7c206cbfb979706349a4cacb73a2b77b7dc2c0b006870"
+      },
+      "endpoint": "/api/report",
+      "scope": "Word/char TF-IDF, LSA32 và graph; FPT hoặc template có nhãn.",
+      "demo": "HbA1c phản ánh điều gì?"
+    },
+    {
+      "id": "output_review",
+      "name": "Kiểm duyệt và sửa câu trả lời",
+      "agent": "Explanation",
+      "implemented": true,
+      "source": {
+        "path": "app/knowledge/review.py",
+        "symbol": "review_and_revise",
+        "line": 143,
+        "sha256": "7e29bf74b5f388b99554b8c8a27f0f2ce8efc39e5e2abbfb24db1542b11bdb46"
+      },
+      "endpoint": "/api/report",
+      "scope": "Kiểm xác định; tối đa 1 sửa extractive; không chứng minh mọi claim y khoa.",
+      "demo": "Xem quality.attempts; chạy test_output_review.py"
+    },
+    {
+      "id": "rules",
+      "name": "Luật an toàn có ưu tiên",
+      "agent": "Rule-Based",
+      "implemented": true,
+      "source": {
+        "path": "app/agents/rules.py",
+        "symbol": "check",
+        "line": 14,
+        "sha256": "c495155ffee4863540bd1ce1b10c437f98f48afd3d919b07067c0cea976620e1"
+      },
+      "endpoint": "/api/report",
+      "scope": "Cảnh báo và giới hạn yêu cầu; không chẩn đoán hoặc kê đơn.",
+      "demo": "Mẹ tôi đang bất tỉnh / yêu cầu liều insulin"
+    },
+    {
+      "id": "coordination",
+      "name": "Điều phối thích ứng trong khung bảy vai trò",
+      "agent": "Coordinator",
+      "implemented": true,
+      "source": {
+        "path": "app/agents/workflow.py",
+        "symbol": "ReportWorkflow.run",
+        "line": 46,
+        "sha256": "7cd74ab12858a1bc967cd3332e31f9add83428c5cf42b785e9a10cee76f1b01e"
+      },
+      "endpoint": "/api/report",
+      "scope": "Outer workflow hữu hạn; retries/review nội bộ, có reason và budget.",
+      "demo": "Thiếu feature dừng trước DL"
+    },
+    {
+      "id": "monitoring",
+      "name": "Thời gian từng agent và audit metadata",
+      "agent": "Monitoring",
+      "implemented": true,
+      "source": {
+        "path": "app/agents/contracts.py",
+        "symbol": "Context.emit",
+        "line": 46,
+        "sha256": "956a4d1380cfce65983f06fb1d699caced468a22e5e5228a92d1abf8a1d5f149"
+      },
+      "endpoint": "/api/report",
+      "scope": "duration_ms đo call; elapsed_ms là mốc tích lũy; audit opt-in.",
+      "demo": "So hai cột thời gian trong trace"
+    },
+    {
+      "id": "rl_simulation",
+      "name": "Q-learning cách trình bày",
+      "agent": "Policy mở rộng",
+      "implemented": true,
+      "source": {
+        "path": "app/agents/policy.py",
+        "symbol": "PresentationPolicy.choose",
+        "line": 21,
+        "sha256": "4c87c4dc568b3254b3291685e77309f75889c47acd5b41b436f51c3f02c0fae2"
+      },
+      "endpoint": "/api/chat",
+      "scope": "Bandit mô phỏng gamma=0; không tham gia report hoặc điều trị.",
+      "demo": "Mở policy-training.json và trace chat"
+    },
+    {
+      "id": "neural_embedding",
+      "name": "Neural embedding",
+      "agent": "-",
+      "implemented": false,
+      "source": {
+        "path": "",
+        "symbol": ""
+      },
+      "endpoint": "-",
+      "scope": "Chưa triển khai; LSA trong bài không phải neural embedding.",
+      "demo": "-"
+    },
+    {
+      "id": "langgraph",
+      "name": "LangGraph / checkpoint / resume",
+      "agent": "-",
+      "implemented": false,
+      "source": {
+        "path": "",
+        "symbol": ""
+      },
+      "endpoint": "-",
+      "scope": "Chưa triển khai; điều phối hiện tại bằng Python có hợp đồng.",
+      "demo": "-"
+    },
+    {
+      "id": "streaming",
+      "name": "SSE streaming tiến trình",
+      "agent": "-",
+      "implemented": false,
+      "source": {
+        "path": "",
+        "symbol": ""
+      },
+      "endpoint": "-",
+      "scope": "Chưa triển khai; API trả report và trace sau khi hoàn tất.",
+      "demo": "-"
+    }
+  ],
+  "agent_contracts": [
+    {
+      "agent": "PatientDataAgent",
+      "reads": [
+        "dataset",
+        "features",
+        "glucose",
+        "unit"
+      ],
+      "writes": [
+        "validated",
+        "feature_count",
+        "feature_order"
+      ],
+      "tools": [
+        "validate_features"
+      ],
+      "decision": "allow_prediction / stop"
+    },
+    {
+      "agent": "DLPredictionAgent",
+      "reads": [
+        "validated features",
+        "serving artifacts"
+      ],
+      "writes": [
+        "prediction"
+      ],
+      "tools": [
+        "Predictor.predict"
+      ],
+      "decision": "inference / dependency_error"
+    },
+    {
+      "agent": "RuleBasedAgent",
+      "reads": [
+        "question",
+        "prediction",
+        "glucose",
+        "unit"
+      ],
+      "writes": [
+        "rules"
+      ],
+      "tools": [
+        "check"
+      ],
+      "decision": "allow_retrieval / safety_override"
+    },
+    {
+      "agent": "KGRAGAgent",
+      "reads": [
+        "question",
+        "public corpus",
+        "ontology"
+      ],
+      "writes": [
+        "evidence",
+        "retrieval"
+      ],
+      "tools": [
+        "AdaptiveRetrieval.run",
+        "KnowledgeBase.retrieve"
+      ],
+      "decision": "accept / rewrite / lexical retry / abstain"
+    },
+    {
+      "agent": "CoordinatorAgent",
+      "reads": [
+        "request",
+        "intermediate outputs"
+      ],
+      "writes": [
+        "request_id",
+        "status",
+        "messages",
+        "report"
+      ],
+      "tools": [
+        "ReportWorkflow.run"
+      ],
+      "decision": "schedule / aggregate / terminate"
+    },
+    {
+      "agent": "ExplanationAgent",
+      "reads": [
+        "question",
+        "prediction",
+        "rules",
+        "evidence"
+      ],
+      "writes": [
+        "explanation",
+        "quality"
+      ],
+      "tools": [
+        "EvidenceGenerator.generate",
+        "review_and_revise"
+      ],
+      "decision": "pass / extractive revision / abstain / safety_rule"
+    },
+    {
+      "agent": "MonitoringAgent",
+      "reads": [
+        "execution metadata"
+      ],
+      "writes": [
+        "audit"
+      ],
+      "tools": [
+        "MonitoringAgent.run"
+      ],
+      "decision": "metadata_only / opt-in write / degraded"
+    }
+  ],
+  "executed_examples": [
+    {
+      "case_id": "cdc-normal",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": true,
+        "retrieval_attempts": 1,
+        "retrieval_retry": false,
+        "output_review": true,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "template",
+        "graph_backend": "sqlite_cache",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "hospital-normal",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": true,
+        "retrieval_attempts": 1,
+        "retrieval_retry": false,
+        "output_review": true,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "template",
+        "graph_backend": "sqlite_cache",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "pima-normal",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": true,
+        "retrieval_attempts": 1,
+        "retrieval_retry": false,
+        "output_review": true,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "template",
+        "graph_backend": "sqlite_cache",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "early-normal",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": true,
+        "retrieval_attempts": 1,
+        "retrieval_retry": false,
+        "output_review": true,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "template",
+        "graph_backend": "sqlite_cache",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "missing-feature",
+      "feature_usage": {
+        "deep_learning": false,
+        "adaptive_retrieval": false,
+        "retrieval_attempts": 0,
+        "retrieval_retry": false,
+        "output_review": false,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "not_used",
+        "graph_backend": "not_used",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "emergency",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": false,
+        "retrieval_attempts": 0,
+        "retrieval_retry": false,
+        "output_review": false,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "safety_rule",
+        "graph_backend": "not_used",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "medication-boundary",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": false,
+        "retrieval_attempts": 0,
+        "retrieval_retry": false,
+        "output_review": false,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "safety_rule",
+        "graph_backend": "not_used",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "low-glucose",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": false,
+        "retrieval_attempts": 0,
+        "retrieval_retry": false,
+        "output_review": false,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "safety_rule",
+        "graph_backend": "not_used",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "adaptive-rewrite",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": true,
+        "retrieval_attempts": 2,
+        "retrieval_retry": true,
+        "output_review": true,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "template",
+        "graph_backend": "sqlite_cache",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    },
+    {
+      "case_id": "unrelated-query",
+      "feature_usage": {
+        "deep_learning": true,
+        "adaptive_retrieval": false,
+        "retrieval_attempts": 0,
+        "retrieval_retry": false,
+        "output_review": true,
+        "review_revision": 0,
+        "fpt_called": false,
+        "final_generation": "template",
+        "graph_backend": "not_used",
+        "rl_policy": false,
+        "neural_embedding": false,
+        "langgraph": false,
+        "streaming": false
+      }
+    }
+  ],
+  "note": "Source declarations prove implementation; per-request feature_usage proves execution. Configured/live backends require their own verification."
+}

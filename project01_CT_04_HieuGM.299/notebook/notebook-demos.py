@@ -5,12 +5,14 @@ from app.ml.predict import Predictor
 import ipywidgets as widgets
 
 system = Coordinator(ROOT)
-QUESTION = 'Giải thích HbA1c và theo dõi đái tháo đường?'
+QUESTION = 'HbA1c là gì?'
 DATASET = 'pima'
 FEATURES = {item['name']: item['default'] for item in SCHEMAS[DATASET]}
 response = system.report(DATASET, FEATURES, QUESTION)
 display(Markdown(response['report']['explanation']['answer']))
 display(pd.DataFrame(response['trace']))
+display(pd.DataFrame(response['decision_trace']))
+display(response['feature_usage'])
 display({key: response['report'][key] for key in response['report'] if key != 'retrieved_evidence'})
 
 question_input = widgets.Textarea(value=QUESTION, description='Câu hỏi:',
@@ -48,6 +50,8 @@ def on_report(_):
         else:
             display(result['error'])
         display(pd.DataFrame(result['trace']))
+        display(result['feature_usage'])
+        display(pd.DataFrame(result['decision_trace']))
 
 
 dataset_input.observe(render_features, names='value')

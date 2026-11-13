@@ -1,0 +1,31 @@
+{
+  "checked_at_vietnam": "2026-11-13T11:29:43.921888+07:00",
+  "workspace_id": "tea-cvkqd8t6ubrc73fsrun0",
+  "workspace_confirmed_by_user": true,
+  "service_id": "srv-dbm5dfgu01pc738ercq0",
+  "service_created": false,
+  "plan": "free",
+  "region": "singapore",
+  "repo": "https://github.com/HieuGM/PTHTTM_PTIT",
+  "branch": "main",
+  "commit": "bc67a979d74db02195ed2b9d927cb59d63c3c7fb",
+  "deploy_id": "dep-dbr926lg1s2s73fpu7qg",
+  "status": "live",
+  "system_version": "hybrid-mas-2.1",
+  "started_at_utc": "2026-11-13T04:24:58.387786Z",
+  "finished_at_utc": "2026-11-13T04:26:33.616038Z",
+  "finished_at_vietnam": "13/11/2026 11:26:33",
+  "url": "https://diacare-mas-hieugm299.onrender.com",
+  "dashboard_url": "https://dashboard.render.com/web/srv-dbm5dfgu01pc738ercq0",
+  "public_checks": {
+    "passed": 39,
+    "total": 39,
+    "evidence": "render-agent-upgrade-http.json"
+  },
+  "graph_backend": "sqlite_cache",
+  "fpt_actual_public_generation": true,
+  "retry_actual_public_calls": 2,
+  "secrets_in_evidence": false,
+  "trigger": "Manual API after pushed public Git URL produced no automatic deploy.",
+  "scope": "Existing free service only; same serving artifacts; no new paid resources or credential changes."
+}

@@ -1,0 +1,40 @@
+{
+  "executed_at": "2026-11-13T11:08:28.859144+07:00",
+  "origin": "http://127.0.0.1:8015",
+  "system_version": "hybrid-mas-2.1",
+  "passed": 18,
+  "checks": [
+    "six navigation tabs",
+    "prediction displayed",
+    "eight core messages",
+    "duration distinct from elapsed",
+    "genuine retry visible",
+    "output review visible",
+    "actual feature usage visible",
+    "capability system version",
+    "fourteen truthful capability cards",
+    "source symbol shown",
+    "tab report",
+    "tab chat",
+    "tab benchmark",
+    "tab graph",
+    "tab knowledge",
+    "tab technology",
+    "mobile no horizontal overflow",
+    "no JavaScript exception"
+  ],
+  "page_errors": [],
+  "generation": "template",
+  "graph_backend": "sqlite_cache",
+  "image_sha256": {
+    "ui-report.png": "73e56b2880a69274fb28e96fa458c64259c7f825be7f2b5a529977cafc025b83",
+    "ui-explanation.png": "3380b416d5371c75d481f8f0f311b64ae914b757094a90918120d5f2d7786ccb",
+    "ui-trace.png": "d1062e188f6bb3000fc4f23ce84fb72e4ff2d7809534b69e6eff68b37a3a1e13",
+    "ui-controls.png": "61eab1e961e77a25b1fa47be98db256d0e2ef87428a5cf03f350080149de593f",
+    "ui-technology.png": "dfda7f64b277eab9933c4810f8519919902ffbaa0aa3b6558675a659a5cac343"
+  },
+  "scope": "Actual local browser, natural element screenshots, synthetic schema defaults; no DOM replacement or mocked response.",
+  "trace_recaptured_at": "2026-11-13T11:35:11.986617+07:00",
+  "trace_device_scale_factor": 2,
+  "trace_scope": "Natural high-DPI element recapture of same Pima/HbA1c case to improve printed readability."
+}

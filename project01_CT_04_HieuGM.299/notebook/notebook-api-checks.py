@@ -15,10 +15,16 @@ def verified(name, condition):
 
 with TestClient(app) as client:
     for path in ('/', '/health', '/api/catalog', '/api/knowledge', '/api/results',
-                 '/api/graph', '/api/benchmark', '/static/style.css', '/static/app.js', '/docs'):
+                 '/api/graph', '/api/benchmark', '/api/capabilities', '/static/style.css', '/static/app.js',
+                 '/static/upgrade.js', '/docs'):
         verified(f'GET {path}', client.get(path).status_code == 200)
     verified('4 cohort', len(client.get('/api/catalog').json()['datasets']) == 4)
     verified('7 agent types', len(client.get('/api/catalog').json()['core_agents']) == 7)
+    feature_catalog = client.get('/api/capabilities').json()
+    verified('capabilities current version', feature_catalog['system_version'] == VERSION)
+    verified('capabilities usage distinction', bool(feature_catalog['usage_note']))
+    verified('capabilities documented code locations', all(item['source']['path'] and item['source']['symbol']
+        for item in feature_catalog['features'] if item['implemented']))
     known = set(system.kb.source_index)
     for dataset, specs in SCHEMAS.items():
         features = {s['name']: s['default'] for s in specs}
@@ -36,6 +42,14 @@ with TestClient(app) as client:
         verified(f'{dataset}: seven core agents', len(names) == 7)
         verified(f'{dataset}: correlation', all(m['request_id'] == report['request_id'] for m in report['messages']))
         verified(f'{dataset}: no medical decision', not report['report']['clinical_use'])
+        verified(f'{dataset}: duration per call', all('duration_ms' in m and m['duration_ms'] >= 0
+            for m in report['messages']))
+        verified(f'{dataset}: actual bounded retrieval', report['report']['retrieval']['sufficient'] and
+            len(report['report']['retrieval']['attempts']) == 1)
+        verified(f'{dataset}: reviewed output', report['report']['quality']['passed'] and
+            report['report']['quality']['revision_count'] <= 1)
+        verified(f'{dataset}: feature usage', report['feature_usage']['deep_learning'] and
+            report['feature_usage']['output_review'])
         verified(f'{dataset}: real provenance', all(s['id'] in known for s in report['report']['sources']))
         invalid = dict(features)
         invalid.pop(specs[0]['name'])
@@ -60,6 +74,22 @@ with TestClient(app) as client:
         verified(f'safety {level}', reply['status'] == level)
         verified(f'safety skips retrieval {level}', next(m for m in reply['messages']
             if m['agent'] == 'KGRAGAgent')['status'] == 'skipped')
+        verified(f'safety review {level}', reply['report']['quality']['status'] == 'safety_override')
+        verified(f'safety no retrieval calls {level}', reply['report']['retrieval']['attempts'] == [])
+        verified(f'safety no provider calls {level}', not reply['feature_usage']['fpt_called'])
+    for name, question in [('rewrite', 'Mờ mắt là gì?'),
+                           ('abstain', 'Ai vô địch bóng đá thế giới?')]:
+        result = client.post('/api/report', json={'dataset':'pima',
+            'features':{s['name']:s['default'] for s in SCHEMAS['pima']}, 'question':question})
+        verified(name+': report HTTP200', result.status_code == 200)
+        result = result.json()
+        if name == 'rewrite':
+            verified('API rewrite actual retry', result['feature_usage']['retrieval_retry'] and
+                1 < len(result['report']['retrieval']['attempts']) <= 3)
+        else:
+            verified('API unrelated abstains', not result['report']['retrieval']['sufficient'] and
+                result['report']['retrieved_evidence'] == [] and
+                result['report']['explanation']['status'] == 'insufficient_evidence')
     verified('no raw values echoed', 'input' not in client.post('/api/report',
         json={'dataset':'pima','features':{},'glucose':True}).text)
 
@@ -69,6 +99,7 @@ verified('legacy artifact preserved', all((ROOT / path).read_bytes() == data
     for path, data in LEGACY_BYTES.items()))
 summary = {'run_mode':RUN_MODE, 'passed':len(checks), 'checks':checks,
            'benchmark_runs':benchmark_result['run_count'],
+           'upgrade_checks_passed':len(upgrade_checks), 'system_version':VERSION,
            'note':'Real SQL cohorts, trained benchmarks, reused serving weights; no simulated live API evidence.'}
 (ROOT/'results/notebook-validation.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
 display(summary)

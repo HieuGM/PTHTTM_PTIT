@@ -40,6 +40,24 @@ checks = {
     'no_replacement_glyph': '\ufffd' not in text and '\u25a0' not in text,
     'identifiers_preserved': not any(x in text for x in ['Neo 4 j', 'B 23 DCCN', 'project 01_CT_', 'srv-dbm 5', '6 eb 79']),
     'no_placeholders': '<!-- BENCHMARK_TABLES -->' not in text and 'TODO' not in text}
+
+with pymupdf.open(HERE/'assets/original-cover.pdf') as original:
+    before=original[0].get_pixmap(matrix=pymupdf.Matrix(1.3,1.3))
+    after=doc[0].get_pixmap(matrix=pymupdf.Matrix(1.3,1.3))
+    checks['original_cover_pixels_unchanged']=(before.width, before.height, before.samples)==(
+        after.width, after.height, after.samples)
+checks.update({
+    'formal_mas_and_interfaces': all(x in normalized for x in ['M = (A, S, O, C, F)', 'Đầu vào', 'Đầu ra']),
+    'feature_order_documented': all(x in text for x in ['HeartDiseaseorAttack', 'AgeGroup', 'DiabetesPedigreeFunction', 'partial paresis']),
+    'timing_semantics_clear': 'tích lũy' in text and 'không cộng' in normalized,
+    'real_api_walkthrough': all(x in text for x in ['pima-normal', 'missing-feature', 'agent-upgrade-cases.json']),
+    'serving_error_analysis': all(x in text for x in ['23758', '10340', '0,6818', 'confusion']),
+    'resubmission_scope': all(x in text for x in ['13/11/2026', 'notebook-agent-upgrade-verification.json', '7.10. Kết luận']),
+    'no_sample_student': all(x not in text for x in ['Văn Thị Mai Linh', 'B23DCCN489']),
+    'bounded_real_upgrade': all(x in text for x in ['adaptive-evidence-2.1.1','review_and_revise','duration_ms','feature_usage','156']),
+    'development_regression_retained': 'Q21' in text and 'post-hoc' in text,
+    'screenshot_assets_present': all((HERE/'figures'/x).is_file() for x in
+        ['ui-report.png','ui-trace.png','ui-explanation.png','workflow-sequence.png','agent-controls.png','ui-controls.png','ui-technology.png'])})
 overflow=[]
 for index,page in enumerate(doc):
     for word in page.get_text('words'):

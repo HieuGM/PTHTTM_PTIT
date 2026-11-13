@@ -9,15 +9,15 @@ Ba mô hình cổ điển cung cấp baseline tuyến tính và phi tuyến. Ba 
 | logistic | Logistic Regression, C=1, max_iter=1000 |
 | random_forest | 100 cây, max_depth=12, min_samples_leaf=5, n_jobs=2 |
 | hist_gradient_boosting | 100 iteration, max_depth=6, early_stopping=False |
-| mlp 2 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 1 logit |
-| mlp 3 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 16 ReLU → 1 logit |
+| mlp2 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 1 logit |
+| mlp3 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 16 ReLU → 1 logit |
 | resmlp | Input projection 32, hai residual block gồm hai linear 32 mỗi block, output 1 |
 
 Mạng trả logit khi học, dùng BCEWithLogitsLoss; suy luận áp sigmoid. Residual block có shortcut cộng đầu vào với phép biến đổi rồi ReLU. Cả ba là mạng nhiều tầng ẩn; không dùng ba seed để tuyên bố có chín kiến trúc DL.
 
 ## 4.2. Ngân sách huấn luyện và lựa chọn
 
-Adam learning_rate 0.001, weight_decay1e-5. CDC/Hospital tối đa 25 epoch, batch 2048; Pima/Early tối đa 100 epoch, batch 32. Patience 10 theo validation ROC-AUC, chỉ cập nhật checkpoint khi AUC tăng hơn1e-5. Sau nạp checkpoint tốt nhất, chọn threshold đạt F 1 cao nhất trên validation rồi mới tính score/test metric.
+Adam learning_rate 0.001, weight_decay1e-5. CDC/Hospital tối đa 25 epoch, batch 2048; Pima/Early tối đa 100 epoch, batch 32. Patience 10 theo validation ROC-AUC, chỉ cập nhật checkpoint khi AUC tăng hơn1e-5. Sau nạp checkpoint tốt nhất, chọn threshold đạt F1 cao nhất trên validation rồi mới tính score/test metric.
 
 Ba mạng được học từ đầu trong benchmark riêng. Hai model phục vụ CDC/Hospital đã có từ phiên bản trước vẫn được tái sử dụng, không bị thay bằng model mới có test đẹp hơn. Pima/Early là cohort mới nên chọn DL phục vụ theo validation AUC trong chín run neural/cohort; không dùng test chọn.
 
@@ -115,10 +115,59 @@ Early: Random Forest có ROC-AUC trung bình 0,9615, nhưng test chỉ 38 dòng.
 
 72 run được thực thi thật trên CPU Linux với Python 3.12.16, torch 2.15.0+cpu, NumPy 2.5.4, pandas 3.1.1, scikit-learn 1.9.1. Tổng các thời gian fit+evaluate ghi theo run là 145,588 giây. Đây không gồm mọi thời gian tải nguồn, build container và kiểm thử.
 
-Lượt đầu đã hoàn thành 54 run nhưng bước copy artifact Pima gặp lỗi cập nhật timestamp trên Windows bind-mount. Sửa copy 2 thành copyfile chỉ sao nội dung, xác minh hash/nhãn 54 run, rồi chạy tiếp 18 run Early. Giá trị 23,449 giây của invocation resume không phải thời gian train 72 run. execution-history.json lưu rõ hai pha.
+Lượt đầu đã hoàn thành 54 run nhưng bước copy artifact Pima gặp lỗi cập nhật timestamp trên Windows bind-mount. Sửa copy2 thành copyfile chỉ sao nội dung, xác minh hash/nhãn 54 run, rồi chạy tiếp 18 run Early. Giá trị 23,449 giây của invocation resume không phải thời gian train 72 run. execution-history.json lưu rõ hai pha.
 
 ## 4.10. Artifact và khả năng tái lập
 
 Mỗi run giữ config, seed, checkpoint/history khi phù hợp, SQL source/hash, threshold, metric và score validation/test. Neural weights lưu state_dict; logistic giữ coefficient/intercept trong NPZ. Cây RF/HGB không đóng gói để tránh artifact lớn; cần refit bằng cùng config/seed/data để tái tạo model, còn score test đã lưu để tính lại metric.
 
 Các hình so sánh biểu diễn metric theo cohort. Báo cáo không tạo leaderboard gộp AUC của bốn nhiệm vụ. Đánh giá thêm bootstrap, calibration, temporal/external validation và kiểm định khác biệt là hướng phát triển, chưa được tuyên bố đã làm.
+
+## 4.11. Từ vector đầu vào đến nhãn nghiên cứu
+
+Với mỗi feature, giá trị thiếu được xử lý theo giao thức của cohort, sau đó chuẩn hóa bằng trung bình và độ lệch chuẩn train. Một lớp ẩn thực hiện biến đổi affine rồi phi tuyến; dropout chỉ hoạt động khi train. Gọi z là logit đầu ra, score s là sigmoid và t là ngưỡng đã chọn trên validation:
+
+$$h^{(l)}=\mathrm{ReLU}(W^{(l)}h^{(l-1)}+b^{(l)})$$
+
+$$s=\sigma(z)=\frac{1}{1+e^{-z}},\qquad \hat y=\mathbf{1}[s\geq t]$$
+
+Khi train, BCEWithLogitsLoss nhận trực tiếp logit để tính binary cross-entropy ổn định số học. Công thức dưới là dạng tương đương theo score, không phải một phép sigmoid bổ sung trước hàm loss trong mã:
+
+$$L=-\frac{1}{n}\sum_{i=1}^{n}\left[y_i\log s_i+(1-y_i)\log(1-s_i)\right]$$
+
+Trong app/ml/network.py, MLP2 và MLP3 khác nhau ở một tầng 16 chiều; ResMLP cộng shortcut tại các block 32 chiều. app/ml/training.py thực hiện lựa checkpoint theo validation ROC-AUC; app/ml/benchmark.py điều phối ma trận và lưu artifact. Ngưỡng phân lớp được chọn sau bước đó bằng validation F1. Hai phép chọn có mục đích khác nhau: AUC đánh giá thứ hạng, còn F1 phụ thuộc một ngưỡng. Test chỉ được dùng ở bước đánh giá cuối.
+
+## 4.12. Đọc confusion matrix và sai số
+
+Quy ước hàng là nhãn thật 0/1, cột là nhãn dự đoán 0/1: TN và FP ở hàng đầu, FN và TP ở hàng sau. Precision trả lời có bao nhiêu nhãn dự đoán dương là đúng; sensitivity đo tỷ lệ nhãn thật dương được phát hiện; specificity đo tỷ lệ nhãn thật âm được giữ đúng. Công thức và định nghĩa chỉ số đối chiếu tài liệu scikit-learn trong danh mục tham khảo.
+
+$$\mathrm{Precision}=\frac{TP}{TP+FP},\qquad \mathrm{Sensitivity}=\frac{TP}{TP+FN}$$
+
+$$\mathrm{Specificity}=\frac{TN}{TN+FP},\qquad F_1=\frac{2TP}{2TP+FP+FN}$$
+
+<!-- SERVING_ANALYSIS_START -->
+
+Bảng dưới lấy đúng bốn artifact phục vụ; mỗi hàng là một run, không là mean ba seed.
+
+| Cohort / model | TN / FP / FN / TP | Sensitivity | Specificity | F1 |
+|---|---|---:|---:|---:|
+| cdc / MLP3 legacy | 23758 / 5164 / 1827 / 3203 | 0,6368 | 0,8215 | 0,4782 |
+| hospital / MLP3 legacy | 10340 / 3110 / 990 / 685 | 0,4090 | 0,7688 | 0,2505 |
+| pima / mlp2 seed 42 | 58 / 17 / 11 / 30 | 0,7317 | 0,7733 | 0,6818 |
+| early / resmlp seed 42 | 8 / 4 / 1 / 25 | 0,9615 | 0,6667 | 0,9091 |
+
+![Confusion matrix của bốn serving model; số đếm từ artifact đã lưu](figures/serving-confusion.png)
+
+Nguồn: results/cdc-training.json, hospital-training.json và hai record benchmark pima/mlp2-seed42.json, early/resmlp-seed42.json. CDC/Hospital là kết quả legacy; không thay bằng run benchmark khác.
+
+<!-- SERVING_ANALYSIS_END -->
+
+Ví dụ Pima MLP2 seed 42 là artifact được chọn để phục vụ bằng validation, không phải run có test cao nhất. Test gồm 75 nhãn âm và 41 nhãn dương: TN=58, FP=17, FN=11, TP=30. Vì vậy precision=30/47=0,6383, sensitivity=30/41=0,7317, specificity=58/75=0,7733 và F1=60/88=0,6818. Mười một nhãn dương bị bỏ sót cho thấy vì sao không thể dùng output như một phép sàng lọc đã được thẩm định.
+
+Accuracy của run này là 88/116=0,7586; baseline luôn dự đoán âm có accuracy 75/116=0,6466 nhưng sensitivity bằng 0. So sánh này giúp diễn giải mất cân bằng lớp, không chứng minh tính hữu ích lâm sàng. Dịch ngưỡng sẽ thay FP/FN; lựa ngưỡng bằng dữ liệu test sau khi xem ma trận sẽ làm mất tính độc lập của đánh giá.
+
+## 4.13. Kết luận thực nghiệm có điều kiện
+
+Trên CDC/Hospital, thay đổi độ sâu chỉ tạo chênh lệch AUC nhỏ trong giao thức hiện tại. Trên Pima, logistic đơn giản có kết quả cạnh tranh với DL. Trên Early, mạng neural biến thiên rõ giữa seed trong khi tập test rất nhỏ. Vì thế giả thuyết “DL luôn tốt hơn” không được thực nghiệm này xác nhận.
+
+Ba seed cùng split chủ yếu kiểm tra độ nhạy khởi tạo hoặc ngẫu nhiên thuật toán. Chúng không đo được mức thay đổi khi lấy một mẫu bệnh nhân khác, đổi bệnh viện hoặc đổi thời điểm. Bảng test mean/SD dùng so sánh kiến trúc; bảng serving dùng diễn giải đúng model API thực sự nạp. Hai bảng có mục đích khác nhau và không được tráo số liệu cho nhau.

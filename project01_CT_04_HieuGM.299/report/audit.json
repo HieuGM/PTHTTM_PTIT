@@ -1,7 +1,7 @@
 {
   "pdf": "project01_CT_04_HieuGM.299.pdf",
-  "pages": 26,
-  "sha256": "e48e1efe2658328393d01cf3f931b56608fcc3f0e104b8a9a5ed29651195e034",
+  "pages": 49,
+  "sha256": "0878176608b7e010fc438fdb742d008565a2543c993529054d259eb106443bbf",
   "checks": {
     "nonempty_all_pages": true,
     "correct_student": true,
@@ -26,63 +26,68 @@
     "no_replacement_glyph": true,
     "identifiers_preserved": true,
     "no_placeholders": true,
+    "original_cover_pixels_unchanged": true,
+    "formal_mas_and_interfaces": true,
+    "feature_order_documented": true,
+    "timing_semantics_clear": true,
+    "real_api_walkthrough": true,
+    "serving_error_analysis": true,
+    "resubmission_scope": true,
+    "no_sample_student": true,
+    "bounded_real_upgrade": true,
+    "development_regression_retained": true,
+    "screenshot_assets_present": true,
     "no_text_outside_page": true
   },
-  "passed": 24,
-  "total": 24,
+  "passed": 35,
+  "total": 35,
   "overflow": [],
   "chapter_outline": [
     [
       1,
       "CHƯƠNG 1. BÀI TOÁN VÀ PHẠM VI THỰC HIỆN",
-      4
+      5
     ],
     [
       1,
       "CHƯƠNG 2. KIẾN TRÚC HYBRID MULTIAGENT SYSTEM",
-      6
-    ],
-    [
-      1,
-      "CHƯƠNG 3. BỐN COHORT VÀ CƠ SỞ DỮ LIỆU HUẤN LUYỆN",
       8
     ],
     [
       1,
+      "CHƯƠNG 3. BỐN COHORT VÀ CƠ SỞ DỮ LIỆU HUẤN LUYỆN",
+      15
+    ],
+    [
+      1,
       "CHƯƠNG 4. DEEP LEARNING VÀ BENCHMARK SO SÁNH",
-      10
+      18
     ],
     [
       1,
       "CHƯƠNG 5. KNOWLEDGE GRAPH, WEB/PDF VÀ RAG",
-      16
+      26
     ],
     [
       1,
       "CHƯƠNG 6. LUẬT, BÁO CÁO CÓ CẤU TRÚC VÀ RL MÔ PHỎNG",
-      19
+      32
     ],
     [
       1,
       "CHƯƠNG 7. TÁI LẬP, NOTEBOOK, KIỂM THỬ VÀ TRIỂN KHAI",
-      21
+      37
     ],
     [
       1,
       "PHỤ LỤC. HỒ SƠ KIỂM CHỨNG VÀ ĐỐI CHIẾU YÊU CẦU",
-      24
+      46
     ],
     [
       1,
       "TÀI LIỆU THAM KHẢO",
-      26
+      49
     ]
   ],
-  "visual_review": {
-    "status": "passed",
-    "pages_reviewed": 26,
-    "method": "All-page contact sheets plus full-size cover/architecture/benchmark/knowledge/deployment/reference pages; changed final reference page re-inspected.",
-    "render_directory": "D:/CodexTaskCache/diacare-hieugm299-261105/upgrade-261106/report-preview-final-release",
-    "defects_remaining": []
-  }
+  "visual_review": "Separate all-page PNG inspection required; semantic checks do not prove layout."
 }

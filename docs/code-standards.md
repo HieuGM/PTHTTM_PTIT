@@ -37,3 +37,8 @@ Contract mỗi agent phải giữ request_id, status, payload, evidence, version
 Dữ liệu train phải được cấp từ SELECT trên prepared SQLite; imputer/scaler fit train, checkpoint/threshold chọn validation, không test chọn serving. Hash bảo toàn artifact legacy. Mọi công bố seed/model/dataset phải phân biệt loại architecture, run và serving artifact. Không gộp AUC khác nhiệm vụ.
 
 Corpus phân biệt downloaded và reference-only, MENTIONS và quan hệ chuyên môn có nguồn. Citation validation không là medical truth validation; read session không thay RBAC. Secret chỉ ở environment/.env ignore, raw database có ID không vào Git/image/ZIP. Notebook độc lập chứa mã trực tiếp, output riêng và không persist key.
+
+
+## Hợp đồng nâng cấp Project01 2.1
+
+Giữ tương thích AgentResult cũ; duration_ms riêng khác elapsed_ms tích lũy. Retry/revision nội bộ không tăng sốagentcore. Candidatekhôngqua kiểm cuối không được publish; giữ verdictmetadata nhưng không lưurejecteddraft vàoaudit. Nêu rõ heuristic lexical/provenance không là xác thựcykhoa. Registry côngnghệ phải trỏ tới hàm/file có thật vàphân biệt implemented/configured/executed. Chỉ train trong pipelineoffline; không đổi72metriclịch sử để trangtrí nâng cấp. Notebookphải nhúngsourcefinal vàchạyfreshkernel trướcđónggói.

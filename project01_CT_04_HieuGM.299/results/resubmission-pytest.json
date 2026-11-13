@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "verified_at_vietnam": "2026-11-12T23:02:09.660924+07:00",
+  "command": "tmp/project01-qa-env/Scripts/python.exe -m pytest tests -q",
+  "cwd": "C:\\Users\\Laptop\\OneDrive\\Laptop\\Ki 1 - Nam 4\\HTTM\\project01_CT_04_HieuGM.299",
+  "exit_code": 0,
+  "passed": 102,
+  "failed": 0,
+  "warnings": 1,
+  "pytest_reported_seconds": 15.98,
+  "environment": {
+    "python": "3.11.15",
+    "torch": "2.11.0+cpu",
+    "fastapi": "0.162.5",
+    "neo4j": "6.4.1",
+    "pytest": "9.0.3",
+    "numpy": "2.4.4"
+  },
+  "external_backends": {
+    "FPT_API_KEY": "cleared by tests/conftest.py",
+    "NEO4J_URI": "cleared by tests/conftest.py",
+    "paid_provider_or_live_neo4j_verified": false
+  },
+  "helper_compile": {
+    "status": "passed",
+    "files": [
+      "scripts/capture-report-cases.py",
+      "report/prepare-analysis.py",
+      "report/prepare-report.py",
+      "report/build-pdf.py"
+    ]
+  },
+  "warning": "StarletteDeprecationWarning: Using httpx with starlette.testclient is deprecated; install httpx2 instead.",
+  "limitations": [
+    "These tests verify local artifact/template/cache paths and failure handling, not live FPT or Neo4j production.",
+    "No training or notebook rerun was performed.",
+    "Tests use Torch 2.11 CPU whereas recorded benchmark environment was Torch 2.15 CPU; this run confirms local suite compatibility, not bitwise retraining parity."
+  ]
+}

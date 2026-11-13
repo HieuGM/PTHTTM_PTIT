@@ -1,0 +1,606 @@
+{
+  "status": "passed",
+  "verified_at_vietnam": "2026-11-12T22:58:13.292762+07:00",
+  "scope": "Independent recomputation from recorded NPZ labels/scores, JSON metrics and metadata/hashes. No training, external requests, environment secret reads, Torch inference, or notebook re-execution.",
+  "environment": {
+    "python": "3.12.9",
+    "numpy": "2.3.4",
+    "scikit_learn": "1.7.2"
+  },
+  "benchmark": {
+    "runs_checked": 72,
+    "datasets_checked": 4,
+    "model_types_checked": 6,
+    "unique_dataset_model_groups": 24,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "metric_sets_recomputed": 144,
+    "prediction_hashes_checked": 72,
+    "individual_json_matches": 72,
+    "validation_thresholds_reselected": 72,
+    "neural_weight_hashes_checked": 36,
+    "best_epoch_histories_checked": 36,
+    "summary_mean_sample_sd_groups_checked": 24,
+    "total_fit_evaluate_seconds": 145.58824072100032,
+    "run_checks": [
+      {
+        "dataset": "cdc",
+        "model_id": "logistic",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "logistic",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "logistic",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "random_forest",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "random_forest",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "random_forest",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "hist_gradient_boosting",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "hist_gradient_boosting",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "hist_gradient_boosting",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp2",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp2",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp2",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp3",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp3",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp3",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "resmlp",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "resmlp",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "resmlp",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "logistic",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "logistic",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "logistic",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "random_forest",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "random_forest",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "random_forest",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "hist_gradient_boosting",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "hist_gradient_boosting",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "hist_gradient_boosting",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp2",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp2",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp2",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp3",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp3",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp3",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "resmlp",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "resmlp",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "resmlp",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "logistic",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "logistic",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "logistic",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "random_forest",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "random_forest",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "random_forest",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "hist_gradient_boosting",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "hist_gradient_boosting",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "hist_gradient_boosting",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp2",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp2",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp2",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp3",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp3",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp3",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "resmlp",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "resmlp",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "resmlp",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "logistic",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "logistic",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "logistic",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "random_forest",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "random_forest",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "random_forest",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "hist_gradient_boosting",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "hist_gradient_boosting",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "hist_gradient_boosting",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp2",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp2",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp2",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp3",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp3",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp3",
+        "seed": 44,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "resmlp",
+        "seed": 42,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "resmlp",
+        "seed": 43,
+        "status": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "resmlp",
+        "seed": 44,
+        "status": "passed"
+      }
+    ]
+  },
+  "serving": {
+    "pima": {
+      "model_id": "mlp2",
+      "seed": 42,
+      "selection": "highest validation ROC-AUC among 9 neural runs; test not used",
+      "test": {
+        "n": 116,
+        "positive": 41,
+        "prevalence": 0.35344827586206895,
+        "threshold": 0.3690996766090393,
+        "roc_auc": 0.8286178861788618,
+        "average_precision": 0.7263822946380973,
+        "f1": 0.6818181818181818,
+        "precision": 0.6382978723404256,
+        "sensitivity": 0.7317073170731707,
+        "specificity": 0.7733333333333333,
+        "accuracy": 0.7586206896551724,
+        "brier": 0.18938179314136505,
+        "confusion_matrix": [
+          [
+            58,
+            17
+          ],
+          [
+            11,
+            30
+          ]
+        ],
+        "confusion_order": "rows=true0/1; columns=predicted0/1"
+      }
+    },
+    "early": {
+      "model_id": "resmlp",
+      "seed": 42,
+      "selection": "highest validation ROC-AUC among 9 neural runs; test not used",
+      "test": {
+        "n": 38,
+        "positive": 26,
+        "prevalence": 0.6842105263157895,
+        "threshold": 0.315549373626709,
+        "roc_auc": 0.951923076923077,
+        "average_precision": 0.9822367803137032,
+        "f1": 0.9090909090909091,
+        "precision": 0.8620689655172413,
+        "sensitivity": 0.9615384615384616,
+        "specificity": 0.6666666666666666,
+        "accuracy": 0.868421052631579,
+        "brier": 0.08342825621366501,
+        "confusion_matrix": [
+          [
+            8,
+            4
+          ],
+          [
+            1,
+            25
+          ]
+        ],
+        "confusion_order": "rows=true0/1; columns=predicted0/1"
+      }
+    },
+    "cdc": {
+      "model_id": "legacy MLP 64-32-16",
+      "seed": 42,
+      "selection": "preserved legacy serving artifact; legacy manifest hashes match",
+      "test": {
+        "n": 33952,
+        "positive": 5030,
+        "prevalence": 0.1481503298774741,
+        "threshold": 0.2339537888765335,
+        "roc_auc": 0.8274255854816472,
+        "average_precision": 0.4393419699257328,
+        "f1": 0.4781667537508397,
+        "precision": 0.3828134337277399,
+        "sensitivity": 0.636779324055666,
+        "specificity": 0.8214507986999516,
+        "accuracy": 0.7940916588124411,
+        "brier": 0.1016601026058197,
+        "confusion_matrix": [
+          [
+            23758,
+            5164
+          ],
+          [
+            1827,
+            3203
+          ]
+        ],
+        "confusion_order": "rows=true0/1; columns=predicted0/1"
+      }
+    },
+    "hospital": {
+      "model_id": "legacy MLP 64-32-16",
+      "seed": 42,
+      "selection": "preserved legacy serving artifact; legacy manifest hashes match",
+      "test": {
+        "n": 15125,
+        "positive": 1675,
+        "prevalence": 0.11074380165289256,
+        "threshold": 0.13450394570827484,
+        "roc_auc": 0.6334034067580314,
+        "average_precision": 0.1869223892788274,
+        "f1": 0.25045703839122485,
+        "precision": 0.18050065876152832,
+        "sensitivity": 0.408955223880597,
+        "specificity": 0.7687732342007435,
+        "accuracy": 0.7289256198347107,
+        "brier": 0.095820352435112,
+        "confusion_matrix": [
+          [
+            10340,
+            3110
+          ],
+          [
+            990,
+            685
+          ]
+        ],
+        "confusion_order": "rows=true0/1; columns=predicted0/1"
+      }
+    }
+  },
+  "legacy_file_hashes_checked": 11,
+  "notebook": {
+    "json_valid": true,
+    "cells": 61,
+    "code_cells": 51,
+    "inline_module_cells": 25,
+    "syntax_checked": 51,
+    "execution_counts": "1 through 51",
+    "stored_error_outputs": 0,
+    "png_outputs": 4,
+    "sha256": "dcace0e4b14563c53da92f1368616a538c5f2f4875c2a650c22cbeb53d9cca64",
+    "unchanged_from_261106_final_delivery": true,
+    "reexecuted_this_audit": false
+  },
+  "limitations": [
+    "Only recorded score predictions were recomputed; no model forward pass or training was performed.",
+    "Current legacy files match recorded preservation hashes; original pre-upgrade ZIP was not available for a second comparison.",
+    "Raw SQL cohort preparation and patient-group separation were not re-audited in this run.",
+    "Notebook stored outputs and syntax were checked; successful fresh-kernel execution remains evidence dated 06/11/2026.",
+    "Seed SD uses one fixed split and does not estimate sampling/domain uncertainty."
+  ]
+}

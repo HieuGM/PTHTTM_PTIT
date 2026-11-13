@@ -95,3 +95,22 @@ Notebook bàn giao có 61 ô/51 ô mã/25 mô-đun inline. Full kernel mới đ�
 Ứng dụng đạt 102 pytest; kiểm độc lập 72 run/144 bộ metric/36 checkpoint/24 summary/11 hash legacy và 24 kiểm tra trình duyệt. Render nâng cấp commit `1d08d9ba7bc1d757ee856268f671ca035399a7b8`, deploy `dep-dbmo7ne7bikc73bj5rv0` đã live lúc 14:40:42 ngày 06/11/2026 giờ Việt Nam. FPT Environment cấu hình riêng; kết quả HTTPS từng lượt được giữ, gồm cả fallback khi LLM không qua kiểm. Dịch vụ public Git URL cần manual deploy theo commit. Neo4j public dùng cache/degraded nếu thiếu URI production; Neo4j local đã kiểm thật. Chưa có clinical validation hoặc SLA.
 
 Public HTTPS cuối 30/30 đạt, có FPT sinh thật; lượt đầu 29/30 với một template fallback được giữ trong render-http-attempts.json. Chạy lại cùng câu hỏi/bộ kiểm đạt 30/30; không suy thành SLA hoặc provider luôn thành công.
+
+## 12/11/2026 — Project01 nộp lại theo đặc tả giảng viên
+
+Kế hoạch: `plans/261112-project01-resubmission/plan.md`. Giảng viên yêu cầu bổ sung phần còn thiếu theo PDF kiến trúc; báo cáo mẫu chỉ tham khảo cách trình bày.
+
+| Hạng mục | Trạng thái / bằng chứng |
+|---|---|
+| Đối chiếu yêu cầu và bổ sung báo cáo | Xong Agent/MAS, mô hình hình thức, contract/status, workflow lỗi, feature/order, sai số serving, API/trace, ảnh UI và ma trận đặc tả; `report/sections/` |
+| Giữ nguyên bìa | Pixel render khớp bìa gốc; `report/assets/original-cover.pdf` và audit PDF |
+| Kiểm ứng dụng và ví dụ | 102 pytest, 8/8 ca API model thật/cache/template; `results/resubmission-pytest.json`, `resubmission-cases.json` |
+| Kiểm artifact và notebook | 72 run/144 metric/24 summary/36 neural hash/11 hash legacy khớp; notebook giữ hash, không chạy lại; `results/resubmission-artifact-verification.json` |
+| Rà PDF cuối và đóng gói | Hoàn thành: PDF42trang,33/33audit,duyệt đủtrang;bìa pixel giống gốc;ZIP/manifest CRC/SHA256 đạt;metadata tại plans/reports/261112-project01-final-delivery.json |
+
+Đợt này bổ sung tài liệu và công cụ chứng minh; giữ nguyên ứng dụng runtime, trọng số, notebook và dịch vụ đã triển khai. Không train/deploy hoặc kiểm lại dịch vụ FPT/Neo4j/Render ngoài. Bằng chứng ngoài ngày 06/11 vẫn là kết quả lịch sử theo phạm vi đã ghi.
+
+
+## 13/11/2026 — Project01 2.1
+
+Runtime/controller/review/capabilities/UI đã hoàn thành;156test,10API,18UI. Notebookfullmới67ô/72fitđạt, không thay servingweights. Rendercũlive2.1 và39HTTPđạt. Báo cáo49trangđãdựng/35audit; đã duyệt ảnh đủ 49 trang; đóng gói/manifest và đồng bộ Git là bước bàn giao cuối. Bảng dùngphươngpháp đã có trongUI và bao-ve-project01.md.

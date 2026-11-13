@@ -1,0 +1,784 @@
+{
+  "status": "passed",
+  "verified_at_vietnam": "2026-11-13T11:09:19.665937+07:00",
+  "system_version": "hybrid-mas-2.1",
+  "policy_version": "adaptive-evidence-2.1.1",
+  "run_mode": "full",
+  "cells": 67,
+  "code_cells": 56,
+  "inline_modules": 28,
+  "static_assets": 6,
+  "benchmark_runs": 72,
+  "api_checks_passed": 99,
+  "upgrade_checks_passed": 37,
+  "ml_checks_passed": 80,
+  "ml_verification": {
+    "status": "passed",
+    "checks_count": 80,
+    "run_count": 72,
+    "checks": [
+      {
+        "dataset": "cdc",
+        "sql_group_disjoint_and_train_only_statistics": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "sql_group_disjoint_and_train_only_statistics": "passed"
+      },
+      {
+        "dataset": "pima",
+        "sql_group_disjoint_and_train_only_statistics": "passed"
+      },
+      {
+        "dataset": "early",
+        "sql_group_disjoint_and_train_only_statistics": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "logistic",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "logistic",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "logistic",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "random_forest",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "random_forest",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "random_forest",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "hist_gradient_boosting",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "hist_gradient_boosting",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "hist_gradient_boosting",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp2",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp2",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp2",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp3",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp3",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "mlp3",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "resmlp",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "resmlp",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "model_id": "resmlp",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "logistic",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "logistic",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "logistic",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "random_forest",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "random_forest",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "random_forest",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "hist_gradient_boosting",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "hist_gradient_boosting",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "hist_gradient_boosting",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp2",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp2",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp2",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp3",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp3",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "mlp3",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "resmlp",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "resmlp",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "model_id": "resmlp",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "logistic",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "logistic",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "logistic",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "random_forest",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "random_forest",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "random_forest",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "hist_gradient_boosting",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "hist_gradient_boosting",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "hist_gradient_boosting",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp2",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp2",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp2",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp3",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp3",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "mlp3",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "resmlp",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "resmlp",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "pima",
+        "model_id": "resmlp",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "logistic",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "logistic",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "logistic",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "random_forest",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "random_forest",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "random_forest",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "hist_gradient_boosting",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "hist_gradient_boosting",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "hist_gradient_boosting",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp2",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp2",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp2",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp3",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp3",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "mlp3",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "resmlp",
+        "seed": 42,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "resmlp",
+        "seed": 43,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "early",
+        "model_id": "resmlp",
+        "seed": 44,
+        "predictions_and_validation_threshold": "passed"
+      },
+      {
+        "dataset": "cdc",
+        "real_serving_and_strict_schema": "passed"
+      },
+      {
+        "dataset": "hospital",
+        "real_serving_and_strict_schema": "passed"
+      },
+      {
+        "dataset": "pima",
+        "real_serving_and_strict_schema": "passed"
+      },
+      {
+        "dataset": "early",
+        "real_serving_and_strict_schema": "passed"
+      }
+    ]
+  },
+  "source_files_present": [],
+  "error_outputs": 0,
+  "sequential_execution_counts": true,
+  "elapsed_seconds": 157.81679600000007,
+  "executed_notebook": "D:\\CodexTaskCache\\diacare-hieugm299-261105\\upgrade-261113\\notebook-full-v21-final\\project01-diacare.ipynb",
+  "delivered_notebook": "C:\\Users\\Laptop\\OneDrive\\Laptop\\Ki 1 - Nam 4\\HTTM\\project01_CT_04_HieuGM.299\\notebook\\project01-diacare.ipynb",
+  "notebook_sha256": "99bedbc3974185faf45d268f3fce12eda173f140be9648e34df00f1c78b253e3",
+  "source_notebook_sha256_before_execution": "9972bfd30b46649ef40480eecfdf8da4593612d84e56208a9be6cf7b7b5863b5",
+  "environment": {
+    "python": "3.11.15",
+    "torch": "2.11.0+cpu",
+    "numpy": "2.4.4",
+    "pandas": "3.0.2",
+    "sklearn": "1.8.0",
+    "run_mode": "full",
+    "use_fpt": false,
+    "platform": "Windows-10-10.0.26300-SP0"
+  },
+  "raw_source_cache_sha256": {
+    "cdc.csv": "9f71fda9d4ae5f4878c99b9233b6a16accfa9a17c194116a6b78100540934964",
+    "hospital.csv": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422",
+    "pima.csv": "bf81d06e0c0512662862248241ab46d7c29258c6ceaad32f3cab56b52a17fdab",
+    "early.csv": "7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137",
+    "pima-source.arff": "4eddd5b2b64679e8888348e306520a393d6a28e1ddc9643cfb76fc5d912d6d40",
+    "early-source.zip": "67594c0f11257688b57493798e70737b7156ba37a2e6ac75507ae3a35221a388"
+  },
+  "inline_source_sha256": {
+    "app/capabilities.py": "7fafec4f3d179acab396c3bacf97f2603fdb0c3177a5cd41fc3b185d797a1299",
+    "app/ml/schema.py": "33668532eadc5c49b445b4881ee1bb4c5c315aa61efbcb5b544895a03a246d3a",
+    "app/ml/database.py": "8c50cbd01312c6fb48f267e7961bf316d8c079c88aa9e905a97366a1120e3bb9",
+    "app/ml/datasets.py": "5638a44f56f3b501b86b3619c369153bdfd79290e6018bef82f5da642d271dc7",
+    "app/ml/network.py": "962aa6c3516c7c02e65da94c0ac58c6cdf90701d963412e18af7c603bcaa411a",
+    "app/ml/metrics.py": "dd73e0c45933599701a07f81f2bf4f2feb9302153ab262e226ca26ede3e3159e",
+    "app/ml/training.py": "3d2765eb460a1b2d55be921b08ee381dfd43a8e2d0388e8f2e27a2851df0e6e2",
+    "app/ml/benchmark.py": "0067676b050db9b1381d0e88a071afe7ab7c27c7fa984cd5989f5559101173eb",
+    "app/ml/plotting.py": "0e44c9f16a14513fd20b4d1c07e85a495cdfbf6c454f2864d2cb5d55968d5025",
+    "app/ml/predict.py": "de0d014692f3416ba997d477c2b9887aa70e911b3180e607ae3e9cf20d7cd6ea",
+    "app/ml/verification.py": "5de3408a7f2449277fe419039ddcd6dc0e752811b5e3778dc116491505ea7be8",
+    "app/agents/rules.py": "c495155ffee4863540bd1ce1b10c437f98f48afd3d919b07067c0cea976620e1",
+    "app/agents/contracts.py": "956a4d1380cfce65983f06fb1d699caced468a22e5e5228a92d1abf8a1d5f149",
+    "app/agents/policy.py": "4c87c4dc568b3254b3291685e77309f75889c47acd5b41b436f51c3f02c0fae2",
+    "app/knowledge/ingestion.py": "5b109e13a084a8357b094e24fdb53278d0c86f15fc13ebde670621d1843799b6",
+    "app/knowledge/graph_builder.py": "4132f0a4af0a67101bfbcd63306521d652b98cf196e8a27fa398ff5e2bb20009",
+    "app/knowledge/store.py": "d2227669b22283bc557076b6f4157c92e3cf6e9a4e80c136b8d2b6c2565ea3c7",
+    "app/knowledge/neo4j_backend.py": "d398481bb40dc05d804e8aa120aed6e7c5d24c8388313e0c9d70b0be2ea9fc0b",
+    "app/knowledge/retrieval.py": "9c8c2ab10fcf1b38854b4487237974a64d7f9d910872c8dfce334d575e735168",
+    "app/knowledge/adaptive.py": "49f76758fd227c1f324c328a603009a66870e2ec6617bea26e77e9855ef1c056",
+    "app/knowledge/review.py": "7e29bf74b5f388b99554b8c8a27f0f2ce8efc39e5e2abbfb24db1542b11bdb46",
+    "app/knowledge/generation.py": "580a16c458facf837ba7c206cbfb979706349a4cacb73a2b77b7dc2c0b006870",
+    "app/agents/roles.py": "dafa2cbea4d3597c090c79a61c4e04065c1673c18590ad916eca4108fd8549fd",
+    "app/agents/reporting.py": "1315c0813c3ca6261e52cae019c05d1f5908ee8987b2e47da40b8f6358483957",
+    "app/agents/workflow.py": "cdb50cbb9409c092fac75246aa6f4945b5e3e6f9f1695cc5be2a120aa46d4a95",
+    "app/agents/coordinator.py": "fe1d26fa36d9ec6073745c3c1181c21c211b0f64d9a2a745660e77f098cb3d2d",
+    "app/api_models.py": "7708dd32f043cee7599112249c4a384f5bf9fa7fc0165914cc77917f1cb258f3",
+    "app/main.py": "bef8bc84a2994173a8e454f1b1a2755abe7aa0b171fe9f0dcf55bef441554d48"
+  },
+  "static_source_sha256": {
+    "app/static/app.js": "158354d9d2eb0c92498bc371d204fcda76dec2d7db8fce7c6c85185ba81b9937",
+    "app/static/benchmark.js": "bb143ceb7e15904024e2b3e1445d51738165f2780f85b1d0841bc8b15a001510",
+    "app/static/index.html": "698f151d2c1107c692942879d8c8b23dd7a514da8c512cbd77e9990448924a3e",
+    "app/static/style.css": "20bb9fe11dd5485132f654f0a26d3a9b023f70518f805ad708bf5303f0771c07",
+    "app/static/upgrade.js": "4b281ddf1a3438380bb21a7adf2e90b185e5d1e0f715e1b59edba84bd844c85a",
+    "app/static/workflow.js": "bf0b5e4a06f1b02bda9b661b81bf875f32e65e2dfba8e176695e671fa4db8830"
+  },
+  "embedded_serving_sha256": {
+    "models/cdc/model.pt": "61789eefd0cdb33db9b43639e002c155b9d84b2ee49f483c46b7bba8d0bc35a9",
+    "models/hospital/model.pt": "976a8fd8287ed91fcbdffe67dbc9940486c4b9b0116c4f55688091b9be069b6b",
+    "models/pima/model.pt": "e55747252bd753697622d9f93b6745a8f6af3745c2b2d904e430800eb939e267",
+    "models/early/model.pt": "6e21b4df330bf7c1c8c6a253ca4087eef96a7be8483e2af6619231ae036286a8"
+  },
+  "verification": {
+    "run_mode": "full",
+    "passed": 99,
+    "checks": [
+      "GET /",
+      "GET /health",
+      "GET /api/catalog",
+      "GET /api/knowledge",
+      "GET /api/results",
+      "GET /api/graph",
+      "GET /api/benchmark",
+      "GET /api/capabilities",
+      "GET /static/style.css",
+      "GET /static/app.js",
+      "GET /static/upgrade.js",
+      "GET /docs",
+      "4 cohort",
+      "7 agent types",
+      "capabilities current version",
+      "capabilities usage distinction",
+      "capabilities documented code locations",
+      "cdc: inference HTTP200",
+      "cdc: fresh weights parity",
+      "cdc: research score",
+      "cdc: unified report",
+      "cdc: seven core agents",
+      "cdc: correlation",
+      "cdc: no medical decision",
+      "cdc: duration per call",
+      "cdc: actual bounded retrieval",
+      "cdc: reviewed output",
+      "cdc: feature usage",
+      "cdc: real provenance",
+      "cdc: invalid stops",
+      "cdc: no DL after invalid",
+      "cdc: train-only mean",
+      "cdc: real SQL SELECT",
+      "hospital: inference HTTP200",
+      "hospital: fresh weights parity",
+      "hospital: research score",
+      "hospital: unified report",
+      "hospital: seven core agents",
+      "hospital: correlation",
+      "hospital: no medical decision",
+      "hospital: duration per call",
+      "hospital: actual bounded retrieval",
+      "hospital: reviewed output",
+      "hospital: feature usage",
+      "hospital: real provenance",
+      "hospital: invalid stops",
+      "hospital: no DL after invalid",
+      "hospital: train-only mean",
+      "hospital: real SQL SELECT",
+      "pima: inference HTTP200",
+      "pima: fresh weights parity",
+      "pima: research score",
+      "pima: unified report",
+      "pima: seven core agents",
+      "pima: correlation",
+      "pima: no medical decision",
+      "pima: duration per call",
+      "pima: actual bounded retrieval",
+      "pima: reviewed output",
+      "pima: feature usage",
+      "pima: real provenance",
+      "pima: invalid stops",
+      "pima: no DL after invalid",
+      "pima: train-only mean",
+      "pima: real SQL SELECT",
+      "early: inference HTTP200",
+      "early: fresh weights parity",
+      "early: research score",
+      "early: unified report",
+      "early: seven core agents",
+      "early: correlation",
+      "early: no medical decision",
+      "early: duration per call",
+      "early: actual bounded retrieval",
+      "early: reviewed output",
+      "early: feature usage",
+      "early: real provenance",
+      "early: invalid stops",
+      "early: no DL after invalid",
+      "early: train-only mean",
+      "early: real SQL SELECT",
+      "safety boundary",
+      "safety skips retrieval boundary",
+      "safety review boundary",
+      "safety no retrieval calls boundary",
+      "safety no provider calls boundary",
+      "safety emergency",
+      "safety skips retrieval emergency",
+      "safety review emergency",
+      "safety no retrieval calls emergency",
+      "safety no provider calls emergency",
+      "rewrite: report HTTP200",
+      "API rewrite actual retry",
+      "abstain: report HTTP200",
+      "API unrelated abstains",
+      "no raw values echoed",
+      "benchmark run count",
+      "optional presentation policy 4 states",
+      "legacy artifact preserved"
+    ],
+    "benchmark_runs": 72,
+    "upgrade_checks_passed": 37,
+    "system_version": "hybrid-mas-2.1",
+    "note": "Real SQL cohorts, trained benchmarks, reused serving weights; no simulated live API evidence.",
+    "elapsed_seconds": 157.81679600000007,
+    "source_sha256": "9972bfd30b46649ef40480eecfdf8da4593612d84e56208a9be6cf7b7b5863b5",
+    "source_files_present": [],
+    "raw_source_cache": {
+      "cdc.csv": "9f71fda9d4ae5f4878c99b9233b6a16accfa9a17c194116a6b78100540934964",
+      "hospital.csv": "f792c388d9b470aac4fbf21c39b176534d55a116e7626881c30bbe7ab0341422",
+      "pima.csv": "bf81d06e0c0512662862248241ab46d7c29258c6ceaad32f3cab56b52a17fdab",
+      "early.csv": "7889d9d0beb7dd1ccc58da99f72763f16afb259b5dbbaa086f8195366ff66137",
+      "pima-source.arff": "4eddd5b2b64679e8888348e306520a393d6a28e1ddc9643cfb76fc5d912d6d40",
+      "early-source.zip": "67594c0f11257688b57493798e70737b7156ba37a2e6ac75507ae3a35221a388"
+    },
+    "executed_notebook": "D:\\CodexTaskCache\\diacare-hieugm299-261105\\upgrade-261113\\notebook-full-v21-final\\project01-diacare.ipynb",
+    "code_cells": 56
+  },
+  "upgrade_verification": {
+    "system_version": "hybrid-mas-2.1",
+    "passed": 37,
+    "checks": [
+      "normal: bounded retrieval",
+      "normal: bounded review",
+      "normal: final review",
+      "normal: eight outer messages",
+      "normal: independent call timing",
+      "normal: decision trace",
+      "normal: explicit unavailable technologies",
+      "normal: no provider called",
+      "rewrite: bounded retrieval",
+      "rewrite: bounded review",
+      "rewrite: final review",
+      "rewrite: eight outer messages",
+      "rewrite: independent call timing",
+      "rewrite: decision trace",
+      "rewrite: explicit unavailable technologies",
+      "rewrite: no provider called",
+      "abstain: bounded retrieval",
+      "abstain: bounded review",
+      "abstain: final review",
+      "abstain: eight outer messages",
+      "abstain: independent call timing",
+      "abstain: decision trace",
+      "abstain: explicit unavailable technologies",
+      "abstain: no provider called",
+      "normal: one sufficient retrieval",
+      "rewrite: additional retrieval",
+      "rewrite: alias decision recorded",
+      "abstain: no unrelated evidence",
+      "abstain: explicit refusal",
+      "normal: template label retained",
+      "personal_diagnosis: initial rejection",
+      "personal_diagnosis: one revision and final pass",
+      "personal_diagnosis: revision never invokes provider",
+      "medication_dosage: initial rejection",
+      "medication_dosage: one revision and final pass",
+      "medication_dosage: revision never invokes provider",
+      "timing: duration is not elapsed"
+    ],
+    "examples": {
+      "normal": {
+        "retrieval_attempts": 1,
+        "feature_usage": {
+          "deep_learning": true,
+          "adaptive_retrieval": true,
+          "retrieval_attempts": 1,
+          "retrieval_retry": false,
+          "output_review": true,
+          "review_revision": 0,
+          "fpt_called": false,
+          "final_generation": "template",
+          "graph_backend": "sqlite_cache",
+          "rl_policy": false,
+          "neural_embedding": false,
+          "langgraph": false,
+          "streaming": false
+        }
+      },
+      "rewrite": {
+        "retrieval_attempts": 2,
+        "feature_usage": {
+          "deep_learning": true,
+          "adaptive_retrieval": true,
+          "retrieval_attempts": 2,
+          "retrieval_retry": true,
+          "output_review": true,
+          "review_revision": 0,
+          "fpt_called": false,
+          "final_generation": "template",
+          "graph_backend": "sqlite_cache",
+          "rl_policy": false,
+          "neural_embedding": false,
+          "langgraph": false,
+          "streaming": false
+        }
+      },
+      "abstain": {
+        "retrieval_attempts": 0,
+        "feature_usage": {
+          "deep_learning": true,
+          "adaptive_retrieval": false,
+          "retrieval_attempts": 0,
+          "retrieval_retry": false,
+          "output_review": true,
+          "review_revision": 0,
+          "fpt_called": false,
+          "final_generation": "template",
+          "graph_backend": "not_used",
+          "rl_policy": false,
+          "neural_embedding": false,
+          "langgraph": false,
+          "streaming": false
+        }
+      }
+    },
+    "scope": "Actual local model/corpus decisions plus labeled unsafe test candidates; no live provider evidence."
+  },
+  "prior_attempt": {
+    "directory": "D:\\CodexTaskCache\\diacare-hieugm299-261105\\upgrade-261113\\notebook-full-v21",
+    "status": "interrupted_not_delivered",
+    "reason": "P1 reviewer defect required runtime source fix before the final execution."
+  },
+  "scope": "Fresh kernel in isolated directory with only notebook and verified real raw cache. All code inline, 72 benchmark fits and model/API/control assertions executed. No live FPT/Neo4j call. Sandbox Pima/Early selection is separate from unchanged project serving artifacts and historical reported benchmark."
+}

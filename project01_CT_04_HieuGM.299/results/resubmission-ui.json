@@ -1,0 +1,27 @@
+{
+  "origin": "http://127.0.0.1:8015",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "generation": "template",
+  "graph_backend": "sqlite_cache",
+  "page_errors": [],
+  "images": [
+    "ui-report.png",
+    "ui-trace.png",
+    "ui-benchmark.png",
+    "ui-graph.png",
+    "ui-explanation.png"
+  ],
+  "scope": "Actual local UI, synthetic Pima defaults, no DOM replacement or mocked response.",
+  "report_crop": "Natural element screenshots of prediction/explanation/trace; no DOM modifications.",
+  "image_sha256": {
+    "ui-report.png": "73e56b2880a69274fb28e96fa458c64259c7f825be7f2b5a529977cafc025b83",
+    "ui-trace.png": "929d22da37a1a5e2a3297f5cf3a00a3228702ca5bbe95993105477305a7062cc",
+    "ui-benchmark.png": "bdbb4b84fbcc7d6ec83ccc545f77074704d6a23a67031f1c5b8545e9f7d43d7a",
+    "ui-graph.png": "18e2aad082236323f9e721b8f23e45bc5856b4ef0370c70acf108d0038e007db",
+    "ui-explanation.png": "e20c05b490a539525d8676212b8d5a106c1589e4337d43d538f01ec438b20201"
+  },
+  "captured_at_vietnam": "2026-11-12T23:02:24.598708+07:00"
+}

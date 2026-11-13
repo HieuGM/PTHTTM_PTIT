@@ -1,0 +1,93 @@
+{
+  "executed_at": "2026-11-13T11:06:48.736245+07:00",
+  "system_version": "hybrid-mas-2.1",
+  "configured": true,
+  "scope": "One real provider request with public educational question and synthetic Pima defaults; SQLite graph cache; no clinical validation.",
+  "provider_structured_response_received": false,
+  "provider_attempted": true,
+  "final_generation": "template",
+  "final_status": "llm_unavailable",
+  "final_review_passed": true,
+  "review": {
+    "passed": true,
+    "final_passed": true,
+    "initial_passed": true,
+    "checks": {
+      "structure": true,
+      "citation_alignment": true,
+      "evidence_provenance": true,
+      "no_new_urls": true,
+      "no_personal_diagnosis": true,
+      "no_medication_dosage": true,
+      "disclaimer": true,
+      "lexical_support": true
+    },
+    "issue_codes": [],
+    "initial_issue_codes": [],
+    "revision_count": 0,
+    "max_revisions": 1,
+    "scope": "Deterministic structure, citation/provenance, narrow safety patterns and lexical support heuristic; not medical validation or claim-level semantic verification.",
+    "terminal_action": "none",
+    "terminal_verdict": null,
+    "status": "passed",
+    "attempts": [
+      {
+        "attempt": 0,
+        "passed": true,
+        "checks": {
+          "structure": true,
+          "citation_alignment": true,
+          "evidence_provenance": true,
+          "no_new_urls": true,
+          "no_personal_diagnosis": true,
+          "no_medication_dosage": true,
+          "disclaimer": true,
+          "lexical_support": true
+        },
+        "issue_codes": [],
+        "lexical_support_ratio": 1.0
+      }
+    ],
+    "original_generation": "template",
+    "original_provider": "FPT Cloud",
+    "original_model": null,
+    "provider_attempted": true
+  },
+  "usage": null,
+  "feature_usage": {
+    "deep_learning": true,
+    "adaptive_retrieval": true,
+    "retrieval_attempts": 1,
+    "retrieval_retry": false,
+    "output_review": true,
+    "review_revision": 0,
+    "fpt_called": true,
+    "final_generation": "template",
+    "graph_backend": "sqlite_cache",
+    "rl_policy": false,
+    "neural_embedding": false,
+    "langgraph": false,
+    "streaming": false
+  },
+  "duration_ms": 10184.36,
+  "citations": [
+    {
+      "id": "KB08",
+      "title": "Ý nghĩa HbA1c",
+      "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis",
+      "page": null,
+      "document_id": "WEB05"
+    },
+    {
+      "id": "KB07",
+      "title": "Xét nghiệm chẩn đoán",
+      "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis",
+      "page": null,
+      "document_id": "WEB05"
+    }
+  ],
+  "final_answer_characters": 618,
+  "error_class": "ValueError",
+  "no_raw_rejected_draft_saved": true,
+  "extra_provider_calls_for_review": 0
+}

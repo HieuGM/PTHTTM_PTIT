@@ -23,6 +23,7 @@ Tài liệu project_architecture_multiagent_diabet_v1.pdf do giảng viên cung 
 | Tái sử dụng | Giữ nguyên artifact CDC/Hospital đã triển khai; benchmark mới lưu riêng |
 | Tri thức | Web, PDF tiếng Việt và thẻ có nguồn; KG được xây dựng mới và xuất Cypher |
 | Điều phối | 7 agent cốt lõi, request_id xuyên suốt, trạng thái và phiên bản |
+| Nâng cấp mã 2.1 | Retrieval tối đa 3 lượt, review/sửa tối đa 1 lần, timing từng call và registry công nghệ |
 | Sản phẩm | Notebook độc lập, FastAPI, Docker, báo cáo, hướng dẫn bảo vệ |
 
 Hai cohort nhỏ bổ sung giúp quan sát độ nhạy khởi tạo và tác động của dữ liệu ít. Chúng không làm tăng bằng chứng kiểm định của cùng một mô hình vì nhiệm vụ, feature và quần thể khác nhau. Không cộng mọi hàng thành một tập huấn luyện chung.
@@ -45,10 +46,49 @@ Các số liệu Chương 3-4 lấy từ artifact thực. 72 lượt nằm tại
 
 Bằng chứng ngày 05/11/2026 là lịch sử phiên bản cũ. Kết quả kiểm tra của phiên bản nào chỉ áp dụng cho phiên bản đó. Trạng thái bản nâng cấp phải đối chiếu verification mới nhất, không suy ra từ việc URL cũ vẫn truy cập được.
 
+Bản 2.1 thay đổi hành vi agent và mã giao diện, đồng thời đồng bộ notebook. Phần mới được kiểm qua agent-upgrade-cases.json, agent-upgrade-evaluation.json, agent-upgrade-pytest.json và notebook-agent-upgrade-verification.json. Registry /api/capabilities nối từng phương pháp với source symbol, endpoint và demo; feature_usage của request cho biết phần đã thực sự chạy.
+
+## 1.6. Câu hỏi nghiên cứu và tiêu chí hoàn thành
+
+Đề tài đặt ba câu hỏi. Thứ nhất, các mô hình Deep Learning có đem lại lợi ích so với baseline đơn giản trên cùng dữ liệu bảng hay không? Câu trả lời dựa trên bảng so sánh từng cohort ở Chương 4, bao gồm cả trường hợp baseline cạnh tranh hoặc tốt hơn. Thứ hai, có thể kết hợp dự đoán, luật và tài liệu mà vẫn truy vết được nguồn của từng kết quả không? Câu trả lời được thể hiện bằng hợp đồng agent, report có cấu trúc và một request chạy thật. Thứ ba, hệ thống phản ứng thế nào khi dữ liệu sai hoặc dịch vụ ngoài không khả dụng? Cần quan sát luồng dừng sớm, trạng thái degraded và đường fallback cụ thể.
+
+| Mã | Yêu cầu thực hiện | Tiêu chí kiểm chứng |
+|---|---|---|
+| YC01 | DB cung cấp dữ liệu cho DL | Có bảng SQLite, SQL, split và nguồn/hash trong manifest |
+| YC02 | So sánh mô hình có kiểm soát | Cùng cohort/split, fit tiền xử lý trên train, chọn bằng validation |
+| YC03 | KB/KG và RAG có provenance | Chunk truy được URL/page; relation có evidence; phân biệt cache và Neo4j |
+| YC04 | Phối hợp bảy agent | Một request_id, message có trạng thái, report tách các loại thông tin |
+| YC05 | Xử lý lỗi có thể quan sát | Input sai dừng trước DL; dependency lỗi không tạo score giả |
+| YC06 | Có sản phẩm chạy lại được | Notebook, API, Docker, hướng dẫn và hồ sơ kiểm chứng theo phiên bản |
+
+Đây là tiêu chí kỹ thuật của nguyên mẫu. Một bộ kiểm chức năng đạt không trả lời được câu hỏi về hiệu quả điều trị, tính công bằng hoặc độ an toàn khi triển khai lâm sàng. Phần kết luận vì vậy tách đóng góp kỹ thuật khỏi các bằng chứng còn thiếu.
+
+## 1.7. Người sử dụng và tình huống sử dụng
+
+Người học có thể chọn một cohort, nhập vector minh họa và quan sát các agent tạo báo cáo. Người xem đánh giá cách kết nối các thành phần qua trace, không dùng các giá trị điền sẵn như hồ sơ của bản thân. Người kiểm tra kỹ thuật có thể mở nguồn, xem phiên bản model, chạy notebook hoặc đối chiếu API để tái lập kết quả.
+
+Ba tình huống chính gồm: tạo báo cáo kết hợp model và câu hỏi; tra cứu tri thức có nguồn; xem bảng benchmark và graph. Luồng tạo báo cáo là điểm tích hợp chính của kiến trúc bảy agent. Luồng chat giữ cơ chế hỏi đáp của phiên bản trước; nó không thay thế bằng chứng cho luồng báo cáo. Không có đăng nhập bệnh viện, nhập hồ sơ định danh hoặc tích hợp bệnh án trong phạm vi bài.
+
+## 1.8. Phương pháp và cách tổ chức báo cáo
+
+Bài thực hiện theo thứ tự: xác định nhiệm vụ/nhãn; kiểm kê và làm sạch nguồn; lưu DB và cố định split; huấn luyện baseline cùng DL; xây corpus và graph; tích hợp agent qua hợp đồng; đánh giá từng thành phần và kiểm tra toàn luồng. Kết quả ML là thực nghiệm đã lưu ngày 06/11/2026. Các ví dụ bổ sung cho bản nộp lại ghi ngày chạy riêng, không đổi ngày hoặc trình bày các lượt cũ như thực nghiệm mới.
+
+Chương 2 giải thích Agent/MAS và ánh xạ sang mã nguồn. Chương 3 mô tả dữ liệu, SQL và ngăn rò rỉ. Chương 4 trình bày mô hình, chỉ số và sai số. Chương 5 giải thích tri thức, graph, retrieval và generation. Chương 6 theo dõi báo cáo/luật/RL qua ví dụ cụ thể. Chương 7 tập hợp tái lập, kiểm chứng, giao diện, triển khai và kết luận. Phụ lục cung cấp bảng đối chiếu và điểm vào mã nguồn để người đọc kiểm tra độc lập.
+
 
 # CHƯƠNG 2. KIẾN TRÚC HYBRID MULTIAGENT SYSTEM
 
-## 2.1. Sáu lớp hệ thống
+## 2.1. Agent và hệ đa agent trong phạm vi đề tài
+
+Agent phần mềm nhận thông tin từ môi trường, xử lý theo mục tiêu và tạo hành động hoặc kết quả. Wooldridge và Jennings mô tả các đặc tính thường dùng để nhận diện agent: tự chủ, tương tác với agent khác, phản ứng với môi trường và hành vi hướng mục tiêu. Đặc tính này là cơ sở phân tích thiết kế, không có nghĩa mọi hàm xử lý hoặc mọi lớp Python đều tự động trở thành agent có năng lực suy luận độc lập. Nguồn: [Wooldridge và Jennings, Intelligent Agents: Theory and Practice](https://www.cs.ox.ac.uk/people/michael.wooldridge/pubs/ker95/subsubsectionstar3_1_1_1.html).
+
+Trong DiaCare, môi trường quan sát gồm request API, trạng thái model, kết quả truy xuất và trạng thái phụ thuộc. Hành động của agent là trả dữ liệu đã kiểm tra, chạy suy luận, phát cảnh báo, lấy evidence hoặc tạo giải thích. Mục tiêu chung là tạo báo cáo có thể truy vết; mỗi vai trò chỉ nhận phần thông tin cần cho nhiệm vụ. Ví dụ, Prediction không sửa luật, còn Explanation không huấn luyện lại mạng hoặc đổi ngưỡng phân lớp.
+
+Mức tự chủ của nguyên mẫu còn giới hạn. Coordinator quyết định thứ tự gọi theo một quy trình hữu hạn; các agent chuyên biệt thực hiện thuật toán đã định nghĩa khi được gọi. Hệ thống chưa có agent tự đặt mục tiêu dài hạn, thương lượng, lập kế hoạch mở hoặc chạy liên tục trong tiến trình riêng. Vì vậy, cách gọi chính xác là kiến trúc đa agent theo vai trò, được điều phối tập trung theo đặc tả của môn học. Đóng góp nằm ở phân trách nhiệm, hợp đồng giao tiếp, phối hợp nhiều phương pháp AI và khả năng kiểm tra từng bước.
+
+Các phương pháp có vai trò khác nhau: Deep Learning học hàm dự đoán từ dữ liệu; luật biểu diễn điều kiện minh bạch; KG/RAG tìm tri thức có nguồn; LLM diễn đạt kết quả đã tổng hợp. Agent không đồng nghĩa với LLM: Data, Rule và Monitoring dùng xử lý xác định; chỉ Explanation có thể gọi dịch vụ sinh ngôn ngữ. RL là mô phỏng tùy chọn, không điều khiển bảy vai trò cốt lõi.
+
+## 2.2. Sáu lớp hệ thống
 
 Sáu lớp gồm giao diện; API và xử lý dữ liệu; điều phối; agent chuyên biệt; model và knowledge; đánh giá/audit. Các agent chạy trong một tiến trình Python, giao tiếp qua object có cấu trúc. Cách triển khai này hỗ trợ kiểm thử và theo dõi; chưa là agent phân tán độc lập qua message broker.
 
@@ -56,49 +96,133 @@ Sáu lớp gồm giao diện; API và xử lý dữ liệu; điều phối; agen
 
 SQLite huấn luyện chứa raw/prepared và split, chỉ dùng cục bộ. SQLite cache tri thức chứa tài liệu/chunk/quan hệ công khai. Neo4j lưu graph; trọng số DL nạp từ artifact. Không huấn luyện lại tại request.
 
-## 2.2. Bảy agent và ánh xạ mã nguồn
+## 2.3. Mô hình trừu tượng và trạng thái hệ thống
 
-| Agent | Thành phần | Trách nhiệm |
+Đặc tả kiến trúc, mục 4 ở trang PDF 5-6, biểu diễn hệ đa agent bằng M = (A, S, O, C, F). Các thành phần được ánh xạ vào nguyên mẫu như sau:
+
+| Ký hiệu | Ý nghĩa trong DiaCare | Hiện thực |
 |---|---|---|
-| Patient Data | PatientDataAgent, roles.py | Kiểm schema, kiểu, thứ tự, miền, thiếu giá trị |
-| DL Prediction | DLPredictionAgent, predict.py | Nạp model/scaler/ngưỡng; score, nhãn, metadata |
-| Rule-Based | RuleBasedAgent, rules.py | Luật có lý do, cảnh báo và review flags |
-| KG/RAG | KnowledgeAgent, retrieval.py | Thực thể, graph, chunk, ranking và nguồn |
-| Coordinator | ReportWorkflow, workflow.py | Điều phối, dừng sớm, tổng hợp và xử lý lỗi |
-| Explanation | ExplanationAgent, generation.py | Giải thích bằng FPT hoặc template có nhãn |
-| Monitoring | MonitoringAgent, roles.py | Metadata, trạng thái, version và độ trễ |
+| A | Tập bảy vai trò cốt lõi | Data, DL, Rule, KG/RAG, Coordinator, Explanation, Monitoring |
+| S | Trạng thái của một yêu cầu và kết quả trung gian | Context, prediction, rules, evidence, explanation |
+| O | Quan sát cấp cho từng vai trò | Feature/schema, câu hỏi, output model, inventory phụ thuộc |
+| C | Cơ chế trao đổi kết quả có cấu trúc | AgentResult, Context.emit, danh sách messages |
+| F | Quy tắc điều phối, tổng hợp và kết thúc | ReportWorkflow.run, structured_report, _finish |
+
+S không phải một cơ sở dữ liệu bệnh án dùng chung. Context tạo mới cho từng request, giữ request_id, thời điểm bắt đầu và message; các biến kết quả nằm trong lượt thực thi workflow. Model và corpus có thể được nạp lại để tái sử dụng giữa các request, nhưng hệ thống không học từ feature người dùng gửi lên. Cách tách này giúp phân biệt trạng thái thực thi tạm thời với artifact mô hình và kho tài liệu đã chuẩn bị.
+
+Mỗi agent được mô tả bằng ánh xạ Ai: Xi → Yi. Chẳng hạn, DL ánh xạ feature hợp lệ sang score, nhãn và metadata; KG ánh xạ câu hỏi sang danh sách evidence; Monitoring ánh xạ metadata thực thi sang bản ghi audit. F kết hợp các output nhưng giữ prediction, rule_results và retrieved_evidence ở các trường riêng. Đây là tổng hợp thông tin theo hợp đồng, không cộng score truy xuất với score DL thành một xác suất bệnh mới.
+
+Mô hình trừu tượng giải thích ranh giới thay thế thành phần. Khi đổi thuật toán retrieval, đầu ra evidence vẫn phải giữ ID, văn bản và nguồn; khi đổi dịch vụ LLM, prediction và rule_results vẫn có nghĩa như trước. Khả năng thay thế phụ thuộc việc giữ contract và kiểm thử tương ứng, không chỉ giữ tên class.
+
+## 2.4. Bảy agent và hợp đồng đầu vào, đầu ra
+
+| Agent và mã nguồn | Đầu vào | Đầu ra chính |
+|---|---|---|
+| Patient Data: PatientDataAgent, roles.py | Dataset, feature, glucose và unit tùy chọn | Xác nhận hợp lệ, số/thứ tự feature; hoặc lỗi schema, kiểu, miền, thiếu giá trị |
+| DL Prediction: DLPredictionAgent, predict.py | Dataset và feature đã qua kiểm tra | Score, nhãn, threshold, task, metadata/version; nạp model và scaler tương ứng |
+| Rule-Based: RuleBasedAgent, rules.py | Câu hỏi, prediction, glucose/unit | Safety, rule_id, lý do, nguồn và review flags |
+| KG/RAG: KnowledgeAgent, adaptive.py | Câu hỏi | Evidence có nguồn, inventory và retrieval gồm attempts, lý do, lượt chọn hoặc từ chối |
+| Coordinator: ReportWorkflow, workflow.py | Yêu cầu tổng hợp | Status, report hoặc error, request_id, messages và audit |
+| Explanation: ExplanationAgent, reporting.py | Câu hỏi, prediction, rules, evidence | Answer, generation, citations và quality; kiểm duyệt/sửa có giới hạn |
+| Monitoring: MonitoringAgent, roles.py | Context và trạng thái workflow | Metadata audit, version, mốc thời gian; write_status khi bật ghi file |
 
 Coordinator không thay thuật toán của agent khác. Prediction suy luận; KG tìm tài liệu; Explanation dùng kết quả đã có. Có thể thay retriever hoặc LLM mà không đổi schema dự đoán. Số lần message không phải số loại agent, vì Coordinator có thể phát nhiều sự kiện trong một request.
 
-## 2.3. Hợp đồng giao tiếp
+Trạng thái của vai trò và trạng thái toàn workflow có ý nghĩa khác nhau. Data phát ok hoặc invalid; DL phát ok hoặc error; Rule phát flagged khi có cờ; KG có thể ok, degraded, error hoặc skipped. Explanation công bố trạng thái sinh thực tế; Monitoring có thể degraded khi ghi audit thất bại. Coordinator dùng started và aggregated để đánh dấu hai mốc điều phối. Workflow trả completed, degraded, validation_error, dependency_error hoặc mức safety tương ứng. Không diễn giải mọi message khác ok là một yêu cầu đã thất bại hoàn toàn.
 
-Message có request_id, agent, status, payload, evidence, model_version và elapsed_ms. Phiên bản nhận diện model hoặc agent; request_id liên kết toàn bộ cùng yêu cầu. Payload tùy chức năng, không phải chuỗi log không cấu trúc.
+Đường dẫn trong bảng rút gọn theo thư mục: agent ở app/agents, model ở app/ml, retrieval/generation ở app/knowledge. Contract được kiểm ở tests/test_workflow.py; các tình huống model, audit và dependency lỗi được kiểm ở tests/test_failure_paths.py. Tên lớp triển khai KnowledgeAgent phát tên vai trò KGRAGAgent trong message; đây là cùng một vai trò truy xuất, không phải hai agent khác nhau.
+
+## 2.5. Hợp đồng giao tiếp và cách đọc thời gian
+
+Message có request_id, agent, status, payload, evidence, model_version, elapsed_ms, duration_ms và decision. Phiên bản nhận diện model hoặc agent; request_id liên kết toàn bộ cùng yêu cầu. Payload tùy chức năng; decision ghi hành động và lý do điều phối.
 
 ```json
 {"request_id":"ma-tu-sinh", "agent":"DLPredictionAgent",
  "status":"ok", "payload":{"dataset":"cdc"},
- "evidence":[], "model_version":"legacy-1.0", "elapsed_ms":12.5}
+ "evidence":[], "model_version":"legacy-1.0", "elapsed_ms":12.5,
+ "duration_ms":10.2, "decision":{"action":"inference"}}
 ```
 
 Ví dụ minh họa cấu trúc, không phải đo độ trễ. Monitoring mặc định chỉ ghi metadata, không vector sức khỏe, câu hỏi hoặc khóa API.
 
-## 2.4. Luồng chính và dừng sớm
+Trường elapsed_ms trong Context.emit là thời gian tích lũy từ lúc tạo Context đến lúc phát message. Bản 2.1 bổ sung duration_ms của message, đo bằng perf_counter ngay trước/sau call trong ReportWorkflow. Nó bao gồm công việc nội bộ của call, chẳng hạn các lượt retrieval hoặc review; không phải hiệu hai mốc elapsed_ms. Bước skipped có duration_ms bằng 0. duration_ms ở cấp audit vẫn là tổng thời gian tới lúc tạo audit. Không cộng các mốc tích lũy để tính latency; một lượt minh họa cũng chưa là benchmark tải hoặc SLA.
+
+Luồng thường có tám message: Coordinator bắt đầu, Data, DL, Rule, KG, Coordinator tổng hợp, Explanation và Monitoring. Như vậy có bảy loại agent. Context.emit giới hạn tối đa 12 message để chặn luồng vượt ngân sách; giới hạn max_steps=8 trong Context.send thuộc trace của các API cũ. Hai cơ chế cùng có request context nhưng không nên dùng số bước của luồng chat để suy ra số agent hoặc số message của report.
+
+## 2.6. Luồng chính, nhánh lỗi và dừng sớm
 
 API nhận cohort và feature. Coordinator tạo request_id, gọi Data. Nếu schema/giá trị sai, trả validation_error trước DL, Rule và KG. Nếu hợp lệ: DL suy luận; Rule đánh giá; KG lấy evidence; Coordinator tổng hợp; Explanation tạo báo cáo; Monitoring ghi metadata.
 
 Luồng hữu hạn có trace. Cảnh báo nguy cấp và yêu cầu vượt phạm vi được luật ưu tiên để LLM không trì hoãn hoặc ghi đè thông báo an toàn. Điểm dự đoán nghiên cứu không phủ quyết cảnh báo luật; tài liệu giáo dục không là quan sát của cá nhân.
 
-## 2.5. Lỗi và dự phòng
+![Luồng tuần tự và các nhánh xử lý của báo cáo tổng hợp](figures/workflow-sequence.png)
+
+Mã giả dưới đây tóm tắt ReportWorkflow.run và _finish; chi tiết điều kiện hợp lệ nằm trong schema và validator của từng cohort.
+
+```text
+Tạo Context; phát Coordinator: started
+Kiểm câu hỏi, feature, glucose và unit
+Nếu sai: phát Data: invalid; audit; trả validation_error
+Phát Data: ok
+Chạy DL bằng artifact đã lưu
+Nếu lỗi: phát DL: error; audit; trả dependency_error
+Phát DL: ok; chạy Rule; phát kết quả và flags
+Nếu Rule có safety:
+    Evidence rỗng; phát KG: skipped
+Ngược lại:
+    Truy xuất thích ứng tối đa ba lượt; kiểm provenance
+    Thiếu Neo4j: dùng cache, đánh dấu degraded
+    Lỗi truy xuất: evidence rỗng, đánh dấu error
+Phát Coordinator: aggregated
+Explanation nhận prediction, rules và evidence
+    Có safety: trả nội dung safety_rule
+    Không safety: generator, review, sửa extractive tối đa một lần
+Tạo structured_report, uncertainty và conflicts
+Chọn trạng thái workflow theo safety và phụ thuộc
+Monitoring tạo audit; trả report, messages và status
+```
+
+Nhánh safety vẫn chạy sau DL theo thứ tự của đặc tả. Khi đã có safety, KG bị bỏ qua và Explanation trả thông điệp của luật, không gọi LLM. Với đầu vào sai, DL không chạy; với model không nạp được, không sinh score thay thế. Nếu lỗi chỉ ảnh hưởng tri thức hoặc giải thích, các kết quả đã có vẫn được giữ để người đọc xem riêng và nhận biết phần suy giảm.
+
+## 2.7. Lỗi và dự phòng
 
 DL lỗi thì trả dependency_error, không tạo score giả. Thiếu Neo4j/kết nối lỗi thì dùng cache và nêu backend. Thiếu FPT, lỗi API hoặc citation không hợp lệ thì dùng template có nhãn. Không gọi template là output đã sinh bằng LLM.
 
 Fallback giúp demo cục bộ, không là bằng chứng Neo4j production. Health/catalog công bố model, inventory, graph và LLM configuration; bằng chứng gọi API thật được ghi riêng với metadata an toàn.
 
-## 2.6. Ranh giới dữ liệu và bảo mật
+API ánh xạ validation_error sang HTTP 422 và dependency_error sang HTTP 503. Report hoàn tất hoặc degraded vẫn có thể trả HTTP 200, vì client cần đọc trạng thái nghiệp vụ trong JSON. Do đó, chỉ thấy HTTP 200 chưa đủ kết luận mọi dịch vụ ngoài hoạt động. Nếu AUDIT_LOG_PATH không ghi được, report đã tạo không bị loại; message Monitoring nêu lỗi và workflow completed được chuyển thành degraded.
+
+## 2.8. Phạm vi của các endpoint
+
+Endpoint /api/report là lối vào quy trình bảy agent được mô tả trong chương này. Nó yêu cầu chọn cohort và feature đúng schema, có thể thêm câu hỏi hoặc glucose. Kết quả thể hiện đầy đủ prediction, luật, evidence, explanation và metadata. Đây là endpoint cần dùng để minh họa tích hợp theo tài liệu kiến trúc.
+
+Endpoint /api/chat giữ luồng hỏi đáp tri thức của phiên bản trước. Trace có các vai trò Safety, Retrieval, Policy, Education và Critic; policy mô phỏng chọn cách trình bày. Chat không yêu cầu vector feature và không chạy DL dự đoán trong mỗi câu hỏi. Endpoint /api/predict chỉ phục vụ suy luận model và trace rút gọn; nó không tạo báo cáo KG/RAG tổng hợp. Ba endpoint dùng chung một số tài nguyên nhưng không có cùng hợp đồng đầu ra hoặc cùng số bước. Mã ánh xạ nằm trong app/main.py và app/agents/coordinator.py.
+
+GET /api/capabilities đọc registry tại app/capabilities.py: phương pháp, vai trò, source symbol, endpoint, demo và giới hạn. implemented cho biết có mã; configured cho biết cấu hình phụ thuộc; feature_usage của từng report mới cho biết phần đã thực sự chạy. Vì vậy, registry không biến cấu hình FPT hoặc Neo4j thành bằng chứng gọi thành công.
+
+## 2.9. Ranh giới dữ liệu và bảo mật
 
 API không nhận SQL/Cypher tùy ý. Query graph dùng tham số. Corpus ingest trước, không tải URL tùy ý từ request. Nội dung nguồn là dữ liệu hỗ trợ, không được thực thi như chỉ thị.
 
 FPT key và Neo4j password chỉ ở môi trường/.env bị ignore. Raw/database chứa patient_nbr phục vụ split không vào Git/image/ZIP. Artifact state_dict nạp weights_only=True; không pickle toàn bộ object mô hình. Audit ra file chỉ bật khi cấu hình rõ đường dẫn.
+
+## 2.10. Quyền ghi trạng thái và điều khiển nội bộ bản 2.1
+
+Outer workflow giữ bảy vai trò và tám message thông thường. Hai controller mới nằm trong KG/RAG và Explanation, không làm tăng số agent core. Quyền đọc/ghi dưới đây được công bố trong AGENTS của registry; đây là phân trách nhiệm trong mã, chưa là cơ chế phân quyền hệ điều hành.
+
+| Vai trò | Đọc | Ghi / quyết định | Công cụ chính |
+|---|---|---|---|
+| Data | Dataset, feature, glucose/unit | Validated, thứ tự feature; cho phép hoặc dừng | validate_features |
+| DL | Feature hợp lệ, serving artifact | Prediction hoặc dependency_error | Predictor.predict |
+| Rule | Câu hỏi, prediction, glucose/unit | Rules; cho truy xuất hoặc safety_override | check |
+| KG/RAG | Câu hỏi, corpus, ontology | Evidence/retrieval; nhận, thử tiếp hoặc từ chối | AdaptiveRetrieval.run |
+| Coordinator | Request và output trung gian | Request_id, status, messages, report | ReportWorkflow.run |
+| Explanation | Question, prediction, rules, evidence | Explanation/quality; đạt, sửa hoặc từ chối | generate, review_and_revise |
+| Monitoring | Metadata thực thi | Audit; không ghi feature/câu hỏi/key | MonitoringAgent.run |
+
+![Hai controller nội bộ hữu hạn: truy xuất và kiểm duyệt câu trả lời](figures/agent-controls.png)
+
+Ngân sách là tối đa ba lần gọi retrieve và tối đa một lần sửa extractive, không phải số lượt bắt buộc. Nếu lượt đầu đủ điều kiện thì dừng. Review không gọi LLM lần hai. decision_trace giữ hành động/lý do của các vai trò; retrieval.attempts và quality.attempts giải thích các quyết định bên trong. Quyết định nội bộ được tự động hóa trong phạm vi rõ, chưa là lập kế hoạch mở hoặc tác tử phân tán tự chủ.
 
 
 # CHƯƠNG 3. BỐN COHORT VÀ CƠ SỞ DỮ LIỆU HUẤN LUYỆN
@@ -156,13 +280,44 @@ Benchmark không đọc NPZ cũ để giả lập database. NPZ đầu ra giữ 
 | Pima | 537 | 115 | 116 | Stratified, median train |
 | Early Stage | 175 | 38 | 38 | Dedup trước stratified split |
 
-Split seed 42; model seed 42/43/44. Đổi model seed không tạo ba test mới. Mean/std fit train và áp cùng thứ tự feature. Checkpoint chọn validation ROC-AUC; ngưỡng chọn validation F 1; đóng băng trước đo test. Không lựa mô hình phục vụ bằng test.
+Split seed 42; model seed 42/43/44. Đổi model seed không tạo ba test mới. Mean/std fit train và áp cùng thứ tự feature. Checkpoint chọn validation ROC-AUC; ngưỡng chọn validation F1; đóng băng trước đo test. Không lựa mô hình phục vụ bằng test.
 
 ## 3.7. Provenance và giới hạn
 
 Manifest lưu URL, hash, số dòng, SQL, split và thống kê. Raw/database chỉ ở máy cục bộ, bị loại khỏi phát hành. Bốn cohort khác nguồn/nhãn/quần thể, không gộp thành một nhiệm vụ và không là bốn tập external validation của một model.
 
 Bài viết Vinmec và PDF Việt giúp truy xuất tài liệu Việt, không thay tập bệnh nhân Việt có nhãn. Trước dùng thực cần quyền dữ liệu, kiểm định ngoài miền, hiệu chuẩn, đánh giá theo nhóm và chuyên gia y tế.
+
+## 3.8. Tên và thứ tự feature khi suy luận
+
+Đặc tả yêu cầu ghi rõ feature/order, không chỉ số lượng cột. Bốn danh sách dưới theo đúng metadata serving và app/ml/schema.py. API nhận object theo tên; validate_features tạo vector theo SCHEMAS và Predictor kiểm thứ tự đó khớp metadata trước khi tạo tensor. Không dựa vào thứ tự khóa JSON người dùng gửi.
+
+```text
+CDC (21):
+HighBP, HighChol, CholCheck, BMI, Smoker, Stroke,
+HeartDiseaseorAttack, PhysActivity, Fruits, Veggies,
+HvyAlcoholConsump, AnyHealthcare, NoDocbcCost, GenHlth,
+MentHlth, PhysHlth, DiffWalk, Sex, Age, Education, Income
+
+Hospital (10):
+time_in_hospital, num_lab_procedures, num_procedures,
+num_medications, number_outpatient, number_emergency,
+number_inpatient, number_diagnoses, AgeGroup, Gender
+
+Pima (8):
+Pregnancies, Glucose, BloodPressure, SkinThickness,
+Insulin, BMI, DiabetesPedigreeFunction, Age
+
+Early Stage (16):
+Age, Gender, Polyuria, Polydipsia, sudden weight loss,
+weakness, Polyphagia, Genital thrush, visual blurring,
+Itching, Irritability, delayed healing, partial paresis,
+muscle stiffness, Alopecia, Obesity
+```
+
+CDC Age là mã nhóm 1-13, không phải tuổi tính theo năm; Sex dùng 0=Nữ, 1=Nam; GenHlth là mã 1-5. Hospital AgeGroup dùng nhóm 1-10; các biến đếm phản ánh một đợt nằm viện hoặc lịch sử năm trước. Pima Age là tuổi thật; Glucose là feature của cohort, không tự đồng nhất với trường glucose tùy chọn phục vụ luật của API. Early có Age thật, Gender 0/1 và 14 biến triệu chứng Có/Không mã 1/0; tên trường có dấu cách phải giữ nguyên trong JSON.
+
+Miền nhập, kiểu integer/float, nhãn và coding đầy đủ nằm trong feature_specs của models/<cohort>/metadata.json, đồng thời được công bố qua GET /api/catalog. Bản mô hình kèm preprocessing chứa mean/std và median khi áp dụng. Sai tên, thiếu/thừa cột hoặc giá trị không nguyên cho trường nguyên sẽ bị từ chối; giá trị 1.0 vẫn có thể hợp lệ vì bằng một số nguyên. API không tự lấp feature thiếu. Riêng zero-coded missing của Pima là quy ước tiền xử lý đã được định nghĩa, khác với thiếu khóa JSON.
 
 
 # CHƯƠNG 4. DEEP LEARNING VÀ BENCHMARK SO SÁNH
@@ -176,15 +331,15 @@ Ba mô hình cổ điển cung cấp baseline tuyến tính và phi tuyến. Ba 
 | logistic | Logistic Regression, C=1, max_iter=1000 |
 | random_forest | 100 cây, max_depth=12, min_samples_leaf=5, n_jobs=2 |
 | hist_gradient_boosting | 100 iteration, max_depth=6, early_stopping=False |
-| mlp 2 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 1 logit |
-| mlp 3 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 16 ReLU → 1 logit |
+| mlp2 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 1 logit |
+| mlp3 | Input → 64 ReLU Dropout 0.15 → 32 ReLU Dropout 0.10 → 16 ReLU → 1 logit |
 | resmlp | Input projection 32, hai residual block gồm hai linear 32 mỗi block, output 1 |
 
 Mạng trả logit khi học, dùng BCEWithLogitsLoss; suy luận áp sigmoid. Residual block có shortcut cộng đầu vào với phép biến đổi rồi ReLU. Cả ba là mạng nhiều tầng ẩn; không dùng ba seed để tuyên bố có chín kiến trúc DL.
 
 ## 4.2. Ngân sách huấn luyện và lựa chọn
 
-Adam learning_rate 0.001, weight_decay1e-5. CDC/Hospital tối đa 25 epoch, batch 2048; Pima/Early tối đa 100 epoch, batch 32. Patience 10 theo validation ROC-AUC, chỉ cập nhật checkpoint khi AUC tăng hơn1e-5. Sau nạp checkpoint tốt nhất, chọn threshold đạt F 1 cao nhất trên validation rồi mới tính score/test metric.
+Adam learning_rate 0.001, weight_decay1e-5. CDC/Hospital tối đa 25 epoch, batch 2048; Pima/Early tối đa 100 epoch, batch 32. Patience 10 theo validation ROC-AUC, chỉ cập nhật checkpoint khi AUC tăng hơn1e-5. Sau nạp checkpoint tốt nhất, chọn threshold đạt F1 cao nhất trên validation rồi mới tính score/test metric.
 
 Ba mạng được học từ đầu trong benchmark riêng. Hai model phục vụ CDC/Hospital đã có từ phiên bản trước vẫn được tái sử dụng, không bị thay bằng model mới có test đẹp hơn. Pima/Early là cohort mới nên chọn DL phục vụ theo validation AUC trong chín run neural/cohort; không dùng test chọn.
 
@@ -282,13 +437,62 @@ Early: Random Forest có ROC-AUC trung bình 0,9615, nhưng test chỉ 38 dòng.
 
 72 run được thực thi thật trên CPU Linux với Python 3.12.16, torch 2.15.0+cpu, NumPy 2.5.4, pandas 3.1.1, scikit-learn 1.9.1. Tổng các thời gian fit+evaluate ghi theo run là 145,588 giây. Đây không gồm mọi thời gian tải nguồn, build container và kiểm thử.
 
-Lượt đầu đã hoàn thành 54 run nhưng bước copy artifact Pima gặp lỗi cập nhật timestamp trên Windows bind-mount. Sửa copy 2 thành copyfile chỉ sao nội dung, xác minh hash/nhãn 54 run, rồi chạy tiếp 18 run Early. Giá trị 23,449 giây của invocation resume không phải thời gian train 72 run. execution-history.json lưu rõ hai pha.
+Lượt đầu đã hoàn thành 54 run nhưng bước copy artifact Pima gặp lỗi cập nhật timestamp trên Windows bind-mount. Sửa copy2 thành copyfile chỉ sao nội dung, xác minh hash/nhãn 54 run, rồi chạy tiếp 18 run Early. Giá trị 23,449 giây của invocation resume không phải thời gian train 72 run. execution-history.json lưu rõ hai pha.
 
 ## 4.10. Artifact và khả năng tái lập
 
 Mỗi run giữ config, seed, checkpoint/history khi phù hợp, SQL source/hash, threshold, metric và score validation/test. Neural weights lưu state_dict; logistic giữ coefficient/intercept trong NPZ. Cây RF/HGB không đóng gói để tránh artifact lớn; cần refit bằng cùng config/seed/data để tái tạo model, còn score test đã lưu để tính lại metric.
 
 Các hình so sánh biểu diễn metric theo cohort. Báo cáo không tạo leaderboard gộp AUC của bốn nhiệm vụ. Đánh giá thêm bootstrap, calibration, temporal/external validation và kiểm định khác biệt là hướng phát triển, chưa được tuyên bố đã làm.
+
+## 4.11. Từ vector đầu vào đến nhãn nghiên cứu
+
+Với mỗi feature, giá trị thiếu được xử lý theo giao thức của cohort, sau đó chuẩn hóa bằng trung bình và độ lệch chuẩn train. Một lớp ẩn thực hiện biến đổi affine rồi phi tuyến; dropout chỉ hoạt động khi train. Gọi z là logit đầu ra, score s là sigmoid và t là ngưỡng đã chọn trên validation:
+
+$$h^{(l)}=\mathrm{ReLU}(W^{(l)}h^{(l-1)}+b^{(l)})$$
+
+$$s=\sigma(z)=\frac{1}{1+e^{-z}},\qquad \hat y=\mathbf{1}[s\geq t]$$
+
+Khi train, BCEWithLogitsLoss nhận trực tiếp logit để tính binary cross-entropy ổn định số học. Công thức dưới là dạng tương đương theo score, không phải một phép sigmoid bổ sung trước hàm loss trong mã:
+
+$$L=-\frac{1}{n}\sum_{i=1}^{n}\left[y_i\log s_i+(1-y_i)\log(1-s_i)\right]$$
+
+Trong app/ml/network.py, MLP2 và MLP3 khác nhau ở một tầng 16 chiều; ResMLP cộng shortcut tại các block 32 chiều. app/ml/training.py thực hiện lựa checkpoint theo validation ROC-AUC; app/ml/benchmark.py điều phối ma trận và lưu artifact. Ngưỡng phân lớp được chọn sau bước đó bằng validation F1. Hai phép chọn có mục đích khác nhau: AUC đánh giá thứ hạng, còn F1 phụ thuộc một ngưỡng. Test chỉ được dùng ở bước đánh giá cuối.
+
+## 4.12. Đọc confusion matrix và sai số
+
+Quy ước hàng là nhãn thật 0/1, cột là nhãn dự đoán 0/1: TN và FP ở hàng đầu, FN và TP ở hàng sau. Precision trả lời có bao nhiêu nhãn dự đoán dương là đúng; sensitivity đo tỷ lệ nhãn thật dương được phát hiện; specificity đo tỷ lệ nhãn thật âm được giữ đúng. Công thức và định nghĩa chỉ số đối chiếu tài liệu scikit-learn trong danh mục tham khảo.
+
+$$\mathrm{Precision}=\frac{TP}{TP+FP},\qquad \mathrm{Sensitivity}=\frac{TP}{TP+FN}$$
+
+$$\mathrm{Specificity}=\frac{TN}{TN+FP},\qquad F_1=\frac{2TP}{2TP+FP+FN}$$
+
+<!-- SERVING_ANALYSIS_START -->
+
+Bảng dưới lấy đúng bốn artifact phục vụ; mỗi hàng là một run, không là mean ba seed.
+
+| Cohort / model | TN / FP / FN / TP | Sensitivity | Specificity | F1 |
+|---|---|---:|---:|---:|
+| cdc / MLP3 legacy | 23758 / 5164 / 1827 / 3203 | 0,6368 | 0,8215 | 0,4782 |
+| hospital / MLP3 legacy | 10340 / 3110 / 990 / 685 | 0,4090 | 0,7688 | 0,2505 |
+| pima / mlp2 seed 42 | 58 / 17 / 11 / 30 | 0,7317 | 0,7733 | 0,6818 |
+| early / resmlp seed 42 | 8 / 4 / 1 / 25 | 0,9615 | 0,6667 | 0,9091 |
+
+![Confusion matrix của bốn serving model; số đếm từ artifact đã lưu](figures/serving-confusion.png)
+
+Nguồn: results/cdc-training.json, hospital-training.json và hai record benchmark pima/mlp2-seed42.json, early/resmlp-seed42.json. CDC/Hospital là kết quả legacy; không thay bằng run benchmark khác.
+
+<!-- SERVING_ANALYSIS_END -->
+
+Ví dụ Pima MLP2 seed 42 là artifact được chọn để phục vụ bằng validation, không phải run có test cao nhất. Test gồm 75 nhãn âm và 41 nhãn dương: TN=58, FP=17, FN=11, TP=30. Vì vậy precision=30/47=0,6383, sensitivity=30/41=0,7317, specificity=58/75=0,7733 và F1=60/88=0,6818. Mười một nhãn dương bị bỏ sót cho thấy vì sao không thể dùng output như một phép sàng lọc đã được thẩm định.
+
+Accuracy của run này là 88/116=0,7586; baseline luôn dự đoán âm có accuracy 75/116=0,6466 nhưng sensitivity bằng 0. So sánh này giúp diễn giải mất cân bằng lớp, không chứng minh tính hữu ích lâm sàng. Dịch ngưỡng sẽ thay FP/FN; lựa ngưỡng bằng dữ liệu test sau khi xem ma trận sẽ làm mất tính độc lập của đánh giá.
+
+## 4.13. Kết luận thực nghiệm có điều kiện
+
+Trên CDC/Hospital, thay đổi độ sâu chỉ tạo chênh lệch AUC nhỏ trong giao thức hiện tại. Trên Pima, logistic đơn giản có kết quả cạnh tranh với DL. Trên Early, mạng neural biến thiên rõ giữa seed trong khi tập test rất nhỏ. Vì thế giả thuyết “DL luôn tốt hơn” không được thực nghiệm này xác nhận.
+
+Ba seed cùng split chủ yếu kiểm tra độ nhạy khởi tạo hoặc ngẫu nhiên thuật toán. Chúng không đo được mức thay đổi khi lấy một mẫu bệnh nhân khác, đổi bệnh viện hoặc đổi thời điểm. Bảng test mean/SD dùng so sánh kiến trúc; bảng serving dùng diễn giải đúng model API thực sự nạp. Hai bảng có mục đích khác nhau và không được tráo số liệu cho nhau.
 
 
 # CHƯƠNG 5. KNOWLEDGE GRAPH, WEB/PDF VÀ RAG
@@ -359,6 +563,61 @@ Corpus nhỏ và không bảo đảm bao phủ mọi câu hỏi. PDF lịch sử
 
 Chưa có hội đồng lâm sàng chấm claim-level support trên tập lớn, chưa đánh giá đầy đủ prompt injection hoặc thay đổi nguồn theo thời gian. Số citation hợp lệ không là tỷ lệ đúng y khoa. Hướng tiếp theo là bộ hỏi đáp độc lập có người thẩm định, kiểm nguồn/phiên bản và đo riêng retrieval, groundedness, refusal, latency/cost.
 
+## 5.9. Phân biệt KB, KG, retrieval và generation
+
+Knowledge Base là toàn bộ tri thức đã tổ chức để hệ thống sử dụng, gồm văn bản, thẻ và metadata. Knowledge Graph là phần biểu diễn thực thể cùng quan hệ: nó giúp truy theo concept và tìm đoạn hỗ trợ một cạnh. Retrieval chọn những đoạn phù hợp với một câu hỏi; generation diễn đạt câu trả lời từ các đoạn đã chọn. Một graph có nhiều cạnh không tự tạo ra câu trả lời, và LLM không thay việc lưu nguồn.
+
+Lewis và cộng sự (2020) kết hợp bộ nhớ tham số của mô hình sinh với bộ nhớ tài liệu bên ngoài được truy xuất. DiaCare áp dụng ý tưởng truy xuất rồi cung cấp ngữ cảnh, nhưng không huấn luyện mô hình RAG end-to-end như bài báo gốc. Mô hình dự đoán DL trên bảng bệnh nhân và dịch vụ LLM sinh giải thích là hai thành phần khác nhau: một bên tạo score nghiên cứu từ feature, bên kia diễn đạt từ evidence/model/rule đã cung cấp.
+
+| Thành phần | Biểu diễn lưu | Công cụ trong bài | Trả lời được câu hỏi nào? |
+|---|---|---|---|
+| Dữ liệu học có giám sát | Bảng feature/target/split | SQLite, datasets.py | Model được fit trên bản ghi và nhãn nào? |
+| KB văn bản | Document/chunk/title/URL/page | corpus.json, store.py | Đoạn nào nói về chủ đề đang hỏi, nguồn ở đâu? |
+| KG | Concept và quan hệ có evidence | graph_builder.py, Neo4j/cache | Concept liên quan thế nào và cạnh dựa trên đoạn nào? |
+| Retriever | Vector chỉ mục và ranking | retrieval.py | Những đoạn nào phù hợp nhất với câu hỏi này? |
+| Generator | Prompt gồm evidence/model/rule | generation.py, FPT hoặc template | Có thể giải thích kết quả bằng ngôn ngữ thế nào? |
+
+Trong retrieval.py, query được mở rộng bằng alias concept. Word TF-IDF và character TF-IDF đều chuẩn hóa vector; tích vô hướng tương ứng cosine trong không gian đó. LSA chiếu vector word xuống không gian 32 chiều rồi chuẩn hóa. Với phương pháp hybrid, điểm nền bằng 0,50 × word + 0,25 × character + 0,25 × LSA. Code cộng 0,055 nếu chunk thuộc ứng viên graph và word>0,015; cộng 0,025 nếu concept giao truy vấn; prior thẻ biên soạn là 0,045 khi word>0,03.
+
+Các hệ số này là heuristic của bản thử nghiệm. Điểm cuối không phải xác suất một phát biểu đúng. Bộ lọc score≥0,09 và điều kiện tối thiểu word/character chỉ giảm nhiễu; chúng không bảo đảm câu hỏi ngoài miền luôn bị từ chối. KnowledgeAgent trong luồng report yêu cầu tối đa bốn hit; generator còn giới hạn ngữ cảnh theo cấu hình. Người đọc có thể đối chiếu toàn bộ ranking đã lưu để giải thích vì sao một tài liệu liên quan nhưng không lên hạng đầu.
+
+## 5.10. Truy vết một kết quả tri thức
+
+Theo mục 7.2 của đặc tả, K = (G_Neo4j, D_RAG): G là graph và D là tập văn bản phục vụ truy xuất. Bản local đã kiểm G trên Neo4j; khi chạy offline, cache giữ bản biểu diễn đã materialize từ cùng corpus. Việc có D hoặc cache không được dùng để tuyên bố một kết nối G_Neo4j đang hoạt động.
+
+Một hit cần đi được theo chuỗi: ID chunk → document_id → URL và page nếu là PDF. Nếu có graph_path, relation cần evidence_chunk_id tương ứng; đường graph là chỉ mục bằng chứng, không là chứng minh quan hệ nhân quả. Document reference-only chỉ cung cấp metadata nguồn của thẻ, không được tính là trang đã tải và trích văn bản thành công.
+
+Việc kiểm citation xảy ra sau retrieval/generation. Đầu tiên chọn evidence từ corpus tin cậy theo ID; tiếp theo prompt giới hạn ID cho LLM; cuối cùng validate_generated kiểm JSON và đối chiếu citation_ids với citation trong câu trả lời. Một citation đúng cấu trúc vẫn có thể đi kèm diễn giải quá mức. Vì vậy, bài đánh giá riêng chất lượng xếp hạng, kiểm cấu trúc nguồn và hành vi fallback, đồng thời ghi rõ chưa có kiểm chứng ngữ nghĩa toàn diện.
+
+## 5.11. Chính sách truy xuất thích ứng 2.1.1
+
+KnowledgeAgent.run gọi AdaptiveRetrieval.run trong app/knowledge/adaptive.py. Controller diễn giải alias, xác định anchor từ ontology; khi không có concept phù hợp, có thể dùng topic cụ thể của thẻ biên soạn. Mỗi hit được đối chiếu ID, text, URL, document_id và page với source_index. Một lượt đủ điều kiện khi có hit được chấp nhận, có giao token truy vấn và các anchor yêu cầu được bao phủ. Đây là heuristic điều khiển, không là confidence y khoa hoặc bằng chứng từng claim đúng.
+
+Controller thử hybrid_graph trên câu hỏi gốc; nếu chưa đủ và có alias thay thế thì thử câu đã chuẩn hóa; cuối cùng có thể thử lexical. Tối đa ba call, mỗi call lấy tối đa bốn hit. Không so trực tiếp raw score giữa hybrid và lexical. Khi hết ngân sách mà chưa đủ, evidence trả rỗng để Explanation từ chối. KnowledgeBase.retrieve gốc giữ nguyên để kết quả baseline lịch sử vẫn có cùng ý nghĩa.
+
+Ca “Mờ mắt là gì?” minh họa retry có nguyên nhân: lượt gốc chưa bao phủ anchor blurred_vision; alias “nhìn mờ” ở lượt hai lấy được KB05. Ngược lại, “HbA1c phản ánh điều gì?” đủ ngay lượt đầu. Metadata attempts ghi method, query_strategy, số ứng viên, coverage, reason và duration; không ghi lại câu hỏi gốc trong audit.
+
+<!-- ADAPTIVE_EVAL_START -->
+
+Bảng sau đọc từ agent-upgrade-evaluation.json. Đây là phép đo phát triển sau khi đã xem lỗi phiên bản đầu (post-hoc); không phải holdout độc lập hoặc kiểm định lâm sàng.
+
+| Bộ câu hỏi / phương pháp | Recall@1 | Recall@3 | MRR@3 |
+|---|---:|---:|---:|
+| 22 câu gold ID / baseline_hybrid | 0,9091 | 1,0000 | 0,9470 |
+| 22 câu gold ID / adaptive | 0,8636 | 0,9545 | 0,9015 |
+| 8 câu gold tài liệu / baseline_hybrid | 0,2500 | 0,5000 | 0,3542 |
+| 8 câu gold tài liệu / adaptive | 0,2500 | 0,5000 | 0,3542 |
+
+Policy đánh giá: adaptive-evidence-2.1.1. Bản thử đầu được giữ tại agent-upgrade-evaluation-v1.json. Adaptive còn bỏ sót Q21 trong bộ gold ID; phép kiểm đủ bằng chứng có thể từ chối một câu hợp lệ về nguồn dữ liệu. Tám gold tài liệu vẫn có những lỗi của baseline. Không kết luận nâng cấp làm tăng mọi metric.
+
+Ca “Mờ mắt là gì?” minh họa một nhánh bổ sung thật: lượt đầu thiếu hỗ trợ concept, lượt sau chuẩn hóa alias thành “nhìn mờ” và lấy được KB05. Nếu lượt đầu đã đủ, bộ điều khiển kết thúc ngay; không ép gọi thêm để trình diễn.
+
+<!-- ADAPTIVE_EVAL_END -->
+
+Bảng lấy từ results/agent-upgrade-evaluation.json. Chính sách 2.1 ban đầu có hồi quy và một điều kiện gây retry dù evidence đã đủ; kết quả được giữ nguyên trong agent-upgrade-evaluation-v1.json. Bản 2.1.1 bỏ điều kiện đó, bổ sung diễn giải topic/alias sau khi xem lỗi phát triển. Đây là so sánh hậu kiểm trên cùng tập phát triển, không phải holdout độc lập. Q21 vẫn bị từ chối và làm giảm Recall@3; các lỗi gold tài liệu vẫn được giữ. Nâng cấp đem lại điều khiển, truy vết và một số ca diễn đạt lại có ích, chưa chứng minh chất lượng xếp hạng tăng tổng thể. Thêm retrieval cũng có thể làm tăng thời gian.
+
+Chính sách này không học một mô hình phản tư hoặc neural retriever. Bài chưa triển khai learned Self-RAG, bge-m3 hay neural embedding; LSA32 vẫn là phép giảm chiều trên TF-IDF. Khi bảo vệ, nên mở attempts và ca lỗi để giải thích hành vi thay vì chỉ nêu tên phương pháp.
+
 
 # CHƯƠNG 6. LUẬT, BÁO CÁO CÓ CẤU TRÚC VÀ RL MÔ PHỎNG
 
@@ -402,12 +661,113 @@ Thực nghiệm lịch sử dùng seed 299, 4.000 episode. Greedy policy khớp 
 
 Core bảy agent không phụ thuộc RL để dự đoán hoặc truy xuất. Nếu mở rộng RL sau này, cần mô phỏng riêng và đánh giá chính sách có ràng buộc trước mọi ứng dụng thực; không cho policy tự kê đơn, đổi liều hoặc điều khiển chăm sóc người thật.
 
+Ánh xạ phần mở rộng vào MDP của đặc tả: trạng thái s là tổ hợp có/không evidence và yêu cầu ngắn/chi tiết, tạo bốn trạng thái 0-3. Action là abstain, brief hoặc detail. Mỗi episode lấy một trạng thái rồi kết thúc sau một action; vì gamma=0, bài hiện tại là bandit theo ngữ cảnh, chưa học chiến lược chăm sóc nhiều bước. Reward bằng +1 khi khớp rubric, -1 khi không khớp, và -3 nếu trả lời khi không có evidence. Các giá trị này do tác giả đặt để minh họa.
+
+$$Q(s,a)\leftarrow Q(s,a)+\alpha\,[r-Q(s,a)]$$
+
+scripts/train-policy.py dùng alpha=0,15 và epsilon=max(0,08; 1-episode/3000). Target greedy cho bốn state là abstain, abstain, brief, detail. app/agents/policy.py chỉ đọc bảng Q khi chọn cách trình bày cho chat. Luồng /api/report không gọi policy này. Chuyển trạng thái kết thúc một bước và reward nhân tạo giải thích vì sao kết quả 4/4 không thể được diễn giải thành chính sách tối ưu cho một bài toán y tế thật.
+
+## 6.7. Kiểm chứng toàn luồng bằng request chạy thật
+
+<!-- API_CASES_START -->
+
+Lượt chạy cục bộ ghi tại 2026-11-13T11:04:29.232131+07:00; 10/10 ca đạt kỳ vọng chức năng. Dữ liệu là giá trị mặc định minh họa theo schema, không là hồ sơ bệnh nhân. Mô hình dùng trọng số thật; tri thức dùng SQLite cache và giải thích bằng template. Lượt này không gọi FPT hoặc Neo4j ngoài, không đo SLA.
+
+| Ca | HTTP | Trạng thái | Message | Generation |
+|---|---:|---|---:|---|
+| cdc-normal | 200 | degraded | 8 | template |
+| hospital-normal | 200 | degraded | 8 | template |
+| pima-normal | 200 | degraded | 8 | template |
+| early-normal | 200 | degraded | 8 | template |
+| missing-feature | 422 | validation_error | 3 | không tạo report |
+| emergency | 200 | emergency | 8 | safety_rule |
+| medication-boundary | 200 | boundary | 8 | safety_rule |
+| low-glucose | 200 | urgent | 8 | safety_rule |
+| adaptive-rewrite | 200 | degraded | 8 | template |
+| unrelated-query | 200 | degraded | 8 | template |
+
+### 6.7.1. Một request Pima xuyên suốt
+
+Request sau gửi đến POST /api/report. Các tên trường giữ nguyên để có thể chạy lại:
+
+```json
+{
+  "dataset": "pima",
+  "features": {
+    "Pregnancies": 1,
+    "Glucose": 120,
+    "BloodPressure": 72,
+    "SkinThickness": 20,
+    "Insulin": 80,
+    "BMI": 28,
+    "DiabetesPedigreeFunction": 0.5,
+    "Age": 35
+  },
+  "question": "HbA1c phản ánh điều gì?"
+}
+```
+
+Request_id của lần ghi: `a15ba8f9-3106-4e50-82a3-4b9be3ff751f`. Score thực là 0,3034, ngưỡng validation 0,3691, nhãn nghiên cứu 0; phiên bản 2.0-db-benchmark. Đây là output của vector minh họa, không là xác suất bệnh cá nhân.
+
+| Thứ tự / agent | Status | Mốc elapsed_ms | duration_ms riêng |
+|---|---|---:|---:|
+| 1. CoordinatorAgent | started | 0.02 | 0.0 |
+| 2. PatientDataAgent | ok | 0.08 | 0.024 |
+| 3. DLPredictionAgent | ok | 2.44 | 2.321 |
+| 4. RuleBasedAgent | ok | 3.01 | 0.497 |
+| 5. KGRAGAgent | degraded | 14.27 | 11.223 |
+| 6. CoordinatorAgent | aggregated | 14.6 | 0.001 |
+| 7. ExplanationAgent | llm_not_configured | 16.94 | 2.304 |
+| 8. MonitoringAgent | ok | 17.08 | 0.015 |
+
+### 6.7.2. Evidence, giải thích và cờ review
+
+Một số evidence được trả trong đúng request trên:
+
+| ID | Document / page | Nguồn |
+|---|---|---|
+| KB08 | WEB05 / - | [Ý nghĩa HbA1c](https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis) |
+| KB07 | WEB05 / - | [Xét nghiệm chẩn đoán](https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis) |
+| PDF01-P019-C001 | PDF01 / 19 | [Bộ Y tế — Hướng dẫn chẩn đoán và điều trị đái tháo đường típ 2 (2020), bản do Sở Y tế Đồng Nai đăng tải](https://syt.dongnai.gov.vn/vi/van-ban/detail/V-v-trien-khai-thuc-hien-Quyet-dinh-so-5481-QD-BYT-ngay-30-12-2020-cua-Bo-truong-Bo-Y-te-4905/?download=1&id=0) |
+
+Các cờ review: knowledge_dependency_degraded. Trạng thái degraded phản ánh backend cache, không phải suy luận DL thất bại. conflicts.status=not_assessed cho biết chưa thực hiện kiểm mâu thuẫn ngữ nghĩa tổng quát. clinical_use=False và uncertainty.score_calibrated=False được giữ trong report.
+
+File results/agent-upgrade-cases.json lưu toàn bộ input minh họa, response, trace, nguồn, hash bốn trọng số và môi trường chạy. Request_id/thời gian ở lần tái chạy sẽ khác; cần so sánh hành vi và schema thay vì yêu cầu UUID giống nhau.
+
+### 6.7.3. Hai đường rẽ quan trọng
+
+Ca missing-feature trả HTTP 422, chỉ có Coordinator → Patient Data → Monitoring. Không có message DL và report=null: luồng không tạo dự đoán khi vector chưa hợp lệ.
+
+Các ca emergency, medication-boundary và low-glucose dùng safety_rule; KG có status skipped. DL đã chạy trước Rule theo thứ tự hiện tại, nhưng score không ghi đè cảnh báo. Explanation dùng thông điệp luật mà không gọi LLM. Các ca này minh họa điều phối; không là đánh giá độ nhạy/đặc hiệu lâm sàng của bộ luật.
+
+<!-- API_CASES_END -->
+
+## 6.8. Kiểm duyệt sau sinh và sửa hữu hạn
+
+Bản 2.1 thêm app/knowledge/review.py. ExplanationAgent.run gọi generator một lần, sau đó review_and_revise kiểm output. Các phép kiểm gồm: cấu trúc; citation inline khớp danh sách; metadata nguồn khớp evidence; không có URL mới; một số mẫu khẳng định chẩn đoán cá nhân hoặc chỉ dẫn liều thuốc; disclaimer; và mức giao token với văn bản nguồn. Nội dung disclaimer chung được dùng cả trong prompt và template.
+
+Lexical_support_ratio là tỷ lệ token nội dung còn lại xuất hiện trong evidence sau chuẩn hóa/lọc từ dừng; ngưỡng hiện tại là 0,35. Nó chỉ phát hiện một số nội dung ít liên hệ từ vựng, không hiểu đầy đủ ngữ nghĩa, tính đúng của con số, mâu thuẫn hoặc suy luận y khoa. Regex chẩn đoán/liều có xử lý phủ định/điều kiện cục bộ nhưng vẫn có thể bỏ sót hoặc bắt nhầm. Kết quả passed chỉ nghĩa đạt các phép kiểm đã định nghĩa.
+
+Nếu bản nháp không đạt, controller sửa tối đa một lần: lấy tối đa hai đoạn trích từ evidence, bỏ các đoạn bị mẫu luật chặn hoặc chứa tham chiếu không phù hợp, thêm citation/disclaimer rồi kiểm lại. Nếu không có đoạn phù hợp hoặc bản sửa vẫn không đạt, trả refusal thay vì xuất bản sửa lỗi. Không gọi LLM thêm để sửa. Safety override của Rule đi đường safety_rule với nhãn review riêng; không yêu cầu evidence hoặc gọi LLM trong nhánh này.
+
+| Trường quan sát | Ý nghĩa |
+|---|---|
+| quality.initial_passed / final_passed | Phân biệt bản nháp và bản cuối |
+| quality.attempts / initial_issue_codes | Lịch sử verdict/lý do; không lưu nguyên văn draft bị loại |
+| revision_count / max_revisions | Số lần sửa thực tế và trần một lần |
+| original_generation / provider_attempted | Giữ đường đi gốc dù kết quả cuối đã chuyển template |
+| feature_usage.fpt_called / final_generation | Phân biệt đã gọi FPT với cách tạo output cuối |
+
+Các ca cố tình đưa draft sai citation, khẳng định bệnh hoặc nêu liều trong tests/test_output_review.py là đầu vào kiểm thử có nhãn, không được gán là câu trả lời FPT thật. Chúng kiểm cơ chế chặn/sửa và giới hạn số lượt. Reviewer thuộc Explanation, không phải agent LLM Critic thứ tám hoặc bộ xác thực lâm sàng.
+
 
 # CHƯƠNG 7. TÁI LẬP, NOTEBOOK, KIỂM THỬ VÀ TRIỂN KHAI
 
 ## 7.1. Notebook là lối chạy chính
 
 Notebook chứa mã trực tiếp trong ô, chạy từ trên xuống trong kernel mới, không import module Python cục bộ của project. Script builder chỉ dùng bảo trì. Luồng gồm môi trường, schema/nguồn, CSV→SQLite→SELECT, benchmark/biểu đồ, serving model tái sử dụng, KB/graph/RAG, bảy agent, demo/API.
+
+Bản 2.1 nhúng thêm source adaptive retrieval, output review và registry trước các module sử dụng chúng. Các ô demo/API kiểm attempts, budget, quality, timing và feature_usage. Kết quả thực thi mới lưu riêng tại results/notebook-agent-upgrade-verification.json; không dùng số ô hoặc output cũ để khẳng định notebook mới đã chạy.
 
 Full chạy ngân sách đầy đủ; smoke giảm seed/epoch/cây để kiểm luồng, không thay số đo full. Output ở thư mục riêng, không ghi đè serving model hoặc báo cáo. Dữ liệu tải thật/cache phải có provenance; model nhúng để reuse không thay việc fit benchmark trên nguồn thật.
 
@@ -434,9 +794,9 @@ Kiểm notebook cần chạy kernel mới trong thư mục không có source app
 
 55/55 pytest và 13/13 HTTP ghi ngày 05/11/2026 là bằng chứng lịch sử phiên bản đầu. Bộ 30 câu phát triển và 11 ca an toàn lịch sử không phải bộ clinical validation. Bản nâng cấp thay schema, retrieval, API và UI nên cần kết quả kiểm tra mới; đối chiếu file verification mới nhất khi nộp.
 
-Bản nâng cấp đạt 102 pytest ở lượt kiểm cuối. Kiểm độc lập tính lại 72 run/144 bộ metric, 36 checkpoint, 24 summary và 11 hash legacy. Bằng chứng nằm tại results/pytest-verification-v2.json và báo cáo tester.
+Bản 2.0 đạt 102 pytest ở lượt kiểm ngày 06/11. Kiểm độc lập tính lại 72 run/144 bộ metric, 36 checkpoint, 24 summary và 11 hash legacy. Bằng chứng lịch sử nằm tại results/pytest-verification-v2.json; lượt kiểm code 2.1 được ghi riêng trong agent-upgrade-pytest.json.
 
-Bản nâng cấp đã kiểm giao diện desktop/mobile thực với 24 kiểm tra: bốn form model, tám message luồng thường, sáu hàng benchmark/cohort, 34 node/19 relation, 26 document metadata, 24 thẻ, chat và năm tab không tràn ngang/lỗi JavaScript. Footprint ứng dụng đo khoảng 302 MiB trong môi trường kiểm; không là bảo đảm mọi tải. Notebook bàn giao có 61 ô/51 ô mã, gồm 25 ô mô-đun inline. Bản cuối chạy full trong kernel mới với nguồn cache thật đã kiểm hash: 72 lượt fit, 80 kiểm tra ML và 68 kiểm tra API đạt, 211,575 giây, không có source app cục bộ đi kèm. Một lượt full trước đó tải nguồn thật đạt trong 339,18 giây. Hai thời gian toàn luồng này không thay tổng fit từng run 145,588 giây của benchmark báo cáo; cache và phiên bản execution được ghi rõ trong notebook-verification.json.
+Bản 2.0 đã kiểm giao diện desktop/mobile với 24 kiểm tra, gồm bốn form, benchmark, graph, metadata, chat và năm tab. Footprint khoảng 302 MiB chỉ áp dụng môi trường lượt đó. Notebook 2.0 có 61 ô/51 ô mã/25 mô-đun inline; lượt full dùng cache nguồn thật đạt 72 fit, 80 kiểm tra ML và 68 kiểm tra API trong 211,575 giây. Lượt tải nguồn trước đó mất 339,18 giây. Đây là bằng chứng lịch sử trong notebook-verification.json, không thay cho việc chạy notebook 2.1; cũng không thay tổng fit từng run 145,588 giây của benchmark báo cáo.
 
 ## 7.4. Docker và cấu hình FPT
 
@@ -448,11 +808,17 @@ FPT_API_KEY, FPT_MODEL và FPT_API_URL cấu hình bằng biến môi trường.
 
 Demo tại https://diacare-mas-hieugm299.onrender.com, API docs tại /docs và readiness tại /health. Dịch vụ hiện có dùng Docker Free Singapore, repo HieuGM/PTHTTM_PTIT nhánh main, service `srv-dbm5dfgu01pc738ercq0`. Root Directory trống; Dockerfile và build context trỏ thư mục `project01_CT_04_HieuGM.299`.
 
-Bản nâng cấp chuyển live lúc 14:40:42 ngày 06/11/2026 theo giờ Việt Nam, commit `1d08d9ba7bc1d757ee856268f671ca035399a7b8`, deploy `dep-dbmo7ne7bikc73bj5rv0`. Kiểm public HTTPS cuối đạt 30/30, gồm suy luận bốn model, corpus/graph/benchmark và sinh câu trả lời FPT thật. Lượt trước đạt 29/30 vì một câu FPT dùng template fallback; giữ nguyên tại results/render-http-attempts.json. Chạy lại cùng câu hỏi/bộ kiểm đạt 30/30, không xóa lỗi ban đầu. Đây là kiểm chức năng theo lượt, không bảo đảm LLM luôn thành công. Kết quả cuối ở results/render-http-verification.json, metadata ở results/render-deployment.json.
+Bản 2.0 chuyển live lúc 14:40:42 ngày 06/11/2026 theo giờ Việt Nam, commit `1d08d9ba7bc1d757ee856268f671ca035399a7b8`, deploy `dep-dbmo7ne7bikc73bj5rv0`. Kiểm public lượt đó đạt 30/30, gồm suy luận bốn model, corpus/graph/benchmark và sinh câu trả lời FPT thật. Lượt trước đạt 29/30 vì một câu FPT dùng template fallback; giữ nguyên tại results/render-http-attempts.json. Đây là kiểm chức năng lịch sử, không bảo đảm LLM luôn thành công hoặc chứng minh code 2.1 đã được phát hành. Kết quả ở results/render-http-verification.json, metadata ở render-deployment.json; khi demo cần đọc system_version từ /health của chính môi trường đang dùng.
 
 Dịch vụ dùng public Git URL nên cần manual deploy theo commit mới sau push; deploy do đổi environment ở commit cũ không được tính là bản nâng cấp. FPT Environment đã cấu hình riêng trên Render, không ship .env. Free có thể ngủ; lần mở đầu chậm không tự chứng minh lỗi model.
 
 Neo4j Docker cục bộ không truy cập từ Render bằng localhost. Muốn live graph production cần URI accessible và credential riêng; khi thiếu dùng sqlite_cache/degraded có nhãn. Không tạo thêm tài nguyên trả phí. Live của ứng dụng không chứng minh đã có Neo4j production hoặc kiểm định lâm sàng.
+
+### 7.5.1. Bản mã 2.1 được kiểm chứng công khai
+
+Bản 2.1 đã live lúc 11:26:33 ngày 13/11/2026 trên chính dịch vụ Free hiện có, từ commit `bc67a979d74db02195ed2b9d927cb59d63c3c7fb`, deploy `dep-dbr926lg1s2s73fpu7qg`. Sau khi trạng thái deploy là live, 39/39 phép kiểm HTTPS đạt: phiên bản mới, bốn model, quality/duration, capabilities, retry thật và từ chối câu ngoài miền. Ca CDC sinh bằng FPT thật; ca “Mờ mắt là gì?” gọi truy xuất hai lượt và cũng có final generation=fpt_cloud_llm. Neo4j public vẫn là sqlite_cache có nhãn. Bằng chứng mới ở render-agent-upgrade-deployment.json và render-agent-upgrade-http.json; không suy từ Git push hoặc localhost.
+
+Một lượt kiểm FPT cục bộ sau sửa đã chuyển sang template vì ValueError khi xử lý phản hồi; giữ nguyên tại provider-review-verification.json. Lượt trước đó có phản hồi FPT hợp lệ được giữ riêng với nhãn before-review-fix. Các ca public sau deploy cho thấy dịch vụ có thể sinh thật, nhưng không bảo đảm mọi request LLM thành công. Cả fallback và generation được ghi theo đường đi thực tế. Đợt này cập nhật mã của dịch vụ cũ, không tạo tài nguyên trả phí mới.
 
 ## 7.6. Kịch bản demo bảo vệ
 
@@ -460,27 +826,96 @@ Mở bảng benchmark, chọn lần lượt bốn cohort và giải thích khác
 
 Thử thiếu feature hoặc nhập ngoài miền: Data từ chối trước DL. Thử yêu cầu kê liều: luật giới hạn phản hồi. Tắt FPT hoặc Neo4j có chủ đích trong môi trường cục bộ để xem nhãn fallback; không giả định fallback chính là dịch vụ ngoài đang chạy. Khi demo LLM thật, dùng câu hỏi công khai và không cung cấp hồ sơ nhận dạng.
 
+Với code 2.1, mở tab Công nghệ và kiểm chứng hoặc /api/capabilities, chỉ source symbol của một phương pháp rồi chạy request tương ứng. So “HbA1c phản ánh điều gì?” với “Mờ mắt là gì?” để xem dừng ngay hoặc alias_rewrite có lý do. Mở mục 6 của report để xem retrieval/quality và feature_usage. Câu bóng đá cho thấy nhánh thiếu evidence; các test draft có nhãn minh họa sửa output khi không thể cố ý điều khiển phản hồi của LLM thật.
+
 ## 7.7. Hướng phát triển
 
 Ưu tiên bộ câu hỏi độc lập có thẩm định chuyên môn, đánh giá claim-level support, nguồn mới và prompt injection; so sánh retriever với neural embedding phù hợp tiếng Việt. Với ML, thêm external/temporal validation, calibration và phân tích nhóm. Với hệ thống, đo tải/RAM/latency/cost, rate limit và hạ tầng log có chính sách rõ.
 
 Không mở rộng số model chỉ để tăng số lượng khi chưa có giả thuyết so sánh. Ma trận hiện tại hữu hạn, có baseline và ba neural architecture, cho thấy cả kết quả tốt và yếu. Giá trị của bài là pipeline tái lập, không rò rỉ, provenance và ranh giới nghiên cứu được thể hiện trong sản phẩm.
 
+## 7.8. Kiểm chứng phần nâng cấp mã 2.1
+
+Lần bổ sung tài liệu ngày 12/11/2026 giữ runtime và notebook cũ, đạt 102 pytest cùng 8 ca minh họa; các file resubmission-* là ảnh chụp bằng chứng của giai đoạn đó. Sau yêu cầu nâng cấp mã, bản 2.1 thêm controller truy xuất, reviewer, timing, registry và UI. Hai giai đoạn được tách để tránh dùng bằng chứng “không đổi mã” cho một bản đã đổi hành vi. Bìa và các trọng số serving được bảo toàn.
+
+<!-- UPGRADE_EVIDENCE_START -->
+
+Đợt kiểm chứng mã nâng cấp hoàn tất ngày 13/11/2026. Các kết quả dưới đây được ghi riêng với đợt bổ sung tài liệu trước đó.
+
+| Bằng chứng của mã nâng cấp | Kết quả | Phạm vi |
+|---|---|---|
+| Pytest | 156 đạt, 0 lỗi | Model thật/cache/template và ca lỗi có chủ đích |
+| API minh họa | 10/10 đạt | Bốn cohort, safety, input sai, retry và từ chối |
+| Notebook | 72 fit, 80 ML, 99 API, 37 kiểm tra nâng cấp | Kernel mới; weights sandbox tách artifact phục vụ |
+| FPT thật | Structured response: False; final generation: template | Một câu hỏi công khai, không phải benchmark y khoa |
+| Review cuối của lượt FPT | True | Chỉ các điều kiện của bộ kiểm xác định |
+| Nguồn công nghệ | technology-map.json | Mỗi tính năng có file/hàm/dòng; phân biệt implemented và executed |
+
+Lượt notebook mới ghi riêng môi trường, source/hash và số kiểm tra trong verification. Các model Pima/Early được chọn lại trong thư mục sandbox của notebook; trọng số phục vụ trong gói nộp và số benchmark lịch sử không bị thay. Một lượt full đã dừng khi review phát hiện lỗi xử lý xuống dòng; lượt đó không được tính là hoàn tất.
+
+Rà soát độc lập phát hiện bản sửa extractive có thể ghép những mảnh xuống dòng thành một phát biểu không đạt kiểm tra. Bản cuối kiểm lại đoạn đã ghép và chuyển sang REFUSAL tin cậy nếu candidate sau sửa vẫn bị từ chối; verdict của candidate lỗi được giữ trong metadata. Đây là sửa lỗi trong cơ chế kiểm duyệt, không là chứng minh an toàn y tế tổng quát.
+
+<!-- UPGRADE_EVIDENCE_END -->
+
+Các test mới kiểm provenance giả, retrieval lỗi/rỗng và trần số call; draft sai nguồn/chẩn đoán/liều; không sửa draft đạt; số lượt revision; metadata timing; feature_usage và source symbol của registry. Predictor cũng từ chối khi thứ tự feature trong metadata không khớp schema. Các sự cố hoặc draft không an toàn được chủ động tạo là ca kiểm thử có nhãn, không phải sự cố production hay output FPT được quan sát.
+
+Mã bảy agent vẫn hữu hạn, nhưng KG/RAG tự quyết định có cần lượt tiếp theo và Explanation tự quyết định nhận/sửa/từ chối trong ngân sách. Đây là cải tiến về hành vi và khả năng quan sát. Bảng ở 5.11 cho thấy bộ lọc có thể giảm Recall; các số kiểm chức năng không được diễn giải thành độ đúng y khoa hoặc thắng lợi retrieval tổng thể. Bằng chứng FPT/Neo4j/Render ngày 06/11 giữ nguyên ngày và phạm vi.
+
+## 7.9. Giao diện và quan sát luồng phối hợp
+
+Các ảnh sau được chụp từ ứng dụng của chính project tại localhost, với vector mặc định minh họa và câu hỏi công khai. Ảnh là các vùng trên giao diện thật, không dựng mô phỏng hay thay nội dung DOM. Lượt trình duyệt riêng có UUID và thời gian khác request TestClient ở Chương 6; generation/backend tại thời điểm chụp phải được đọc trên ảnh hoặc metadata kiểm UI.
+
+![Vùng dự đoán Pima: score, ngưỡng, nhãn và phiên bản được trình bày riêng](figures/ui-report.png)
+
+Score hiển thị ba chữ số sau dấu thập phân để dễ đọc; response JSON giữ giá trị chính xác hơn. Việc nhãn bằng 0 chỉ mô tả output phân lớp theo ngưỡng của artifact, không là kết luận “không có bệnh”. Người xem luôn có task/label_semantics và phiên bản bên cạnh score.
+
+![Trace giao diện gồm tám message của bảy vai trò; Coordinator xuất hiện hai lần](figures/ui-trace.png)
+
+Trong cấu hình cache/template, KG/RAG mang nhãn degraded và Explanation có thể mang llm_not_configured. Monitoring vẫn hoàn tất. Trace 2.1 bổ sung duration_ms của từng call và decision; elapsed_ms vẫn là mốc tích lũy. Không cộng các mốc này để tính tổng latency.
+
+![Vùng giải thích dùng template, có ID nguồn và tách khỏi điểm dự đoán](figures/ui-explanation.png)
+
+Hai vùng còn lại của giao diện cung cấp nguồn truy xuất và bất định/giới hạn. Tab So sánh mô hình đọc 24 hàng summary theo cohort; tab Knowledge Graph hiển thị snapshot thực thể/quan hệ có nguồn của corpus. Snapshot trên giao diện giúp khám phá tri thức, không phải bằng chứng rằng một kết nối Neo4j production đang hoạt động.
+
+![Mục quyết định và kiểm duyệt hiển thị attempts, lý do và số lần sửa thực tế](figures/ui-controls.png)
+
+![Tab Công nghệ và kiểm chứng nối phương pháp với vai trò, source symbol và demo](figures/ui-technology.png)
+
+Bảng công nghệ khai báo phần đã triển khai; report ghi phần đã chạy. Ví dụ, RL có mã và dùng trong chat nhưng feature_usage.rl_policy=False ở /api/report. Registry công bố neural_embedding, LangGraph/checkpoint/resume và streaming là chưa triển khai. Cách trình bày này giúp trả lời trực tiếp “có dùng không, dùng ở đâu, chứng minh bằng gì” mà không suy từ tên thư viện hoặc hình kiến trúc.
+
+## 7.10. Kết luận và đóng góp
+
+DiaCare đã hiện thực một nguyên mẫu Hybrid MAS theo bảy vai trò của đặc tả. Nhánh DL nhận dữ liệu từ SQLite, có baseline cùng ba kiến trúc neural và giao thức ngăn rò rỉ. Nhánh tri thức kết nối tài liệu Web/PDF, concept graph và truy xuất có provenance. Coordinator ghép dự đoán, luật và evidence thành báo cáo có cấu trúc; Explanation diễn đạt; Monitoring cung cấp metadata truy vết. Ví dụ chạy thật chứng minh các nhánh này gặp nhau trong cùng một request, đồng thời các loại thông tin vẫn được giữ riêng.
+
+Kết quả thực nghiệm không xác nhận DL luôn vượt mô hình cổ điển hoặc graph luôn tăng retrieval. Các trường hợp baseline cạnh tranh, Hospital khó dự đoán, Early dao động giữa seed và lỗi ranking đều được giữ trong báo cáo. Chúng chỉ ra giới hạn dữ liệu/phương pháp và giúp xác định bước cải thiện tiếp theo có căn cứ.
+
+Bản 2.1 bổ sung mã truy xuất thích ứng và kiểm duyệt hữu hạn, thời lượng từng call, decision trace, feature_usage và registry gắn phương pháp với source. Báo cáo, notebook và hướng dẫn bảo vệ kết nối các phần này tới ca chạy có thể kiểm tra. Các trọng số phục vụ được giữ để đáp ứng yêu cầu tái sử dụng. Neo4j đã có bằng chứng cục bộ; trạng thái môi trường public cần đọc riêng theo phiên bản. Xác thực lâm sàng, kiểm định ngoài miền, kiểm chứng từng claim và đánh giá tải vẫn là công việc tương lai.
+
 
 # PHỤ LỤC. HỒ SƠ KIỂM CHỨNG VÀ ĐỐI CHIẾU YÊU CẦU
 
 ## A.1. Ánh xạ đặc tả sang sản phẩm
 
-| Yêu cầu từ kiến trúc | Sản phẩm |
-|---|---|
-| Tái sử dụng DL | models/cdc, models/hospital; legacy-preservation.json |
-| Patient validation, dừng sớm | PatientDataAgent, ReportWorkflow, /api/report |
-| KG Neo4j và RAG | corpus/ontology, DB_diabet.cypher, neo4j_backend.py |
-| Contract có trạng thái/version | AgentResult, Context.emit, messages và request_id |
-| Báo cáo prediction/rule/evidence riêng | structured_report và ExplanationAgent |
-| Monitoring | Metadata audit; mặc định không ghi file/patient data |
-| Đánh giá thành phần và hệ | 72 run, retrieval checks, Neo4j proof, pytest, notebook/API |
-| RL tùy chọn | One-step contextual bandit mô phỏng, tách core |
+Số trang dưới là trang vật lý của project_architecture_multiagent_diabet_v1.pdf (11 trang). “Đã có” mô tả chức năng kỹ thuật theo bằng chứng, không là chứng nhận lâm sàng. Các giả định khác đặc tả được nêu trực tiếp.
+
+| Mục đặc tả / trang | Yêu cầu và hiện trạng | Nơi kiểm tra trong bài |
+|---|---|---|
+| 1.2 / tr.3 | Tái sử dụng DL: giữ hai serving model CDC/Hospital; benchmark mở rộng ở kho riêng | 1.3, 4.9; legacy-preservation.json |
+| 1.2, 7.2 / tr.3,9 | KG giả định có sẵn: thực tế phải xây mới; Neo4j đã kiểm local, public dùng cache | 1.3, 5.3-5.4; DB_diabet.cypher, neo4j-verification.json |
+| 2.1 / tr.3-4 | Sáu lớp: UI, API, điều phối, agent, model/knowledge, đánh giá | 2.2; app/main.py và app/static |
+| 3.1-3.2 / tr.5 | Bảy vai trò, I/O và quyền ghi trạng thái, quyết định nội bộ hữu hạn | 2.1, 2.4, 2.10; roles.py, workflow.py, capabilities.py |
+| 4 / tr.5-6 | M=(A,S,O,C,F), ánh xạ input/output của agent | 2.3; Context, AgentResult, ReportWorkflow |
+| 5 / tr.6-7 | Workflow tuần tự; input sai phải dừng trước DL | 2.6, 6.7; test_workflow.py và request missing-feature |
+| 6 / tr.7-8 | Message có request_id, agent, status, payload, evidence, model_version | 2.5; contracts.py; trace thật tại 6.7 |
+| 7.1 / tr.8-9 | Kiến trúc DL, dữ liệu, tên/thứ tự feature, preprocessing, output/version, metric | Chương 3-4; metadata.json, predict.py |
+| 7.2 / tr.9 | Diễn giải query, thực thể, graph, ranking, dẫn nguồn; thêm controller hữu hạn | 5.5, 5.9-5.11; retrieval.py, adaptive.py |
+| 5-6 / tr.6-8 | Báo cáo tách các loại thông tin; thêm kiểm duyệt/sửa sau sinh | 6.3, 6.7-6.8; structured_report, review.py, /api/report |
+| 3.1, 9 / tr.5,10 | Monitoring, kiểm thử từng thành phần và toàn hệ | 6.5, 7.3, 7.8; audit và verification |
+| 8 / tr.9-10 | RL tùy chọn trong mô phỏng; không điều khiển điều trị | 6.6; policy.py, train-policy.py; tách core |
+| 9 / tr.10 | Giao diện và báo cáo thực nghiệm | 7.9; notebook, API, ảnh UI và bảng benchmark |
+| 10 / tr.10 | Nguồn có thể xem lại, giới hạn chẩn đoán/thuốc, nêu bất định | 1.4, 6.1-6.4, A.5; rules.py, uncertainty/conflicts |
+
+Phần bổ sung tài liệu làm rõ lý thuyết, contract, sequence/lỗi, feature và ví dụ thực. Code 2.1 bổ sung quyết định retrieval/review, timing và registry có thể kiểm trực tiếp. Các cải tiến nội bộ vẫn theo khung bảy vai trò. Chưa có bằng chứng hoàn tất kiểm chứng ngữ nghĩa tổng quát, hệ phân tán tự chủ hoặc Neo4j production.
 
 ## A.2. Cấu trúc bàn giao
 
@@ -489,7 +924,7 @@ notebook/project01-diacare.ipynb    Mã độc lập chạy từ trên xuống
 app/ml/                           Database, dataset, training, inference
 app/knowledge/                    Corpus, ontology, retrieval, generation
 app/agents/                       Bảy agent, contracts, rules, workflow
-app/static/                       Report, Chat, Benchmark, Graph, Knowledge
+app/static/                       Report, Chat, Benchmark, Graph, Knowledge, Technology
 models/                           Serving weights và benchmark neural
 results/benchmark/full/            72run, summary, scores, figures
 results/*verification.json         Bằng chứng theo phạm vi/phiên bản
@@ -509,7 +944,7 @@ Vì sao không chọn test cao nhất để deploy? Làm vậy dùng test tham g
 
 Có dùng Neo4j/LLM thật không? Neo4j local đã import/query thật và có verification; FPT gọi HTTPS thật có evidence/citation check. Render có backend nào phải đọc health/verification thực tế, không suy từ kết quả local.
 
-Kết quả có chẩn đoán được không? Chưa. Quần thể nước ngoài, test nhỏ ở hai cohort, sigmoid chưa calibration Việt, RAG chỉ có kiểm citation cơ bản. Core là nguyên mẫu học thuật có human review.
+Kết quả có chẩn đoán được không? Chưa. Quần thể nước ngoài, test nhỏ ở hai cohort, sigmoid chưa calibration Việt. Reviewer mới là bộ kiểm cấu trúc/nguồn/mẫu luật và lexical support, chưa chứng minh đúng y khoa. Core là nguyên mẫu học thuật có human review.
 
 ## A.4. Bảng kiểm trước khi nộp
 
@@ -521,10 +956,46 @@ Loại .env thật, key/password, raw/database, runtime log và patient ID khỏ
 
 Chưa có xác thực lâm sàng Việt Nam; chưa có external/temporal validation hay calibration production; chưa có nghiên cứu tác động chăm sóc. Chưa có benchmark tải/SLA. Chưa có đánh giá claim-level support lớn được chuyên gia chấm. SD ba seed không là uncertainty đầy đủ. Chế độ cache không là Neo4j production, citation hợp lệ không là sự thật y khoa.
 
+## A.6. Điểm vào mã nguồn cho người kiểm tra
+
+Contract sau trích từ app/agents/contracts.py, bỏ decorator/import để tập trung các trường. payload và evidence là object/danh sách JSON; client cần đọc status trước khi diễn giải nội dung.
+
+```python
+class AgentResult:
+    request_id: str
+    agent: str
+    status: str
+    payload: dict
+    evidence: list
+    model_version: str
+    elapsed_ms: float
+    duration_ms: float = 0.0
+    decision: dict = field(default_factory=dict)
+```
+
+| Muốn kiểm tra | Điểm vào |
+|---|---|
+| Nhận request và mã HTTP | app/main.py: report; app/api_models.py: ReportRequest |
+| Toàn bộ thứ tự điều phối | app/agents/workflow.py: ReportWorkflow.run và _finish |
+| Nguồn của score, thứ tự feature | app/ml/predict.py: Predictor.predict; models/<cohort>/metadata.json |
+| Luật và ưu tiên phản hồi | app/agents/rules.py: check; reporting.py: ExplanationAgent.run |
+| Ranking và graph fallback | app/knowledge/retrieval.py: KnowledgeBase.retrieve, graph_evidence |
+| Chính sách accept/retry/abstain | app/knowledge/adaptive.py: AdaptiveRetrieval.run |
+| Prompt, HTTPS và citation gate | app/knowledge/generation.py: EvidenceGenerator.generate, validate_generated |
+| Kiểm duyệt và sửa hữu hạn | app/knowledge/review.py: review_output, review_and_revise |
+| Có dùng công nghệ nào, dùng ở đâu? | app/capabilities.py: FEATURES, AGENTS, inventory, usage; GET /api/capabilities |
+| Tái tạo ví dụ Chương 6 | scripts/capture-report-cases.py; results/agent-upgrade-cases.json |
+| Đánh giá thay đổi retrieval | scripts/evaluate-agent-upgrade.py; agent-upgrade-evaluation.json và bản v1 |
+| Tái tạo bảng/sơ đồ/báo cáo | report/prepare-analysis.py, prepare-report.py, build-pdf.py |
+
+Nguồn báo cáo và công cụ dựng được đóng gói cùng bài để có thể sửa tiếp. assets/original-cover.pdf là trang bìa gốc được giữ lại; builder thay trang đầu bằng trang này sau khi dựng nội dung. Kiểm render pixel trước/sau được dùng để xác nhận yêu cầu giữ nguyên bìa, thay vì chỉ so tên và mã sinh viên.
+
 
 # TÀI LIỆU THAM KHẢO
 
-Tài liệu kiến trúc do giảng viên cung cấp: project_architecture_multiagent_diabet_v1.pdf (11 trang,11/2026). Đây là đặc tả được đối chiếu, không là kết quả đo của project.
+Tài liệu kiến trúc do giảng viên cung cấp: project_architecture_multiagent_diabet_v1.pdf (11 trang,11/2026), đặc biệt mục 3-7 và 9-10. Đây là đặc tả được đối chiếu, không là kết quả đo của project.
+
+Báo cáo project_01_CT_04_linhvtm_v2.pdf (53 trang): tham khảo cách trình bày nền tảng Agent/MAS, hợp đồng API, ví dụ và ảnh giao diện. Không sử dụng số liệu, ảnh giao diện hoặc mã của báo cáo mẫu làm kết quả DiaCare.
 
 Nguồn Web/PDF được kiểm tra trong quá trình thực hiện; ngày tải/hash/note cụ thể lưu trong corpus và knowledge-ingestion.json. PDF Việt 2020 là nguồn lịch sử. Số liệu mô hình được tính bằng mã và dữ liệu của bài, không chép số liệu báo cáo mẫu.
 
@@ -568,7 +1039,7 @@ Nguồn Web/PDF được kiểm tra trong quá trình thực hiện; ngày tải
 
 20. [Lewis và cộng sự (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.](https://arxiv.org/abs/2005.11401)
 
-21. [Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.](https://www.cs.rhul.ac.uk/~mike/pubs/ker95.pdf)
+21. [Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.](https://www.cs.ox.ac.uk/people/michael.wooldridge/pubs/ker95.pdf)
 
 22. [Sutton và Barto (2018). Reinforcement Learning: An Introduction.](http://incompleteideas.net/book/the-book-2nd.html)
 

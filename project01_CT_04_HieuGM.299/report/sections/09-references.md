@@ -1,6 +1,8 @@
 # TÀI LIỆU THAM KHẢO
 
-Tài liệu kiến trúc do giảng viên cung cấp: project_architecture_multiagent_diabet_v1.pdf (11 trang,11/2026). Đây là đặc tả được đối chiếu, không là kết quả đo của project.
+Tài liệu kiến trúc do giảng viên cung cấp: project_architecture_multiagent_diabet_v1.pdf (11 trang,11/2026), đặc biệt mục 3-7 và 9-10. Đây là đặc tả được đối chiếu, không là kết quả đo của project.
+
+Báo cáo project_01_CT_04_linhvtm_v2.pdf (53 trang): tham khảo cách trình bày nền tảng Agent/MAS, hợp đồng API, ví dụ và ảnh giao diện. Không sử dụng số liệu, ảnh giao diện hoặc mã của báo cáo mẫu làm kết quả DiaCare.
 
 Nguồn Web/PDF được kiểm tra trong quá trình thực hiện; ngày tải/hash/note cụ thể lưu trong corpus và knowledge-ingestion.json. PDF Việt 2020 là nguồn lịch sử. Số liệu mô hình được tính bằng mã và dữ liệu của bài, không chép số liệu báo cáo mẫu.
 
@@ -44,7 +46,7 @@ Nguồn Web/PDF được kiểm tra trong quá trình thực hiện; ngày tải
 
 20. [Lewis và cộng sự (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.](https://arxiv.org/abs/2005.11401)
 
-21. [Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.](https://www.cs.rhul.ac.uk/~mike/pubs/ker95.pdf)
+21. [Wooldridge và Jennings (1995). Intelligent Agents: Theory and Practice.](https://www.cs.ox.ac.uk/people/michael.wooldridge/pubs/ker95.pdf)
 
 22. [Sutton và Barto (2018). Reinforcement Learning: An Introduction.](http://incompleteideas.net/book/the-book-2nd.html)
 

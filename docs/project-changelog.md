@@ -104,3 +104,20 @@ Xuất riêng `csv-xem-du-lieu/cdc.csv` (226.342 dòng, 23 cột) và `hospital.
 - Báo cáo 26 trang/bảy chương, 24 hàng mean/SD và bốn hình benchmark, 38 Q&A. Nguồn Web/PDF/Vinmec và giới hạn được ghi rõ; PDF audit/PNG review và metadata HTTPS/ZIP theo artifact cuối. Giữ cả lần gọi public LLM fallback để phản ánh độ ổn định thực tế.
 
 Public HTTPS cuối 30/30 đạt, có FPT sinh thật; lượt đầu 29/30 với một template fallback được giữ trong render-http-attempts.json. Chạy lại cùng câu hỏi/bộ kiểm đạt 30/30; không suy thành SLA hoặc provider luôn thành công.
+
+## 12/11/2026 — Bổ sung Project01 để nộp lại
+
+- Theo phản hồi giảng viên, lấy `project_architecture_multiagent_diabet_v1.pdf` làm tiêu chí đối chiếu phần còn thiếu. Bổ sung nền tảng Agent/MAS, mô hình `M=(A,S,O,C,F)`, I/O/status bảy agent, workflow và các nhánh lỗi/an toàn/dự phòng, tên/thứ tự feature, phân tích confusion matrix serving, ví dụ API/trace, ảnh giao diện thật và ma trận yêu cầu ở Phụ lục A.1.
+- Giữ nguyên trang bìa gốc; so pixel render trước/sau đạt. Chỉnh công cụ dựng báo cáo và ghi ví dụ, không đổi mã ứng dụng runtime hoặc trọng số, không deploy hay huấn luyện lại. Notebook giữ nguyên hash; chỉ kiểm cấu trúc, syntax và output lưu sẵn trong đợt này.
+- Kiểm lại đạt 102 pytest, 8/8 ca API dùng input minh họa và model thật với SQLite cache/template. Kiểm độc lập 72 run, 144 bộ metric, 72 ngưỡng validation, 24 summary, 36 neural hash và 11 hash legacy; lựa chọn serving Pima/Early khớp validation.
+- Bằng chứng mới ở `project01_CT_04_HieuGM.299/results/resubmission-*.json` và báo cáo trong `plans/reports/261112-project01-*`. Không kiểm lại FPT/Neo4j/Render ngoài; bằng chứng ngày 06/11 giữ nguyên ngày/phạm vi. PDF cuối 42 trang đạt 33/33 audit, đã duyệt đủ ảnh trang và kiểm bìa pixel; ZIP/manifest đã kiểm CRC và SHA256. Metadata giao nộp: plans/reports/261112-project01-final-delivery.json.
+
+
+## 13/11/2026 — Nâng cấp hành vi Project01 2.1
+
+- Code thật: adaptive evidence retrieval (tối đa3call, chỉretrykhi thiếu support), post-generationreview (max1extractiverevision, terminalrefusal nếu candidatevẫnlỗi), duration riêng/elapsed tích lũy, decision_trace/feature_usage và /api/capabilities; UI có tab công nghệ/kiểm chứng.
+- Kiểm cuối156pytest;10/10API;18UI. Review phát hiện lỗi ghép xuống dòng, đã sửa và thêm3regression; giữ lượt153test và notebookinterrupted riêng.
+- Notebook67ô/56mã/28module/6assets chạy full72fit+80ML+99API+37upgrade trong157,817giây; servingweights và metriclịch sử không đổi.
+- Giữ kết quả retrieval v1 và đánh giá phát triển post-hoc2.1.1; Q21 còn miss, không tuyên bố cải thiện mọi metric.
+- Dịch vụ cũ FreeSingapore đã live2.1 lúc11:26:33, commitbc67a979d74db02195ed2b9d927cb59d63c3c7fb, deploydep-dbr926lg1s2s73fpu7qg. Public39/39 đạt, cóFPTthật vàretry2lượt; giữ lỗiFPTlocalfallback. Không tạoresource trảphí.
+- Báo cáo49trang/35auditđạt, bìapixelgiốnggốc; đã duyệt đủ 49 trang, không còn lỗi bố cục; ZIP/manifest được kiểm khi đóng gói cuối. Tài liệu bảo vệ cómapping côngnghệ→mã→endpoint→demo.
