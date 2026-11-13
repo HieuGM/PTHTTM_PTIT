@@ -17,6 +17,7 @@ function renderReport(result) {
   const limits = text('ul'); r.limitations.forEach(item => limits.append(text('li', item)));
   limits.append(text('li', r.uncertainty.interpretation), text('li', r.conflicts.limitation));
   target.append(reportSection('5. Bất định và giới hạn', limits));
+  if (window.renderUpgrade) window.renderUpgrade(result, target);
 }
 $('report-form').onsubmit = async event => {
   event.preventDefault(); $('create-report').disabled = true;

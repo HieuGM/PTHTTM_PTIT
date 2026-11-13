@@ -1,9 +1,10 @@
 """Grounded structured reports keep model, symbolic rules and evidence separate."""
+from app.knowledge.review import review_and_revise, safety_review
 
 
 class ExplanationAgent:
     name = "ExplanationAgent"
-    version = "grounded-report-2.0"
+    version = "reviewed-report-2.1"
 
     def __init__(self, generator):
         self.generator = generator
@@ -12,8 +13,10 @@ class ExplanationAgent:
         safety = rules.get("safety")
         if safety:
             return {"answer": safety["answer"], "generation": "safety_rule",
-                    "status": safety["level"], "citations": [], "model": None}
-        return self.generator.generate(question, evidence, model_output=prediction, rules=rules)
+                    "status": safety["level"], "citations": [], "model": None,
+                    "review": safety_review()}
+        draft = self.generator.generate(question, evidence, model_output=prediction, rules=rules)
+        return review_and_revise(draft, evidence)
 
 
 def structured_report(prediction, rules, evidence, explanation, knowledge_status):

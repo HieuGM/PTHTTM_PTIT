@@ -20,7 +20,7 @@ function sourceList(sources) {
 }
 function showTrace(trace, target = $('trace')) {
   target.replaceChildren();
-  trace.forEach(m => { const li = text('li'); li.append(text('b', `${m.agent || m.sender} · ${m.status || m.kind}`), text('span', m.detail || `Phiên bản: ${m.model_version || '—'} · ${m.elapsed_ms} ms`)); target.append(li); });
+  trace.forEach(m => { const li = text('li'); li.append(text('b', `${m.agent || m.sender} · ${m.status || m.kind}`), text('span', m.detail || `Phiên bản: ${m.model_version || '—'} · mốc ${m.elapsed_ms} ms${m.duration_ms !== undefined ? ' · riêng bước '+m.duration_ms+' ms' : ''}`)); if (m.decision?.reason) li.append(text('small', `${m.decision.action} · ${m.decision.reason}`)); target.append(li); });
 }
 function showError(target, error) { target.replaceChildren(text('p', error.message, 'error')); }
 document.querySelectorAll('[data-tab]').forEach(button => button.onclick = () => {

@@ -45,6 +45,9 @@ class Predictor:
         if dataset not in self.loaded:
             folder = self.root / 'models' / dataset
             meta = json.loads((folder / 'metadata.json').read_text(encoding='utf-8'))
+            expected = [item['name'] for item in SCHEMAS[dataset]]
+            if [item['name'] for item in meta['feature_specs']] != expected:
+                raise ValueError('Thứ tự feature trong metadata không khớp schema đã công bố.')
             model = build_model(len(meta['feature_specs']), meta.get('model_id', 'mlp3'))
             model.load_state_dict(torch.load(folder / 'model.pt', map_location='cpu',
                                             weights_only=True))

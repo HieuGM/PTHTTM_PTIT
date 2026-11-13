@@ -13,6 +13,7 @@ from app.agents.coordinator import Coordinator
 from app.api_models import ChatRequest, PredictRequest, ReportRequest
 from app.ml.schema import SCHEMAS
 from dotenv import load_dotenv
+from app.capabilities import VERSION, inventory
 
 ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT / ".env", override=False)
@@ -32,7 +33,7 @@ async def lifespan(api):
         coordinator.kb.close()
 
 
-app = FastAPI(title="DiaCare Hybrid MAS", version="2.0.0", lifespan=lifespan)
+app = FastAPI(title="DiaCare Hybrid MAS", version="2.1.0", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=ROOT / "app/static"), name="static")
 
 
@@ -63,7 +64,12 @@ def home():
 @app.get("/health")
 def health():
     return {"status": "ok", "models": list(SCHEMAS), "kb": coordinator.kb.inventory(),
-            "llm": coordinator.generator.configuration(), "system_version": "hybrid-mas-2.0"}
+            "llm": coordinator.generator.configuration(), "system_version": VERSION}
+
+
+@app.get("/api/capabilities")
+def capabilities():
+    return inventory(coordinator.kb, coordinator.generator)
 
 
 @app.get("/api/catalog")

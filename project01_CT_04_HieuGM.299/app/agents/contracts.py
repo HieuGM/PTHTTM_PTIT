@@ -22,6 +22,8 @@ class AgentResult:
     evidence: list
     model_version: str
     elapsed_ms: float
+    duration_ms: float = 0.0
+    decision: dict = field(default_factory=dict)
 
 
 @dataclass
@@ -41,10 +43,12 @@ class Context:
         self.trace.append(asdict(Message(sender, receiver, kind, detail,
                                         round((time.perf_counter()-self.started)*1000, 2))))
 
-    def emit(self, agent, status, payload, evidence=None, version="2.0"):
+    def emit(self, agent, status, payload, evidence=None, version="2.1",
+             duration_ms=0.0, decision=None):
         if len(self.messages) >= 12:
             raise RuntimeError("Đã đạt giới hạn thông điệp Agent.")
         result = asdict(AgentResult(self.request_id, agent, status, payload, evidence or [],
-                                   version, round((time.perf_counter()-self.started)*1000, 2)))
+            version, round((time.perf_counter()-self.started)*1000, 2),
+            round(max(0.0, duration_ms), 3), decision or {}))
         self.messages.append(result)
         return result

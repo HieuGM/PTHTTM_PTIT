@@ -66,24 +66,26 @@ class RuleBasedAgent:
 
 class KnowledgeAgent:
     name = "KGRAGAgent"
-    version = "hybrid-graph-retrieval-2.0"
+    version = "adaptive-evidence-2.1.1"
 
     def __init__(self, kb):
         self.kb = kb
 
     def run(self, question):
-        hits = self.kb.retrieve(question, k=4)
-        return {"evidence": hits, "inventory": self.kb.inventory(), "evidence_count": len(hits)}
+        from app.knowledge.adaptive import AdaptiveRetrieval
+        result = AdaptiveRetrieval(self.kb).run(question)
+        return {**result, "inventory": self.kb.inventory(),
+                "evidence_count": len(result["evidence"])}
 
 
 class MonitoringAgent:
     name = "MonitoringAgent"
-    version = "metadata-audit-2.0"
+    version = "metadata-audit-2.1"
 
     def run(self, context, status):
         audit = {"request_id": context.request_id, "status": status,
             "duration_ms": round((time.perf_counter()-context.started)*1000, 2),
-            "agents": [{k: m[k] for k in ("agent", "status", "model_version", "elapsed_ms")}
+            "agents": [{k: m[k] for k in ("agent", "status", "model_version", "elapsed_ms", "duration_ms")}
                        for m in context.messages],
             "records_patient_features": False, "records_question": False,
             "records_api_keys": False}
